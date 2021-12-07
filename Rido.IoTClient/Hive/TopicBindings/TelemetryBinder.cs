@@ -26,16 +26,16 @@ namespace Rido.IoTClient.Hive.TopicBindings
         {
             string topic = $"pnp/{deviceId}";
 
-            if (!string.IsNullOrEmpty(moduleId))
-            {
-                topic += $"/modules/{moduleId}";
-            }
-            topic += "/telemetry/";
-
             if (!string.IsNullOrEmpty(componentName))
             {
-                topic += $"$.sub={componentName}";
+                topic += $"/{componentName}";
             }
+            //if (!string.IsNullOrEmpty(moduleId))
+            //{
+            //    topic += $"/modules/{moduleId}";
+            //}
+            topic += "/telemetry";
+
 
             Dictionary<string, T> typedPayload = new Dictionary<string, T>
             {

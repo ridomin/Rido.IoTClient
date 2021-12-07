@@ -1,7 +1,5 @@
 ﻿using MQTTnet.Client;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +34,6 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
-            //PropertyValue = new PropertyAck<T>.InitFromTwin(twin, propertyName, componentName, defaultValue);
             PropertyValue = new PropertyAck<T>(propertyName, componentName)
             {
                 Value = defaultValue

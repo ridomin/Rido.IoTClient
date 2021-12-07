@@ -61,15 +61,15 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             var root = JsonNode.Parse(twinJson);
             var desired = root?["desired"];
             var reported = root?["reported"];
+            T desired_Prop = default;
             int desiredVersion = desired["$version"].GetValue<int>();
             PropertyAck<T> result = new PropertyAck<T>(propName, componentName) { DesiredVersion = desiredVersion };
 
             bool desiredFound = false;
-            T desired_Prop = default;
-            result.DesiredVersion = desiredVersion;
             if (!string.IsNullOrEmpty(componentName))
             {
                 if (desired[componentName] != null &&
+                    desired[componentName]["__t"] != null &&
                     desired[componentName]["__t"]?.GetValue<string>() == "c" &&
                     desired[componentName][propName] != null)
                 {

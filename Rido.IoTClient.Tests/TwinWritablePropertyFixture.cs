@@ -1,9 +1,6 @@
-﻿using MQTTnet;
-using MQTTnet.Client;
+﻿using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
-using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -61,16 +58,22 @@ namespace Rido.IoTClient.Tests
         }
 
         [Fact]
-        public async Task InitTwinWithDesired()
+        public async Task InitTwinWithDesiredTriggersUpdate()
         {
+            wp.OnProperty_Updated = async p =>
+            {
+                p.Status = 200;
+                return await Task.FromResult(p);
+            };
             string twin = js(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
                 desired = new Dictionary<string, object>() { { "$version", 2 }, { "myProp", 3.1 } },
             });
-
             await wp.InitPropertyAsync(twin, 0.2);
             Assert.Equal(3.1, wp.PropertyValue.Value);
+            Assert.Equal(200, wp.PropertyValue.Status);
+            Assert.Equal(2, wp.PropertyValue.Version);
             Assert.Equal(2, wp.PropertyValue.DesiredVersion);
         }
 
@@ -240,66 +243,5 @@ namespace Rido.IoTClient.Tests
             Assert.Equal(201, wpWithComp.PropertyValue.Status);
         }
 
-    }
-   
-
-    class MockMqttClient : IMqttClient
-    {
-        public MockMqttClient()
-        {
-         
-        }
-
-        public bool IsConnected => throw new NotImplementedException();
-
-        public IMqttClientOptions Options => throw new NotImplementedException();
-
-        public IMqttClientConnectedHandler ConnectedHandler { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IMqttClientDisconnectedHandler DisconnectedHandler { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public event Func<MqttClientConnectedEventArgs, Task> ConnectedAsync;
-        public event Func<MqttClientDisconnectedEventArgs, Task> DisconnectedAsync;
-        public event Func<MqttApplicationMessageReceivedEventArgs, Task> ApplicationMessageReceivedAsync;
-
-        public Task<MqttClientConnectResult> ConnectAsync(IMqttClientOptions options, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DisconnectAsync(MqttClientDisconnectOptions options, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PingAsync(CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<MqttClientPublishResult> PublishAsync(MqttApplicationMessage applicationMessage, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SendExtendedAuthenticationExchangeDataAsync(MqttExtendedAuthenticationExchangeData data, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<MqttClientSubscribeResult> SubscribeAsync(MqttClientSubscribeOptions options, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(new MqttClientSubscribeResult());
-            //throw new NotImplementedException();
-        }
-
-        public Task<MqttClientUnsubscribeResult> UnsubscribeAsync(MqttClientUnsubscribeOptions options, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

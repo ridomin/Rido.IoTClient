@@ -1,9 +1,7 @@
 ﻿using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub;
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Hive.TopicBindings

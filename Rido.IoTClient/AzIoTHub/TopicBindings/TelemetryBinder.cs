@@ -12,7 +12,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         readonly string moduleId;
         readonly string name;
 
-        public Telemetry(IMqttClient connection,  string name, string moduleId = "")
+        public Telemetry(IMqttClient connection, string name, string moduleId = "")
         {
             this.connection = connection;
             this.name = name;
