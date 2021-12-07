@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-    public interface IBaseCommandRequest
+    public interface IBaseCommandRequest<T>
     {
-        public object DeserializeBody(string payload);
+        public T DeserializeBody(string payload);
     }
 
     public abstract class BaseCommandResponse
@@ -18,7 +18,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
     }
 
     public class CommandBinder<T, TResponse>
-        where T : IBaseCommandRequest, new()
+        where T : IBaseCommandRequest<T>, new()
         where TResponse : BaseCommandResponse
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
@@ -35,7 +35,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                 if (topic.StartsWith($"$iothub/methods/POST/{fullCommandName}"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                    T req = (T)new T().DeserializeBody(msg);
+                    T req = new T().DeserializeBody(msg);
                     if (OnCmdDelegate != null && req != null)
                     {
                         (int rid, _) = TopicParser.ParseTopic(topic);

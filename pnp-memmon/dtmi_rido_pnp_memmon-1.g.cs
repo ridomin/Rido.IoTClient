@@ -14,8 +14,8 @@ namespace dtmi_rido_pnp
         public ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;
         public WritableProperty<int> Property_interval;
-        public CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
         public TelemetryBinder<double> Telemetry_workingSet;
+        public CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
         private memmon(IMqttClient c, ConnectionSettings cs) : base(c, cs)
         {

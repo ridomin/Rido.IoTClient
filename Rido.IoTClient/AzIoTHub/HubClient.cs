@@ -9,7 +9,7 @@ namespace Rido.IoTClient.AzIoTHub
 {
     public class HubClient
     {
-        public IMqttClient connection;
+        public IMqttClient Connection;
         public ConnectionSettings connectionSettings;
         public string InitialTwin = string.Empty;
 
@@ -18,7 +18,7 @@ namespace Rido.IoTClient.AzIoTHub
 
         public HubClient(IMqttClient connection, ConnectionSettings cs)
         {
-            this.connection = connection;
+            this.Connection = connection;
             this.connectionSettings = cs;
             GetTwinBinder = new GetTwinBinder(connection);
             UpdateTwinBinder = new UpdateTwinBinder(connection);

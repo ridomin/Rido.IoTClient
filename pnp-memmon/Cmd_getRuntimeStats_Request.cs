@@ -11,11 +11,11 @@ public enum DiagnosticsMode
     full = 2
 }
 
-public class Cmd_getRuntimeStats_Request : IBaseCommandRequest
+public class Cmd_getRuntimeStats_Request : IBaseCommandRequest<Cmd_getRuntimeStats_Request>
 {
     public DiagnosticsMode DiagnosticsMode { get; set; }
 
-    public object DeserializeBody(string payload)
+    public Cmd_getRuntimeStats_Request DeserializeBody(string payload)
     {
         return new Cmd_getRuntimeStats_Request()
         {
