@@ -32,7 +32,8 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public async Task UpdatePropertyAsync() => await updatePropertyBinder.ReportProperty(this.PropertyValue.ToAck());
 
-        public async Task InitPropertyAsync(T defaultValue, CancellationToken cancellationToken = default)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "To keep this API compatible with Hub")]
+        public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
             PropertyValue = new PropertyAck<T>(propertyName, componentName)
             {

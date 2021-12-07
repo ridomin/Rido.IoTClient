@@ -22,7 +22,7 @@ public class DeviceRunner : BackgroundService
     const bool default_enabled = true;
     const int default_interval = 8;
 
-    dtmi_rido_pnp.memmon client;
+    dtmi_rido_pnp.memmon_hive client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -32,8 +32,9 @@ public class DeviceRunner : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogWarning("Connecting..");
-        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("hub"), stoppingToken);
+        _logger.LogInformation("Connecting..");
+        client = await dtmi_rido_pnp.memmon_hive.CreateClientAsync(_configuration.GetConnectionString("hive"), stoppingToken);
+        _logger.LogInformation("Connected");
 
         client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
 

@@ -76,5 +76,11 @@ namespace Rido.IoTClient.Tests
         {
             throw new NotImplementedException();
         }
+
+        public void SimulateNewMessage(string topic, string payload)
+        {
+            var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithPayload(payload).Build();
+            this.ApplicationMessageReceivedAsync.Invoke(new MqttApplicationMessageReceivedEventArgs("mock", msg, null, null));
+        }
     }
 }

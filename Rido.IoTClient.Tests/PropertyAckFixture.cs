@@ -42,6 +42,28 @@ namespace Rido.IoTClient.Tests
         }
 
         [Fact]
+        public void NullIgnored()
+        {
+            var wp = new PropertyAck<double>("aDouble")
+            {
+                Status = 200,
+                Version = null,
+                Value = 1.2,
+            };
+
+            var expectedJson = Stringify(new
+            {
+                aDouble = new
+                {
+                    ac = 200,
+                    value = 1.2,
+                }
+            });
+            Assert.Equal(expectedJson, wp.ToAck());
+        }
+
+
+        [Fact]
         public void AckDateTime()
         {
             var wpDate = new PropertyAck<DateTime>("aDateTime")
