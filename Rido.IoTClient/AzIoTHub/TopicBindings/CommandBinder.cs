@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
 
-    public class CommandBinder<T, TResponse>
+    public class Command<T, TResponse>
         where T : IBaseCommandRequest<T>, new()
         where TResponse : BaseCommandResponse
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
 
-        public CommandBinder(IMqttClient connection, string commandName, string componentName = "")
+        public Command(IMqttClient connection, string commandName, string componentName = "")
         {
             _ = connection.SubscribeAsync("$iothub/methods/POST/#");
             connection.ApplicationMessageReceivedAsync += async m =>

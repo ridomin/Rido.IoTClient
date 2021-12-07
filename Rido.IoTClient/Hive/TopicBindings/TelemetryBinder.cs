@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Hive.TopicBindings
 {
-    public class TelemetryBinder<T>
+    public class Telemetry<T>
     {
         readonly IMqttClient connection;
         readonly string deviceId;
         readonly string moduleId;
         readonly string name;
 
-        public TelemetryBinder(IMqttClient connection, string name, string moduleId = "")
+        public Telemetry(IMqttClient connection, string name, string moduleId = "")
         {
             this.connection = connection;
             this.name = name;

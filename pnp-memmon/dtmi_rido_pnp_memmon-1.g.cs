@@ -14,16 +14,16 @@ namespace dtmi_rido_pnp
         public ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;
         public WritableProperty<int> Property_interval;
-        public TelemetryBinder<double> Telemetry_workingSet;
-        public CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
+        public Telemetry<double> Telemetry_workingSet;
+        public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
         private memmon(IMqttClient c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
-            Telemetry_workingSet = new TelemetryBinder<double>(c, "workingSet");
-            Command_getRuntimeStats = new CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
+            Telemetry_workingSet = new Telemetry<double>(c, "workingSet");
+            Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
