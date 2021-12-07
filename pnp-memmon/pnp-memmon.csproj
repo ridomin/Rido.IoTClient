@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-pnp_memmon-0A0A11E5-9BF2-4ADB-B648-713142FEE29C</UserSecretsId>
+    <RootNamespace>pnp_memmon</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="dtmi_rido_pnp_memmon-1.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="dtmi_rido_pnp_memmon-1.json" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Humanizer" Version="2.13.14" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="Cmd_getRuntimeStats_Request.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="Cmd_getRuntimeStats_Response.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+</Project>

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pnp-announce-spike", "pnp-announce-spike\pnp-announce-spike.csproj", "{44F4764C-D964-488F-8360-DEE8921AC3A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.IoTClient", "Rido.IoTClient\Rido.IoTClient.csproj", "{A6870AFC-E893-4B7F-B8AD-F087EC49A58D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon", "pnp-memmon\pnp-memmon.csproj", "{CE98A769-0744-411D-B07F-B83FB2405842}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44F4764C-D964-488F-8360-DEE8921AC3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F4764C-D964-488F-8360-DEE8921AC3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F4764C-D964-488F-8360-DEE8921AC3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F4764C-D964-488F-8360-DEE8921AC3A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6870AFC-E893-4B7F-B8AD-F087EC49A58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6870AFC-E893-4B7F-B8AD-F087EC49A58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6870AFC-E893-4B7F-B8AD-F087EC49A58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6870AFC-E893-4B7F-B8AD-F087EC49A58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE98A769-0744-411D-B07F-B83FB2405842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE98A769-0744-411D-B07F-B83FB2405842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE98A769-0744-411D-B07F-B83FB2405842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE98A769-0744-411D-B07F-B83FB2405842}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+{
+  "profiles": {
+    "pnp_memmon": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__hub": "HostName=ridox.azure-devices.net;DeviceId=memmon32;SharedAccessKey=hFbDDUytbR3cfO5bF0K05FnhdQ513yPwZuIpfP9x25w=",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
+    "pnp_memmon-central": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__hub": "IdScope=0ne00434908;DeviceId=memmon01;SharedAccessKey=3QFAN73JOlCLqP0bclHBYSVgD/otYvdSMkW+4F786ms=",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
+    "Docker (1)": {
+      "commandName": "Docker"
+    }
+  }
+}

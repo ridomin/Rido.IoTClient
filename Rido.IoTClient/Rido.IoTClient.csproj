@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Version>0.0.1</Version>
+		<Authors>ridomin</Authors>
+		<Description>Minimalistic IoT client to implement IoT PnP with Azure IoT Hub using MqttNet</Description>
+		<RepositoryUrl>https://github.com/ridomin/Rido.IoTClient</RepositoryUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<Copyright>copyleft</Copyright>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/ridomin/Rido.IoTClient</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>mqtt; iot; azure-iot</PackageTags>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<Deterministic>true</Deterministic>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<PackageReleaseNotes>
+			0.0.1 - First release
+		</PackageReleaseNotes>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="4.0.0-preview1" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0" />
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+  </ItemGroup>
+</Project>

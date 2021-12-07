@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "pnp-announce-spike": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "cs": "HostName=ridox.azure-devices.net;DeviceId=memmon-98;SharedAccessKey=kx7TzmxgnAfTiHL1xnZUR9GCBcSSEVsM55lXHxjywnk="
+      }
+    }
+  }
+}
