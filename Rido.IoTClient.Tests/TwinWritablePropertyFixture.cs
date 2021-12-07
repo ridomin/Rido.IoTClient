@@ -8,10 +8,10 @@ namespace Rido.IoTClient.Tests
 {
     public class TwinWritablePropertyFixture
     {
-        static string js(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
-        WritableProperty<double> wp;
-        IMqttClient connection;
+        readonly WritableProperty<double> wp;
+        readonly IMqttClient connection;
 
         public TwinWritablePropertyFixture()
         {
@@ -22,7 +22,7 @@ namespace Rido.IoTClient.Tests
         [Fact]
         public async Task InitEmptyTwin()
         {
-            string twin = js(new
+            string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
                 desired = new Dictionary<string, object>() { { "$version", 1 } },
@@ -37,7 +37,7 @@ namespace Rido.IoTClient.Tests
         [Fact]
         public async Task InitTwinWithReported()
         {
-            string twin = js(new
+            string twin = Stringify(new
             {
                 reported = new
                 {
@@ -65,7 +65,7 @@ namespace Rido.IoTClient.Tests
                 p.Status = 200;
                 return await Task.FromResult(p);
             };
-            string twin = js(new
+            string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
                 desired = new Dictionary<string, object>() { { "$version", 2 }, { "myProp", 3.1 } },
@@ -85,7 +85,7 @@ namespace Rido.IoTClient.Tests
         public async Task InitTwinWithDesiredInComponent()
         {
             var wpWithComp = new WritableProperty<double>(connection, "myProp", "myComp");
-            string twin = js(new
+            string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
                 desired = new Dictionary<string, object>() {
@@ -116,7 +116,7 @@ namespace Rido.IoTClient.Tests
         public async Task InitTwinWithReportedInComponent()
         {
             var wpWithComp = new WritableProperty<double>(connection, "myProp", "myComp");
-            string twin = js(new
+            string twin = Stringify(new
             {
                 desired = new Dictionary<string, object>()
                 {
@@ -155,7 +155,7 @@ namespace Rido.IoTClient.Tests
         public async Task InitTwinWithReportedInComponentWithoutFlag()
         {
             var wpWithComp = new WritableProperty<double>(connection, "myProp", "myComp");
-            string twin = js(new
+            string twin = Stringify(new
             {
                 desired = new Dictionary<string, object>()
                 {
@@ -192,7 +192,7 @@ namespace Rido.IoTClient.Tests
         public async Task InitReportedDoubleInComponent()
         {
             var wpWithComp = new WritableProperty<double>(connection, "myProp", "myComp");
-            string twin = js(new
+            string twin = Stringify(new
             {
                 reported = new
                 {
@@ -220,7 +220,7 @@ namespace Rido.IoTClient.Tests
         public async Task InitReportedDoubleInComponentWithouFlag()
         {
             var wpWithComp = new WritableProperty<double>(connection, "myProp", "myComp");
-            string twin = js(new
+            string twin = Stringify(new
             {
                 reported = new
                 {

@@ -15,7 +15,7 @@ namespace Rido.IoTClient.Tests
 
     public  class PropertyAckFixture
     {
-        static string js(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
         [Fact]
         public void AckDouble()
@@ -28,7 +28,7 @@ namespace Rido.IoTClient.Tests
                 Value = 1.2,
             };
 
-            var expectedJson = js(new
+            var expectedJson = Stringify(new
             {
                 aDouble = new
                 {
@@ -52,7 +52,7 @@ namespace Rido.IoTClient.Tests
                 Description = "updated"
             };
 
-            var expectedJson = js(new
+            var expectedJson = Stringify(new
             {
                 aDateTime = new
                 {
@@ -76,7 +76,7 @@ namespace Rido.IoTClient.Tests
                 Description = "updated"
             };
 
-            var expectedJson = js(new
+            var expectedJson = Stringify(new
             {
                 aBoolean = new
                 {
@@ -100,7 +100,7 @@ namespace Rido.IoTClient.Tests
                 Status = 213,
                 Description = "description"
             };
-            var expectedJson = js(new
+            var expectedJson = Stringify(new
             {
                 aComplexObj = new
                 {
@@ -127,7 +127,7 @@ namespace Rido.IoTClient.Tests
                 Value = 2.4,
                 Description = "updated"
             };
-            var expectedJson = js(new
+            var expectedJson = Stringify(new
             {
                 inAComp = new
                 {

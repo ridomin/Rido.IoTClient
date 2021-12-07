@@ -24,8 +24,8 @@ namespace Rido.IoTClient.Tests.Hive
         public async Task SendTelemetryWithComponent()
         {
             var mqttClient = new MockMqttClient();
-            var telemetryBinder = new Telemetry<int>(mqttClient, "temp");
-            await telemetryBinder.SendTelemetryAsync(2, "temp", "myComp");
+            var telemetryBinder = new Telemetry<int>(mqttClient, "temp", "myComp");
+            await telemetryBinder.SendTelemetryAsync(2);
             Assert.Equal("pnp/mock/myComp/telemetry", mqttClient.topicRecceived);
             Assert.Equal("{\"temp\":2}", mqttClient.payloadReceived);
         }

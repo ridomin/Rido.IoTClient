@@ -10,7 +10,6 @@ public class DeviceRunner : BackgroundService
 {
     private readonly ILogger<DeviceRunner> _logger;
     private readonly IConfiguration _configuration;
-    private Timer screenRefresher;
     readonly Stopwatch clock = Stopwatch.StartNew();
 
     double telemetryWorkingSet = 0;
@@ -42,12 +41,13 @@ public class DeviceRunner : BackgroundService
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
         
-        await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled);
-        await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval);
+        await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
+        await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
 
-        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now);
+        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
 
-        screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
+        //screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
+        RefreshScreen(this);
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -153,6 +153,6 @@ public class DeviceRunner : BackgroundService
 
         Console.SetCursorPosition(0, 0);
         Console.WriteLine(RenderData());
-        screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
+        var screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
     }
 }
