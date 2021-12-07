@@ -11,6 +11,7 @@ namespace Rido.IoTClient.Hive
     public class HiveClient
     {
         public IMqttClient Connection;
+        public string InitialTwin = string.Empty;
 
         public ConnectionSettings ConnectionSettings;
 
@@ -23,7 +24,7 @@ namespace Rido.IoTClient.Hive
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient(new MqttClientAdapterFactory());
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
-                .WithTcpServer(cs.HostName, 8884)
+                .WithTcpServer(cs.HostName, 8883)
                 .WithTls()
                 .WithClientId(cs.DeviceId)
                 .WithCredentials(cs.DeviceId, cs.SharedAccessKey)

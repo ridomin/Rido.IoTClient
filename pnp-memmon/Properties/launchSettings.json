@@ -4,6 +4,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "ConnectionStrings__hub": "HostName=ridox.azure-devices.net;DeviceId=memmon32;SharedAccessKey=hFbDDUytbR3cfO5bF0K05FnhdQ513yPwZuIpfP9x25w=",
+        "ConnectionStrings__hive": "HostName=f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud;DeviceId=client1;SharedAccessKey=Myclientpwd.000;Auth=Basic",
         "DOTNET_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true

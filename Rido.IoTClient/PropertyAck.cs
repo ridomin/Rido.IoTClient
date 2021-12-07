@@ -32,6 +32,16 @@ namespace Rido.IoTClient
         public static PropertyAck<T> InitFromTwin(string twinJson, string propName, T defaultValue) => InitFromTwin(twinJson, propName, null, defaultValue);
         public static PropertyAck<T> InitFromTwin(string twinJson, string propName, string componentName, T defaultValue)
         {
+            if (string.IsNullOrEmpty(twinJson))
+            {
+                return new PropertyAck<T>(propName, componentName)
+                {
+                    Status = 203,
+                    Value = defaultValue,
+                    Version = -1
+                };
+            }
+
             var root = JsonNode.Parse(twinJson);
             var desired = root?["desired"];
             var reported = root?["reported"];

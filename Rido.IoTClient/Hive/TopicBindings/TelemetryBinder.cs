@@ -24,13 +24,13 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, string name, string componentName = "", CancellationToken cancellationToken = default)
         {
-            string topic = $"devices/{deviceId}";
+            string topic = $"pnp/{deviceId}";
 
             if (!string.IsNullOrEmpty(moduleId))
             {
                 topic += $"/modules/{moduleId}";
             }
-            topic += "/messages/events/";
+            topic += "/telemetry/";
 
             if (!string.IsNullOrEmpty(componentName))
             {
