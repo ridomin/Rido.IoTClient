@@ -32,7 +32,7 @@ namespace dtmi_rido_pnp
             {
                 ModelId = modelId
             };
-            IMqttClient mqtt = await ConnectWithConnectsionSettings(cs, cancellationToken);
+            IMqttClient mqtt = await HubClient.ConnectWithConnectsionSettings(cs, cancellationToken);
             var client = new memmon(mqtt, cs);
             client.InitialTwin = await client.GetTwinAsync(cancellationToken);
             return client;
