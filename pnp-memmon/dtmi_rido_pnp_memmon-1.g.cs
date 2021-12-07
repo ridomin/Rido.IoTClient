@@ -22,7 +22,7 @@ namespace dtmi_rido_pnp
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
-            Telemetry_workingSet = new TelemetryBinder<double>(c, c.Options.ClientId, "workingSet");
+            Telemetry_workingSet = new TelemetryBinder<double>(c, "workingSet");
             Command_getRuntimeStats = new CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 

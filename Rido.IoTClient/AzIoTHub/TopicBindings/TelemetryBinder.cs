@@ -12,11 +12,11 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         readonly string moduleId;
         readonly string name;
 
-        public TelemetryBinder(IMqttClient connection, string deviceId, string name, string moduleId = "")
+        public TelemetryBinder(IMqttClient connection,  string name, string moduleId = "")
         {
             this.connection = connection;
             this.name = name;
-            this.deviceId = deviceId;
+            this.deviceId = connection.Options.ClientId;
             this.moduleId = moduleId;
         }
         public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default) =>
