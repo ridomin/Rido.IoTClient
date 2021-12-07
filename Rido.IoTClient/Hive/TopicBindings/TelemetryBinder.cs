@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.AzIoTHub.TopicBindings
+namespace Rido.IoTClient.Hive.TopicBindings
 {
     public class TelemetryBinder<T>
     {
@@ -24,13 +24,13 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
 
         public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, string name, string componentName = "", CancellationToken cancellationToken = default)
         {
-            string topic = $"pnp/{deviceId}";
+            string topic = $"devices/{deviceId}";
 
             if (!string.IsNullOrEmpty(moduleId))
             {
                 topic += $"/modules/{moduleId}";
             }
-            topic += "/telemetry/";
+            topic += "/messages/events/";
 
             if (!string.IsNullOrEmpty(componentName))
             {

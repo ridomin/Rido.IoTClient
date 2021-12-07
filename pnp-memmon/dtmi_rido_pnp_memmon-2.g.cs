@@ -2,12 +2,13 @@
 
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
+
+using Rido.IoTClient.Hive;
+using Rido.IoTClient.Hive.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class memmon : HubClient
+    public class memmon_hive : HiveClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -17,7 +18,7 @@ namespace dtmi_rido_pnp
         public TelemetryBinder<double> Telemetry_workingSet;
         public CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
-        private memmon(IMqttClient c) : base(c)
+        private memmon_hive(IMqttClient c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
@@ -26,16 +27,16 @@ namespace dtmi_rido_pnp
             Command_getRuntimeStats = new CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
-        public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
+        public static async Task<memmon_hive> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionString)
             {
                 ModelId = modelId
             };
-            IMqttClient mqtt = await HubClient.CreateAsync(cs, cancellationToken);
-            var client = new memmon(mqtt);
+            IMqttClient mqtt = await HiveClient.CreateAsync(cs, cancellationToken);
+            var client = new memmon_hive(mqtt);
             client.ConnectionSettings = cs;
-            client.InitialTwin = await client.GetTwinAsync(cancellationToken);
+            //client.InitialTwin = await client.GetTwinAsync(cancellationToken);
             return client;
         }
     }

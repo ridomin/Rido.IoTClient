@@ -3,7 +3,6 @@ using MQTTnet.Client;
 using MQTTnet.Implementations;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +13,11 @@ namespace Rido.IoTClient.Hive
         public IMqttClient Connection;
 
         public ConnectionSettings ConnectionSettings;
+
+        public HiveClient(IMqttClient c)
+        {
+            this.Connection = c;
+        }
 
         protected static async Task<IMqttClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<Version>0.0.1</Version>
+		<Version>0.0.1-pre</Version>
 		<Authors>ridomin</Authors>
 		<Description>Minimalistic IoT client to implement IoT PnP with Azure IoT Hub using MqttNet</Description>
 		<RepositoryUrl>https://github.com/ridomin/Rido.IoTClient</RepositoryUrl>
