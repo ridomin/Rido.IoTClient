@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.IoTClient.Tests
+namespace Rido.IoTClient.Tests.AzIoTHub
 {
     public class TwinWritablePropertyFixture
     {
@@ -15,6 +15,7 @@ namespace Rido.IoTClient.Tests
 
         public TwinWritablePropertyFixture()
         {
+            RidCounter.Reset();
             connection = new MockMqttClient();
             wp = new WritableProperty<double>(connection, "myProp");
         }

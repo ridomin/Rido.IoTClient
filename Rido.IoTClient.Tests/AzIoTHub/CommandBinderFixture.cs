@@ -1,4 +1,5 @@
-﻿using Rido.IoTClient.Hive.TopicBindings;
+﻿
+using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.IoTClient.Tests.Hive
+namespace Rido.IoTClient.Tests.AzIoTHub
 {
     public class CommandBinderFixture
     {
@@ -31,9 +32,9 @@ namespace Rido.IoTClient.Tests.Hive
             command.OnCmdDelegate = async m =>
             {
                 cmdCalled = true;
-                return await Task.FromResult(new CmdResponse() { Status = 222});
+                return await Task.FromResult(new CmdResponse());
             };
-            mqttClient.SimulateNewMessage("pnp/mock/commands/myCmd", "{}");
+            mqttClient.SimulateNewMessage("$iothub/methods/POST/myCmd", "{}");
             Assert.True(cmdCalled);
         }
 
@@ -48,7 +49,7 @@ namespace Rido.IoTClient.Tests.Hive
                 cmdCalled = true;
                 return await Task.FromResult(new CmdResponse());
             };
-            mqttClient.SimulateNewMessage("pnp/mock/commands/myComp*myCmd", "{}");
+            mqttClient.SimulateNewMessage("$iothub/methods/POST/myComp*myCmd", "{}");
             Assert.True(cmdCalled);
         }
     }
