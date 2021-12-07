@@ -36,18 +36,12 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
-            PropertyValue = PropertyAck<T>.InitFromTwin(twin, propertyName, componentName, defaultValue);
-            if (desiredBinder.OnProperty_Updated != null && (PropertyValue.DesiredVersion > 1))
+            //PropertyValue = new PropertyAck<T>.InitFromTwin(twin, propertyName, componentName, defaultValue);
+            PropertyValue = new PropertyAck<T>(propertyName, componentName)
             {
-                var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
-                //_ = updateTwin.UpdateTwinAsync(ack.ToAck(), cancellationToken);
-                _ = updatePropertyBinder.ReportProperty(ack.ToAck(), cancellationToken);
-                PropertyValue = ack;
-            }
-            else
-            {
-                _ = updatePropertyBinder.ReportProperty(PropertyValue.ToAck());
-            }
+                Value = defaultValue
+            };
+            _ = await updatePropertyBinder.ReportProperty(PropertyValue.ToAck());
         }
     }
 }

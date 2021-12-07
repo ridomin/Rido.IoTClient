@@ -24,7 +24,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
                 var fullCommandName = string.IsNullOrEmpty(componentName) ? commandName : $"{componentName}*{commandName}";
 
-                if (topic.StartsWith($"pnp/{connection.Options.ClientId}/commands/{fullCommandName}"))
+                if (topic.Equals($"pnp/{connection.Options.ClientId}/commands/{fullCommandName}"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     T req = new T().DeserializeBody(msg);
