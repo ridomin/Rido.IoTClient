@@ -34,7 +34,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogWarning("Connecting..");
-        client = await dtmi_rido_pnp.memmon.CreateDeviceClientAsync(_configuration.GetConnectionString("hub"), stoppingToken) ??
+        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("hub"), stoppingToken) ??
             throw new ApplicationException("Error creating MQTT Client");
 
         client.connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);

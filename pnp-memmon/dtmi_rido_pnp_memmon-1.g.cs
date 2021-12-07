@@ -26,7 +26,7 @@ namespace dtmi_rido_pnp
             Command_getRuntimeStats = new CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
-        public static async Task<memmon> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken = default)
+        public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionString)
             {
