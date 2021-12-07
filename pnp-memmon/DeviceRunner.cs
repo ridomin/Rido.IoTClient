@@ -128,8 +128,8 @@ public class DeviceRunner : BackgroundService
             string interval_value = client?.Property_interval.PropertyValue?.Value.ToString();
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
-            AppendLineWithPadRight(sb, client?.connectionSettings?.HostName);
-            AppendLineWithPadRight(sb, $"{client?.connectionSettings?.DeviceId} ({client?.connectionSettings?.Auth})");
+            AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
+            AppendLineWithPadRight(sb, $"{client?.Connection.Options.ClientId} ({client.ConnectionSettings.Auth})");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));

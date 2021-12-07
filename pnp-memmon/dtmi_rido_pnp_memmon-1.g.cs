@@ -10,6 +10,7 @@ namespace dtmi_rido_pnp
     public class memmon : HubClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
+        
 
         public ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;
@@ -17,12 +18,12 @@ namespace dtmi_rido_pnp
         public TelemetryBinder<double> Telemetry_workingSet;
         public CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
-        private memmon(IMqttClient c, ConnectionSettings cs) : base(c, cs)
+        private memmon(IMqttClient c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
-            Telemetry_workingSet = new TelemetryBinder<double>(c, cs.DeviceId, "workingSet");
+            Telemetry_workingSet = new TelemetryBinder<double>(c, c.Options.ClientId, "workingSet");
             Command_getRuntimeStats = new CommandBinder<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
@@ -32,8 +33,9 @@ namespace dtmi_rido_pnp
             {
                 ModelId = modelId
             };
-            IMqttClient mqtt = await HubClient.ConnectWithConnectsionSettings(cs, cancellationToken);
-            var client = new memmon(mqtt, cs);
+            IMqttClient mqtt = await HubClient.CreateAsync(cs, cancellationToken);
+            var client = new memmon(mqtt);
+            client.ConnectionSettings = cs;
             client.InitialTwin = await client.GetTwinAsync(cancellationToken);
             return client;
         }
