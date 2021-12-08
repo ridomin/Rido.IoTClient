@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-pnp_memmon-0A0A11E5-9BF2-4ADB-B648-713142FEE29C</UserSecretsId>
     <RootNamespace>pnp_memmon</RootNamespace>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
