@@ -41,7 +41,7 @@ public class DeviceRunner : BackgroundService
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
-        
+
         await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
         await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
 
@@ -123,7 +123,7 @@ public class DeviceRunner : BackgroundService
     {
         string RenderData()
         {
-            void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth-1));
+            void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth - 1));
 
             string enabled_value = client?.Property_enabled?.PropertyValue.Value.ToString();
             string interval_value = client?.Property_interval.PropertyValue?.Value.ToString();

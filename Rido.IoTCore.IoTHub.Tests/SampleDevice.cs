@@ -1,10 +1,6 @@
 ﻿using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Rido.IoTCore.IoTHub.Tests
@@ -16,7 +12,7 @@ namespace Rido.IoTCore.IoTHub.Tests
 
         }
 
-        public  static async Task<SampleDevice> CreateAsync(ConnectionSettings cs)
+        public static async Task<SampleDevice> CreateAsync(ConnectionSettings cs)
         {
             var mqtt = await HubClient.CreateAsync(cs);
             return new SampleDevice(mqtt);

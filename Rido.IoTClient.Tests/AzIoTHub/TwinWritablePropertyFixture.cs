@@ -77,9 +77,9 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.Equal(2, wp.PropertyValue.DesiredVersion);
         }
 
-        
 
-        
+
+
 
         [Fact]
         public async Task InitTwinWithDesiredInComponent()
@@ -122,7 +122,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                 {
                     { "$version", 3 }
                 },
-                reported = new Dictionary<string, object>() 
+                reported = new Dictionary<string, object>()
                 {
                     {
                         "$version", 4

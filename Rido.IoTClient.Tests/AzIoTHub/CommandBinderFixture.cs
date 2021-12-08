@@ -1,9 +1,5 @@
 ﻿
 using Rido.IoTClient.AzIoTHub.TopicBindings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,12 +10,12 @@ namespace Rido.IoTClient.Tests.AzIoTHub
 
         class CmdRequest : IBaseCommandRequest<CmdRequest>
         {
-            public CmdRequest DeserializeBody(string payload) => new CmdRequest();
+            public CmdRequest DeserializeBody(string payload) => new();
         }
 
         class CmdResponse : BaseCommandResponse
         {
-            public string result => "result";
+            public static string Result => "result";
         }
 
 

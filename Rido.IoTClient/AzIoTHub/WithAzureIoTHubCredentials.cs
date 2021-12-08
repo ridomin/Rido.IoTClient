@@ -26,7 +26,7 @@ namespace Rido.IoTClient.AzIoTHub
                     var segmentsId = clientId.Split('/');
                     cs.DeviceId = segmentsId[0];
                     cs.ModuleId = segmentsId[1];
-                } 
+                }
                 else
                 {
                     cs.DeviceId = clientId;

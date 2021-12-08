@@ -1,6 +1,5 @@
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ namespace Rido.IoTCore.IoTHub.Tests
     {
         readonly long tick = Environment.TickCount64;
         readonly string hostname = "tests.azure-devices.net";
-        readonly  string defaultKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.Empty.ToString("N")));
+        readonly string defaultKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.Empty.ToString("N")));
 
         [Fact]
         public async Task ConnectDeviceWithSas()
@@ -29,6 +28,7 @@ namespace Rido.IoTCore.IoTHub.Tests
             var v = await device.UpdateTwinAsync(new { testProp = tick });
             var twin = await device.GetTwinAsync();
             Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
             await device.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
             {
                 Reason = MqttClientDisconnectReason.NormalDisconnection
@@ -52,6 +52,7 @@ namespace Rido.IoTCore.IoTHub.Tests
             var v = await device.UpdateTwinAsync(new { testProp = tick });
             var twin = await device.GetTwinAsync();
             Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
             await device.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
             {
                 Reason = MqttClientDisconnectReason.NormalDisconnection
@@ -74,9 +75,10 @@ namespace Rido.IoTCore.IoTHub.Tests
             var v = await device.UpdateTwinAsync(new { testProp = tick });
             var twin = await device.GetTwinAsync();
             Assert.Contains(tick.ToString(), twin);
-            await device.Connection.DisconnectAsync(new MqttClientDisconnectOptions() 
-            { 
-                Reason = MqttClientDisconnectReason.NormalDisconnection 
+            Assert.Contains(v.ToString(), twin);
+            await device.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
+            {
+                Reason = MqttClientDisconnectReason.NormalDisconnection
             });
             Assert.False(device.Connection.IsConnected);
         }
@@ -96,6 +98,7 @@ namespace Rido.IoTCore.IoTHub.Tests
             var v = await device.UpdateTwinAsync(new { testProp = tick });
             var twin = await device.GetTwinAsync();
             Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
             await device.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
             {
                 Reason = MqttClientDisconnectReason.NormalDisconnection

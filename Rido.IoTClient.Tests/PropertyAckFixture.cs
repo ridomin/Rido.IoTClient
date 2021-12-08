@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Rido.IoTClient.Tests
@@ -13,7 +9,7 @@ namespace Rido.IoTClient.Tests
         public int AIntProp { get; set; }
     }
 
-    public  class PropertyAckFixture
+    public class PropertyAckFixture
     {
         static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 

@@ -1,8 +1,4 @@
 ﻿using Rido.IoTClient.Hive.TopicBindings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,12 +9,12 @@ namespace Rido.IoTClient.Tests.Hive
 
         class CmdRequest : IBaseCommandRequest<CmdRequest>
         {
-            public CmdRequest DeserializeBody(string payload) => new CmdRequest();
+            public CmdRequest DeserializeBody(string payload) => new();
         }
 
         class CmdResponse : BaseCommandResponse
         {
-            public string result => "result";
+            public static string Result => "result";
         }
 
 
@@ -31,7 +27,7 @@ namespace Rido.IoTClient.Tests.Hive
             command.OnCmdDelegate = async m =>
             {
                 cmdCalled = true;
-                return await Task.FromResult(new CmdResponse() { Status = 222});
+                return await Task.FromResult(new CmdResponse() { Status = 222 });
             };
             mqttClient.SimulateNewMessage("pnp/mock/commands/myCmd", "{}");
             Assert.True(cmdCalled);

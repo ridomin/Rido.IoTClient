@@ -1,28 +1,27 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Tests
 {
-    
+
     class MockMqttClient : IMqttClient
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public MockMqttClient()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-         
+
         }
 
         public bool IsConnected => throw new NotImplementedException();
 
         public IMqttClientOptions Options
         {
-            get => new MqttClientOptions() { ClientId = "mock"};
+            get => new MqttClientOptions() { ClientId = "mock" };
         }
 
         public IMqttClientConnectedHandler ConnectedHandler { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
