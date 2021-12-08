@@ -22,7 +22,7 @@ public class DeviceRunner : BackgroundService
     const bool default_enabled = true;
     const int default_interval = 8;
 
-    dtmi_rido_pnp.memmon_hive client;
+    dtmi_rido_pnp.memmon client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -33,10 +33,15 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.memmon_hive.CreateClientAsync(_configuration.GetConnectionString("hive"), stoppingToken);
+        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("hub"), stoppingToken);
         _logger.LogInformation("Connected");
 
-        client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
+        client.Connection.DisconnectedAsync += async e =>
+        {
+            await Task.Delay(1);
+            reconnectCounter++;
+            Console.WriteLine(e.Exception.ToString());
+        };
 
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
@@ -147,7 +152,7 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, $"WorkingSet: {telemetryWorkingSet.Bytes()}");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Time Running: {TimeSpan.FromMilliseconds(clock.ElapsedMilliseconds).Humanize(3)}");
-            AppendLineWithPadRight(sb, " ");
+            AppendLineWithPadRight(sb, $"{client.ConnectionSettings}");
             AppendLineWithPadRight(sb, " ");
             return sb.ToString();
         }

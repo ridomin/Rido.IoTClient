@@ -1,5 +1,6 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +27,12 @@ namespace Rido.IoTClient
                               .WithPayload(jsonPayload)
                               .Build();
 
-            return await client.PublishAsync(message, cancellation);
+            var pubAck =  await client.PublishAsync(message, cancellation);
+            if (pubAck.ReasonCode != MqttClientPublishReasonCode.Success)
+            {
+                throw new ApplicationException("Error publishing: " + pubAck.ReasonString);
+            }
+            return pubAck;
         }
 
     }
