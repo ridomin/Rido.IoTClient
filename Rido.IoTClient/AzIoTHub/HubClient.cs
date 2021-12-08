@@ -1,6 +1,7 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Implementations;
+using Rido.IoTClient.AzDps;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System;
 using System.Diagnostics;
@@ -32,6 +33,7 @@ namespace Rido.IoTClient.AzIoTHub
 
         protected static async Task<IMqttClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
+            await ProvisionIfNeededAsync(cs);
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient(new MqttClientAdapterFactory());
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(cs).Build(), cancellationToken);
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
@@ -41,5 +43,40 @@ namespace Rido.IoTClient.AzIoTHub
             }
             return mqtt;
         }
+
+        private static async Task ProvisionIfNeededAsync(ConnectionSettings dcs)
+        {
+            if (!string.IsNullOrEmpty(dcs.IdScope))
+            {
+                DpsStatus dpsResult;
+                if (!string.IsNullOrEmpty(dcs.SharedAccessKey))
+                {
+                    dpsResult = await DpsClient.ProvisionWithSasAsync(dcs.IdScope, dcs.DeviceId, dcs.SharedAccessKey, dcs.ModelId);
+                }
+                else if (!string.IsNullOrEmpty(dcs.X509Key))
+                {
+                    var segments = dcs.X509Key.Split('|');
+                    string pfxpath = segments[0];
+                    string pfxpwd = segments[1];
+                    dpsResult = await DpsClient.ProvisionWithCertAsync(dcs.IdScope, pfxpath, pfxpwd, dcs.ModelId);
+                }
+                else
+                {
+                    throw new ApplicationException("No Key found to provision");
+                }
+
+                if (!string.IsNullOrEmpty(dpsResult.registrationState.assignedHub))
+                {
+                    dcs.HostName = dpsResult.registrationState.assignedHub;
+                }
+                else
+                {
+                    throw new ApplicationException("DPS Provision failed: " + dpsResult.status);
+                }
+            }
+        }
+
+
+
     }
 }

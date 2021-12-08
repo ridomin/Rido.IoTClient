@@ -15,9 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.IoTClient.Tests", "Rido.IoTClient.Tests\Rido.IoTClient.Tests.csproj", "{349D3251-7E38-42E1-BA47-DEDAC1AB5783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.IoTClient.Tests", "Rido.IoTClient.Tests\Rido.IoTClient.Tests.csproj", "{349D3251-7E38-42E1-BA47-DEDAC1AB5783}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.IoTCore.IoTHub.Tests", "Rido.IoTCore.IoTHub.Tests\Rido.IoTCore.IoTHub.Tests.csproj", "{3FD43E55-B22F-4764-BA34-0199C9B62C56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-component", "pnp-memmon-component\pnp-memmon-component.csproj", "{A593C79F-EB11-463A-B27B-E5BFD497BB87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.IoTClient.IoTHub.Tests", "Rido.IoTClient.IoTHub.Tests\Rido.IoTClient.IoTHub.Tests.csproj", "{F22D5737-2FB6-44DA-9E3C-BC4BCDA04C3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +43,14 @@ Global
 		{349D3251-7E38-42E1-BA47-DEDAC1AB5783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{349D3251-7E38-42E1-BA47-DEDAC1AB5783}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{349D3251-7E38-42E1-BA47-DEDAC1AB5783}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3FD43E55-B22F-4764-BA34-0199C9B62C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FD43E55-B22F-4764-BA34-0199C9B62C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FD43E55-B22F-4764-BA34-0199C9B62C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FD43E55-B22F-4764-BA34-0199C9B62C56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A593C79F-EB11-463A-B27B-E5BFD497BB87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A593C79F-EB11-463A-B27B-E5BFD497BB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A593C79F-EB11-463A-B27B-E5BFD497BB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A593C79F-EB11-463A-B27B-E5BFD497BB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F22D5737-2FB6-44DA-9E3C-BC4BCDA04C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F22D5737-2FB6-44DA-9E3C-BC4BCDA04C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F22D5737-2FB6-44DA-9E3C-BC4BCDA04C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F22D5737-2FB6-44DA-9E3C-BC4BCDA04C3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using MQTTnet.Client;
+using Rido.IoTClient.AzDps;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
@@ -7,7 +8,6 @@ namespace Rido.IoTClient.AzIoTHub
 {
     public static class MqttNetExtensions
     {
-
         public static MqttClientOptionsBuilder WithAzureIoTHubCredentials(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {
             if (cs.Auth == "SAS")

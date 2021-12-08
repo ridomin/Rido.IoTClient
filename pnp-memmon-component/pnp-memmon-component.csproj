@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>pnp_memmon_component</RootNamespace>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Humanizer" Version="2.13.14" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Cmd_getRuntimeStats_Request.cs">
+			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="Cmd_getRuntimeStats_Response.cs">
+			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_rido_pnp_sample_memmon-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+</Project>
