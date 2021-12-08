@@ -15,7 +15,7 @@ namespace Rido.IoTCore.IoTHub.Tests
         public static async Task<SampleDevice> CreateAsync(ConnectionSettings cs)
         {
             var mqtt = await HubClient.CreateAsync(cs);
-            return new SampleDevice(mqtt);
+            return new SampleDevice(mqtt) { ConnectionSettings = cs };
         }
     }
 }

@@ -34,10 +34,11 @@ namespace dtmi_rido_pnp
                 ModelId = modelId
             };
             IMqttClient mqtt = await HiveClient.CreateAsync(cs, cancellationToken);
-            var client = new memmon_hive(mqtt);
-            client.ConnectionSettings = cs;
-            client.InitialTwin = string.Empty; // await client.GetTwinAsync(cancellationToken);
-            return client;
+            return new memmon_hive(mqtt)
+            {
+                ConnectionSettings = cs,
+                InitialTwin = String.Empty
+            };
         }
     }
 }
