@@ -15,7 +15,6 @@ namespace Rido.IoTClient.Tests.AzIoTHub
 
         public TwinWritablePropertyFixture()
         {
-            RidCounter.Reset();
             connection = new MockMqttClient();
             wp = new WritableProperty<double>(connection, "myProp");
         }

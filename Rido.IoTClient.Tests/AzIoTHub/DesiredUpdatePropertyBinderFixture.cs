@@ -10,11 +10,6 @@ namespace Rido.IoTClient.Tests.AzIoTHub
 {
     public class DesiredUpdatePropertyBinderFixture
     {
-        public DesiredUpdatePropertyBinderFixture()
-        {
-            RidCounter.Reset();
-        }
-
         static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
         [Fact]
         public void ReceiveDesired()
@@ -35,7 +30,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             
 
             mqttClient.SimulateNewMessage("$iothub/twin/PATCH/properties/desired", Stringify(desiredMsg));
-            Assert.Equal($"$iothub/twin/PATCH/properties/reported/?$rid={RidCounter.Current}", mqttClient.topicRecceived);
+            Assert.StartsWith($"$iothub/twin/PATCH/properties/reported/?$rid=", mqttClient.topicRecceived);
             
             var expected = Stringify(new 
             {
