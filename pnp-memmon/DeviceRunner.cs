@@ -50,7 +50,7 @@ public class DeviceRunner : BackgroundService
         await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
         await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
 
-        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
+        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now);
 
         //screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
         RefreshScreen(this);
