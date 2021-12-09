@@ -16,11 +16,11 @@ namespace dtmi_rido_pnp_sample
         public memMonComponent(IMqttClient c, string name) : base(c, name)
         {
             CV = new pnp_memmon_1();
-            CV.Property_interval = new WritableProperty<int>(c, "interval", "memMon");
-            CV.Property_enabled = new WritableProperty<bool>(c, "enabled", "memMon");
-            CV.Property_started = new ReadOnlyProperty<DateTime>(c, "started");
-            CV.Telemetry_workingSet = new Telemetry<double>(c, "workingSet", "memMon");
-            CV.Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats", "memMon");
+            CV.Property_interval = new WritableProperty<int>(c, "interval", name);
+            CV.Property_enabled = new WritableProperty<bool>(c, "enabled", name);
+            CV.Property_started = new ReadOnlyProperty<DateTime>(c, "started", name);
+            CV.Telemetry_workingSet = new Telemetry<double>(c, "workingSet", name);
+            CV.Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats", name);
         }
     }
 
@@ -31,9 +31,7 @@ namespace dtmi_rido_pnp_sample
         public WritableProperty<int> Property_interval;
         public Telemetry<double> Telemetry_workingSet;
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
-
-
-      
+             
 
         public Dictionary<string, object> ToJson()
         {

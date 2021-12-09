@@ -1,4 +1,5 @@
 ﻿using MQTTnet.Client;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
@@ -10,35 +11,46 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
     {
         readonly UpdateTwinBinder updateTwin;
         readonly string name;
-
+        readonly string component;
         public T PropertyValue;
         public int Version;
 
-        public ReadOnlyProperty(IMqttClient connection, string name)
+        public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
             updateTwin = new UpdateTwinBinder(connection);
             this.name = name;
+            this.component =  component;
         }
 
-        public async Task UpdateTwinPropertyAsync(T newValue, CancellationToken cancellationToken = default)
+        public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            Version = await updateTwin.UpdateTwinAsync(ToJson(), cancellationToken);
+            Version = await updateTwin.UpdateTwinAsync(ToJson(asComponent), cancellationToken);
         }
 
-        string ToJson()
+        string ToJson(bool asComponent = false)
         {
-            return JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
-            //{
-            //    Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
-            //    {
-            //        { component, new Dictionary<string, object>() }
-            //    };
-            //    dict[component].Add("__t", "c");
-            //    dict[component].Add(name, PropertyValue);
-            //    result = JsonSerializer.Serialize(dict);
-            //}
-        }
+            string result;
+            if (asComponent)
+            {
+                if (string.IsNullOrEmpty(component))
+                {
+                    throw new ApplicationException("Cant serialize a ReadOnlyProperty as a component if the component name is not set.");
+                }
 
+                Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
+                    {
+                        { component, new Dictionary<string, object>() }
+                    };
+                dict[component].Add("__t", "c");
+                dict[component].Add(name, PropertyValue);
+                result = JsonSerializer.Serialize(dict);
+            }
+            else
+            {
+                result = JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
+            }
+            return result;
+        }
     }
 }
