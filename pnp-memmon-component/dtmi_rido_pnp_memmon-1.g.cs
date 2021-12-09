@@ -33,7 +33,7 @@ namespace dtmi_rido_pnp_sample
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
              
 
-        public Dictionary<string, object> ToJson()
+        public Dictionary<string, object> ToJsonDict()
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict.Add("started", Property_started.PropertyValue);

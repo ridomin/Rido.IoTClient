@@ -29,7 +29,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                 {
                     { name, new Dictionary<string, object>() }
                 };
-            dict[name] = CV.ToJson();
+            dict[name] = CV.ToJsonDict();
             dict[name].Add("__t", "c");
             return await update.UpdateTwinAsync(dict);
         }

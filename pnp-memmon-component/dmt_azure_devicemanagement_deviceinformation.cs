@@ -33,7 +33,7 @@ namespace dtmi_azure_devicemanagement
         public ReadOnlyProperty<long> totalMemory { get; set; }
         public ReadOnlyProperty<long> totalStorage { get; set; }
 
-        public Dictionary<string, object> ToJson()
+        public Dictionary<string, object> ToJsonDict()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add(nameof(manufacturer), manufacturer.PropertyValue);

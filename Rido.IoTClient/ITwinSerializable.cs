@@ -6,6 +6,6 @@ namespace Rido.IoTClient
 {
     public interface ITwinSerializable
     {
-        public Dictionary<string, object> ToJson();
+        public Dictionary<string, object> ToJsonDict();
     }
 }
