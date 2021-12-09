@@ -29,11 +29,8 @@ namespace dtmi_rido_pnp_sample
         public static async Task<memmon> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var connection = await CreateAsync(cs, cancellationToken);
-            var client = new memmon(connection)
-            {
-                ConnectionSettings = cs
-            };
+            var mqtt = await HubClient.CreateAsync(cs, cancellationToken);
+            var client = new memmon(mqtt.Connection);
             client.InitialTwin = await client.GetTwinAsync();
             return client;
         }

@@ -67,7 +67,7 @@ namespace Rido.IoTClient.IntegrationTests
         {
             var csx = new ConnectionSettings()
             {
-                HostName = "tests.azure-devices.net",
+                HostName = hostname,
                 Auth = "X509",
                 X509Key = "testdevice.pfx|1234"
             };
@@ -90,7 +90,7 @@ namespace Rido.IoTClient.IntegrationTests
         {
             var csx = new ConnectionSettings()
             {
-                HostName = "tests.azure-devices.net",
+                HostName = hostname,
                 Auth = "X509",
                 X509Key = "xd01_xmod01.pfx|1234"
             };
