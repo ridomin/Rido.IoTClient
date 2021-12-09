@@ -10,32 +10,56 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzDps
 {
-    public class DpsClient
+    public class DpsClient 
     {
-        static readonly IMqttClient mqttClient;
-        static int rid = 1;
-        static DpsClient()
+        readonly IMqttClient mqttClient;
+        
+        public DpsClient(IMqttClient c)
         {
-            var logger = new MqttNetEventLogger();
-            logger.LogMessagePublished += (s, e) =>
-            {
-                var trace = $">> [{e.LogMessage.Timestamp:O}] [{e.LogMessage.ThreadId}]: {e.LogMessage.Message}";
-                if (e.LogMessage.Exception != null)
-                {
-                    trace += Environment.NewLine + e.LogMessage.Exception.ToString();
-                }
-
-                Trace.TraceInformation(trace);
-            };
-            var factory = new MqttFactory(logger);
-            mqttClient = factory.CreateMqttClient();
+            mqttClient = c;
         }
 
-        public static async Task<DpsStatus> ProvisionWithCertAsync(string idScope, string pfxPath, string pfxPwd, string modelId = "")
+        public static async Task ProvisionIfNeededAsync(ConnectionSettings dcs)
+        {
+            if (!string.IsNullOrEmpty(dcs.IdScope))
+            {
+                DpsStatus dpsResult;
+                IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
+                DpsClient dpsClient = new DpsClient(mqtt);
+                if (!string.IsNullOrEmpty(dcs.SharedAccessKey))
+                {
+                    dpsResult = await dpsClient.ProvisionWithSasAsync(dcs.IdScope, dcs.DeviceId, dcs.SharedAccessKey, dcs.ModelId);
+                }
+                else if (!string.IsNullOrEmpty(dcs.X509Key))
+                {
+                    var segments = dcs.X509Key.Split('|');
+                    string pfxpath = segments[0];
+                    string pfxpwd = segments[1];
+                    dpsResult = await dpsClient.ProvisionWithCertAsync(dcs.IdScope, pfxpath, pfxpwd, dcs.ModelId);
+                }
+                else
+                {
+                    throw new ApplicationException("No Key found to provision");
+                }
+
+                if (!string.IsNullOrEmpty(dpsResult.RegistrationState.AssignedHub))
+                {
+                    dcs.HostName = dpsResult.RegistrationState.AssignedHub;
+                }
+                else
+                {
+                    throw new ApplicationException("DPS Provision failed: " + dpsResult.Status);
+                }
+            }
+        }
+
+
+        public async Task<DpsStatus> ProvisionWithCertAsync(string idScope, string pfxPath, string pfxPwd, string modelId = "")
         {
             if (mqttClient.IsConnected)
             {
@@ -74,7 +98,7 @@ namespace Rido.IoTClient.AzDps
             return tcs.Task.Result;
         }
 
-        public static async Task<DpsStatus> ProvisionWithSasAsync(string idScope, string registrationId, string sasKey, string modelId = "")
+        public async Task<DpsStatus> ProvisionWithSasAsync(string idScope, string registrationId, string sasKey, string modelId = "")
         {
             if (mqttClient.IsConnected)
             {
@@ -104,11 +128,12 @@ namespace Rido.IoTClient.AzDps
             suback.Items.ToList().ForEach(x => Trace.TraceWarning($"+ {x.TopicFilter.Topic} {x.ResultCode}"));
             await ConfigureDPSFlowAsync(registrationId, modelId, tcs);
             return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(60));
-
         }
 
-        private static async Task ConfigureDPSFlowAsync(string registrationId, string modelId, TaskCompletionSource<DpsStatus> tcs)
+        private async Task ConfigureDPSFlowAsync(string registrationId, string modelId, TaskCompletionSource<DpsStatus> tcs)
         {
+
+            int rid = RidCounter.NextValue();
             string msg = string.Empty;
             mqttClient.ApplicationMessageReceivedAsync += async e =>
             {
@@ -128,21 +153,20 @@ namespace Rido.IoTClient.AzDps
                         tcs.SetException(new ApplicationException(msg));
                     }
                     var dpsRes = JsonSerializer.Deserialize<DpsStatus>(msg);
-                    if (dpsRes.status == "assigning")
+                    if (dpsRes.Status == "assigning")
                     {
                         // TODO: ready retry-after
                         await Task.Delay(2500); //avoid throtling
-                        var pollTopic = $"$dps/registrations/GET/iotdps-get-operationstatus/?$rid={rid}&operationId={dpsRes.operationId}";
+                        var pollTopic = $"$dps/registrations/GET/iotdps-get-operationstatus/?$rid={rid}&operationId={dpsRes.OperationId}";
                         var puback = await mqttClient.PublishAsync(pollTopic);
                     }
                     else
                     {
                         tcs.TrySetResult(dpsRes);
-                        rid++;
+                        
                     }
                 }
             };
-
             var putTopic = $"$dps/registrations/PUT/iotdps-register/?$rid={rid}";
             var puback = await mqttClient.PublishAsync(putTopic,
                 JsonSerializer.Serialize(new { registrationId, payload = new { modelId } }));

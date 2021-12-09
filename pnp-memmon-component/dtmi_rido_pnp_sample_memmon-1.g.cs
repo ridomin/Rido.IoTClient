@@ -30,7 +30,7 @@ namespace dtmi_rido_pnp_sample
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
             var mqtt = await HubClient.CreateAsync(cs, cancellationToken);
-            var client = new memmon(mqtt.Connection);
+            var client = new memmon(mqtt.Connection) { ConnectionSettings = cs };
             client.InitialTwin = await client.GetTwinAsync();
             return client;
         }
