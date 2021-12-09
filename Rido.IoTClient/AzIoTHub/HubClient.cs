@@ -17,8 +17,8 @@ namespace Rido.IoTClient.AzIoTHub
         public ConnectionSettings ConnectionSettings;
         public string InitialTwin = string.Empty;
 
-        protected GetTwinBinder GetTwinBinder;
-        protected UpdateTwinBinder UpdateTwinBinder;
+        readonly  GetTwinBinder GetTwinBinder;
+        readonly UpdateTwinBinder UpdateTwinBinder;
 
         public HubClient(IMqttClient connection)
         {
@@ -31,17 +31,17 @@ namespace Rido.IoTClient.AzIoTHub
 
         public async Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => await UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
 
-        protected static async Task<IMqttClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public static async Task<HubClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             await ProvisionIfNeededAsync(cs);
-            IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient(new MqttClientAdapterFactory());
+            IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(cs).Build(), cancellationToken);
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
             {
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
-            return mqtt;
+            return new HubClient(mqtt) { ConnectionSettings = cs} ;
         }
 
         private static async Task ProvisionIfNeededAsync(ConnectionSettings dcs)

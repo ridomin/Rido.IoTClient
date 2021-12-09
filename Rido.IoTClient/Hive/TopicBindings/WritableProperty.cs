@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,12 +33,16 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public async Task UpdatePropertyAsync() => await updatePropertyBinder.ReportProperty(this.PropertyValue.ToAck());
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "To keep this API compatible with Hub")]
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
+            if (!string.IsNullOrEmpty(twin))
+            {
+                Trace.TraceWarning("twin not expected");
+            }
+
             PropertyValue = new PropertyAck<T>(propertyName, componentName)
             {
-                Value = defaultValue
+                Value = defaultValue,
             };
             _ = await updatePropertyBinder.ReportProperty(PropertyValue.ToAck(), cancellationToken);
         }
