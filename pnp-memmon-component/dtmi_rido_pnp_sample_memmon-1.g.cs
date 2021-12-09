@@ -25,7 +25,7 @@ namespace dtmi_rido_pnp_sample
             Property_memMon_interval = new WritableProperty<int>(c, "interval", "memMon");
             Telemetry_memMon_workingSet = new Telemetry<double>(c, "workingSet", "memMon");
             Command_getRuntimeStats_Binder = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats", "memMon");
-            Component_deviceInfo = new Component<dtmi_azure_devicemanagement.DeviceInformation>(c, "deviceInfo");
+            Component_deviceInfo = new Component<dtmi_azure_devicemanagement.DeviceInformation>(c, "deviceInfo"); 
         }
 
         public static async Task<memmon> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken)

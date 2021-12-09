@@ -46,7 +46,9 @@ public class DeviceRunner : BackgroundService
         await client.Property_memMon_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
         await client.Property_memMon_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
         await client.Property_memMon_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
-        await client.Component_deviceInfo.UpdateTwinAsync(ThisDeviceInfo);
+
+        await client.Component_deviceInfo.UpdateTwinAsync(ThisDeviceInfo());
+        
 
         RefreshScreen(this);
 
@@ -155,18 +157,17 @@ public class DeviceRunner : BackgroundService
         var screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
     }
 
-    static dtmi_azure_devicemanagement.DeviceInformation ThisDeviceInfo
+    static dtmi_azure_devicemanagement.DeviceInformation ThisDeviceInfo()
     {
-        get => new()
-        {
-            manufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER"),
-            model = Environment.OSVersion.Platform.ToString(),
-            softwareVersion = Environment.OSVersion.VersionString,
-            operatingSystemName = Environment.GetEnvironmentVariable("OS"),
-            processorArchitecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"),
-            processorManufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER"),
-            totalStorage = System.IO.DriveInfo.GetDrives()[0].TotalSize,
-            totalMemory = System.Environment.WorkingSet
-        };
-    }   
+        dtmi_azure_devicemanagement.DeviceInformation di = new dtmi_azure_devicemanagement.DeviceInformation();
+        di.manufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        di.model = Environment.OSVersion.Platform.ToString();
+        di.softwareVersion = Environment.OSVersion.VersionString;
+        di.operatingSystemName = Environment.GetEnvironmentVariable("OS");
+        di.processorArchitecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+        di.processorManufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        di.totalStorage = System.IO.DriveInfo.GetDrives()[0].TotalSize;
+        di.totalMemory = System.Environment.WorkingSet;
+        return di;
+    }
 }
