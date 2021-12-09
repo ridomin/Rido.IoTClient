@@ -19,7 +19,7 @@ var connAck = await mqtt.ConnectAsync(
         .WithAzureIoTHubCredentials(cs)
         .Build());
 
-var deviceInfo = new ReadOnlyProperty<string>(mqtt, "serialNumber", "deviceInfo");
+//var deviceInfo = new ReadOnlyProperty<string>(mqtt, "serialNumber", "deviceInfo");
 
 var v = await new UpdateTwinBinder(mqtt).UpdateTwinAsync(new { MyNameIs = "Jonas" });
 var twin = await new GetTwinBinder(mqtt).GetTwinAsync();

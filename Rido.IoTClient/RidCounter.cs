@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 
 namespace Rido.IoTClient
 {
+    [DebuggerStepThrough()]
     public static class RidCounter
     {
         static int counter = 0;

@@ -10,16 +10,14 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
     {
         readonly UpdateTwinBinder updateTwin;
         readonly string name;
-        readonly string component;
 
         public T PropertyValue;
         public int Version;
 
-        public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
+        public ReadOnlyProperty(IMqttClient connection, string name)
         {
             updateTwin = new UpdateTwinBinder(connection);
             this.name = name;
-            this.component = component;
         }
 
         public async Task UpdateTwinPropertyAsync(T newValue, CancellationToken cancellationToken = default)
@@ -30,22 +28,16 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
 
         string ToJson()
         {
-            string result;
-            if (string.IsNullOrEmpty(component))
-            {
-                result = JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
-            }
-            else
-            {
-                Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
-                {
-                    { component, new Dictionary<string, object>() }
-                };
-                dict[component].Add("__t", "c");
-                dict[component].Add(name, PropertyValue);
-                result = JsonSerializer.Serialize(dict);
-            }
-            return result;
+            return JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
+            //{
+            //    Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
+            //    {
+            //        { component, new Dictionary<string, object>() }
+            //    };
+            //    dict[component].Add("__t", "c");
+            //    dict[component].Add(name, PropertyValue);
+            //    result = JsonSerializer.Serialize(dict);
+            //}
         }
 
     }

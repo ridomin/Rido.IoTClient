@@ -1,7 +1,7 @@
 [
   {
     "@context": "dtmi:dtdl:context;2",
-    "@id": "dtmi:rido:pnp:sample:memmon;1",
+    "@id": "dtmi:rido:pnp:sampleDevice;1",
     "@type": "Interface",
     "contents": [
       {

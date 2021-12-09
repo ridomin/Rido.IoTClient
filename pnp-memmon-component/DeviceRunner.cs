@@ -39,28 +39,30 @@ public class DeviceRunner : BackgroundService
 
         client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
 
-        client.Property_memMon_enabled.OnProperty_Updated = Property_memMon_enabled_UpdateHandler;
-        client.Property_memMon_interval.OnProperty_Updated = Property_memMon_interval_UpdateHandler;
-        client.Command_getRuntimeStats_Binder.OnCmdDelegate = Command_memMon_getRuntimeStats_Handler;
+        client.Component_memMon.CV.Property_enabled.OnProperty_Updated = Property_memMon_enabled_UpdateHandler;
+        client.Component_memMon.CV.Property_interval.OnProperty_Updated = Property_memMon_interval_UpdateHandler;
+        client.Component_memMon.CV.Command_getRuntimeStats.OnCmdDelegate = Command_memMon_getRuntimeStats_Handler;
 
-        await client.Property_memMon_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
-        await client.Property_memMon_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
-        await client.Property_memMon_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
+        await client.Component_memMon.CV.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
+        await client.Component_memMon.CV.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
 
-        await client.Component_deviceInfo.UpdateTwinAsync(ThisDeviceInfo());
-        
+        client.Component_memMon.CV.Property_started.PropertyValue = DateTime.Now;
+        await client.Component_memMon.UpdateTwinAsync();
+
+        SetThisDeviceInfo(client.Component_deviceInfo.CV);
+        await client.Component_deviceInfo.UpdateTwinAsync();
 
         RefreshScreen(this);
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (client?.Property_memMon_enabled?.PropertyValue.Value == true)
+            if (client?.Component_memMon.CV.Property_enabled.PropertyValue.Value == true)
             {
                 telemetryWorkingSet = Environment.WorkingSet;
-                await client.Telemetry_memMon_workingSet.SendTelemetryAsync(telemetryWorkingSet, stoppingToken);
+                await client.Component_memMon.CV.Telemetry_workingSet.SendTelemetryAsync(telemetryWorkingSet, stoppingToken);
                 telemetryCounter++;
             }
-            await Task.Delay(client.Property_memMon_interval.PropertyValue.Value * 1000, stoppingToken);
+            await Task.Delay(client.Component_memMon.CV.Property_interval.PropertyValue.Value * 1000, stoppingToken);
         }
     }
 
@@ -75,7 +77,7 @@ public class DeviceRunner : BackgroundService
             Version = req.Version,
             Value = req.Value
         };
-        client.Property_memMon_enabled.PropertyValue = ack;
+        client.Component_memMon.CV.Property_enabled.PropertyValue = ack;
         return await Task.FromResult(ack);
     }
 
@@ -83,14 +85,15 @@ public class DeviceRunner : BackgroundService
     {
         ArgumentNullException.ThrowIfNull(client);
         twinRecCounter++;
+        bool enabled = client.Component_memMon.CV.Property_enabled.PropertyValue.Value;
         var ack = new PropertyAck<int>("interval", "memMon")
         {
-            Description = (client.Property_memMon_enabled?.PropertyValue.Value == true) ? "desired notification accepted" : "disabled, not accepted",
-            Status = (client.Property_memMon_enabled?.PropertyValue.Value == true) ? 200 : 205,
+            Description = (enabled == true) ? "desired notification accepted" : "disabled, not accepted",
+            Status = (enabled == true) ? 200 : 205,
             Version = req.Version,
             Value = req.Value
         };
-        client.Property_memMon_interval.PropertyValue = ack;
+        client.Component_memMon.CV.Property_interval.PropertyValue = ack;
         return await Task.FromResult(ack);
     }
 
@@ -125,8 +128,8 @@ public class DeviceRunner : BackgroundService
         {
             void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth - 1));
 
-            string enabled_value = client?.Property_memMon_enabled?.PropertyValue.Value.ToString();
-            string interval_value = client?.Property_memMon_interval?.PropertyValue.Value.ToString();
+            string enabled_value = client.Component_memMon.CV.Property_enabled.PropertyValue.Value.ToString();
+            string interval_value = client.Component_memMon.CV.Property_interval.PropertyValue.Value.ToString();
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
@@ -134,9 +137,9 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "Component", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "---------", "--------", "-----".PadRight(15, '-'), "------"));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Property_memMon_enabled?.PropertyValue.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Property_memMon_interval?.PropertyValue.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Property_memMon_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Property_memMon_started?.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Component_memMon.CV.Property_enabled?.PropertyValue.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Component_memMon.CV.Property_interval.PropertyValue.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Component_memMon.CV.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Component_memMon.CV.Property_started?.Version));
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Reconnects: {reconnectCounter}");
             AppendLineWithPadRight(sb, $"Telemetry: {telemetryCounter}");
@@ -157,17 +160,15 @@ public class DeviceRunner : BackgroundService
         var screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
     }
 
-    static dtmi_azure_devicemanagement.DeviceInformation ThisDeviceInfo()
+    static void SetThisDeviceInfo(dtmi_azure_devicemanagement.DeviceInformation di)
     {
-        dtmi_azure_devicemanagement.DeviceInformation di = new dtmi_azure_devicemanagement.DeviceInformation();
-        di.manufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-        di.model = Environment.OSVersion.Platform.ToString();
-        di.softwareVersion = Environment.OSVersion.VersionString;
-        di.operatingSystemName = Environment.GetEnvironmentVariable("OS");
-        di.processorArchitecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
-        di.processorManufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-        di.totalStorage = System.IO.DriveInfo.GetDrives()[0].TotalSize;
-        di.totalMemory = System.Environment.WorkingSet;
-        return di;
+        di.manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        di.model.PropertyValue = Environment.OSVersion.Platform.ToString();
+        di.softwareVersion.PropertyValue = Environment.OSVersion.VersionString;
+        di.operatingSystemName.PropertyValue = Environment.GetEnvironmentVariable("OS");
+        di.processorArchitecture.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+        di.processorManufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        di.totalStorage.PropertyValue = System.IO.DriveInfo.GetDrives()[0].TotalSize;
+        di.totalMemory.PropertyValue = System.Environment.WorkingSet;
     }
 }

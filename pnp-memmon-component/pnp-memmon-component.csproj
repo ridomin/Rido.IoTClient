@@ -30,5 +30,8 @@
 		<Compile Update="dmt_azure_devicemanagement_deviceinformation.cs">
 			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
 		</Compile>
+		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
+		</Compile>
 	</ItemGroup>
 </Project>

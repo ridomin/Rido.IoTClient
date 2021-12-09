@@ -8,25 +8,29 @@ using System.Threading.Tasks;
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
     public class Component<T>
-        where T: new()
+        where T: ITwinSerializable, new()
     {
         readonly string name;
         readonly UpdateTwinBinder update;
-        public T ComponentValue { get; set; }
+        public T CV { get; set; }
 
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            this.ComponentValue = new T();
+            this.CV = new T();
             update = new UpdateTwinBinder(connection);
         }
+        public Task<int> UpdateTwinAsync() => UpdateTwinAsync(CV);
+
         public async Task<int> UpdateTwinAsync(T instance)
         {
-            ComponentValue = instance;
-            Dictionary<string, T> dict = new Dictionary<string, T>
-            {
-                { name, instance }
-            };
+            CV = instance;
+            Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
+                {
+                    { name, new Dictionary<string, object>() }
+                };
+            dict[name] = CV.ToJson();
+            dict[name].Add("__t", "c");
             return await update.UpdateTwinAsync(dict);
         }
     }
