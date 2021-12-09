@@ -11,7 +11,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
 {
     public class GetTwinBinder
     {
-        readonly ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
+        readonly static ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
         readonly IMqttClient connection;
 
         public GetTwinBinder(IMqttClient conn)

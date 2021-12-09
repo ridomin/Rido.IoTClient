@@ -4,8 +4,9 @@ using System.Diagnostics;
 
 namespace Rido.IoTClient
 {
-    internal class MqttNetTraceLogger
+    public class MqttNetTraceLogger
     {
+        [DebuggerStepThrough()]
         public static MqttNetEventLogger CreateTraceLogger()
         {
             var logger = new MqttNetEventLogger();

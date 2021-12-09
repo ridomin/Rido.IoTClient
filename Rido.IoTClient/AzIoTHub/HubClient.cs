@@ -26,11 +26,9 @@ namespace Rido.IoTClient.AzIoTHub
             UpdateTwinBinder = new UpdateTwinBinder(connection);
         }
 
-        public async Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => 
-            await GetTwinBinder.GetTwinAsync(cancellationToken);
+        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => GetTwinBinder.GetTwinAsync(cancellationToken);
 
-        public async Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => 
-            await UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
+        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
 
         public static async Task<HubClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {

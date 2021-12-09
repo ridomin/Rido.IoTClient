@@ -1,10 +1,9 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using Rido.IoTClient.AzBroker.TopicBindings;
+using Rido.IoTClient.AzDps;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +27,7 @@ namespace Rido.IoTClient.AzBroker
 
         public static async Task<HubBrokerClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
-            //await ProvisionIfNeededAsync(cs);
+            await DpsClient.ProvisionIfNeededAsync(cs);
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubBrokerCredentials(cs).Build(), cancellationToken);
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
@@ -39,9 +38,11 @@ namespace Rido.IoTClient.AzBroker
             return new HubBrokerClient(mqtt);
         }
 
-        public async Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => await GetTwinBinder.GetTwinAsync(cancellationToken);
+        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => 
+            GetTwinBinder.GetTwinAsync(cancellationToken);
 
-        public async Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => await UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
+        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => 
+            UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
 
     }
 }

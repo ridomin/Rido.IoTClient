@@ -9,12 +9,11 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
     public class UpdateTwinBinder
     {
-        readonly ConcurrentDictionary<int, TaskCompletionSource<int>> pendingRequests;
+        readonly static ConcurrentDictionary<int, TaskCompletionSource<int>> pendingRequests = new ConcurrentDictionary<int, TaskCompletionSource<int>>();
         readonly IMqttClient connection;
 
         public UpdateTwinBinder(IMqttClient connection)
         {
-            pendingRequests = new ConcurrentDictionary<int, TaskCompletionSource<int>>();
             this.connection = connection;
             _ = connection.SubscribeAsync("$iothub/twin/res/#");
             connection.ApplicationMessageReceivedAsync += async m =>
