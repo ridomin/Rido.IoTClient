@@ -1,6 +1,7 @@
 using dtmi_rido_pnp_sample;
 using Humanizer;
 using Rido.IoTClient;
+using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Diagnostics;
 using System.Text;
 
@@ -45,6 +46,7 @@ public class DeviceRunner : BackgroundService
         await client.Property_memMon_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
         await client.Property_memMon_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
         await client.Property_memMon_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
+        await client.Component_deviceInfo.UpdateTwinAsync(ThisDeviceInfo);
 
         RefreshScreen(this);
 
@@ -152,4 +154,19 @@ public class DeviceRunner : BackgroundService
         Console.WriteLine(RenderData());
         var screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
     }
+
+    static dtmi_azure_devicemanagement.DeviceInformation ThisDeviceInfo
+    {
+        get => new()
+        {
+            manufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER"),
+            model = Environment.OSVersion.Platform.ToString(),
+            softwareVersion = Environment.OSVersion.VersionString,
+            operatingSystemName = Environment.GetEnvironmentVariable("OS"),
+            processorArchitecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"),
+            processorManufacturer = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER"),
+            totalStorage = System.IO.DriveInfo.GetDrives()[0].TotalSize,
+            totalMemory = System.Environment.WorkingSet
+        };
+    }   
 }

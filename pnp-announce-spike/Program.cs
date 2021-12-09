@@ -23,12 +23,12 @@ var deviceInfo = new ReadOnlyProperty<string>(mqtt, "serialNumber", "deviceInfo"
 
 var v = await new UpdateTwinBinder(mqtt).UpdateTwinAsync(new { MyNameIs = "Jonas" });
 var twin = await new GetTwinBinder(mqtt).GetTwinAsync();
-var cmd = new Command<cmdRequest, cmdResponse>(mqtt, "myCommand");
+var cmd = new Command<CmdRequest, CmdResponse>(mqtt, "myCommand");
 
 cmd.OnCmdDelegate = async m =>
 {
     global::System.Console.WriteLine("Command Invoked");
-    return await Task.FromResult(new cmdResponse() { Status = 200 });
+    return await Task.FromResult(new CmdResponse() { Status = 200 });
 };
 
 Console.WriteLine(twin);
@@ -45,15 +45,15 @@ var puback = await mqtt.PublishAsync(msg);
 Console.WriteLine(puback.ReasonString);
 
 
-class cmdRequest : IBaseCommandRequest<cmdRequest>
+class CmdRequest : IBaseCommandRequest<CmdRequest>
 {
-    public cmdRequest DeserializeBody(string payload)
+    public CmdRequest DeserializeBody(string payload)
     {
-        return new cmdRequest();
+        return new CmdRequest();
     }
 }
 
-class cmdResponse : BaseCommandResponse { }
+class CmdResponse : BaseCommandResponse { }
 
 
 //var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
