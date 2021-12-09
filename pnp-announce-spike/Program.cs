@@ -9,6 +9,7 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
 Console.WriteLine("Hello, World!");
 
 var cs = ConnectionSettings.FromConnectionString(Environment.GetEnvironmentVariable("cs"));
+cs.ModelId = "dtmi:asf;1";
 
 IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger())
                             .CreateMqttClient(new MqttClientAdapterFactory());
@@ -17,6 +18,8 @@ var connAck = await mqtt.ConnectAsync(
     new MqttClientOptionsBuilder()
         .WithAzureIoTHubCredentials(cs)
         .Build());
+
+var deviceInfo = new ReadOnlyProperty<string>(mqtt, "serialNumber", "deviceInfo");
 
 var v = await new UpdateTwinBinder(mqtt).UpdateTwinAsync(new { MyNameIs = "Jonas" });
 var twin = await new GetTwinBinder(mqtt).GetTwinAsync();
