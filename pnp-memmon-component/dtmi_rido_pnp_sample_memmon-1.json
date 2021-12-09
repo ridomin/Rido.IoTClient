@@ -10,9 +10,9 @@
         "schema": "dtmi:rido:pnp:memmon;1"
       },
       {
-        "@type": "Telemetry",
-        "schema": "double",
-        "name" : "foo"
+        "@type": "Component",
+        "schema": "dtmi:azure:dtmi:azure:DeviceManagement:DeviceInformation;1",
+        "name": "deviceInfo"
       }
     ]
   },
