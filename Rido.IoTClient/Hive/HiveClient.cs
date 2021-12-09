@@ -20,7 +20,7 @@ namespace Rido.IoTClient.Hive
             this.Connection = c;
         }
 
-        protected static async Task<IMqttClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public static async Task<HiveClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient(new MqttClientAdapterFactory());
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
@@ -34,7 +34,10 @@ namespace Rido.IoTClient.Hive
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
-            return mqtt;
+            return new HiveClient(mqtt)
+            {
+                ConnectionSettings = cs
+            };
         }
     }
 }

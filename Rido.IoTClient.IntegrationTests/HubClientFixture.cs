@@ -1,0 +1,123 @@
+using MQTTnet;
+using MQTTnet.Client;
+using Rido.IoTClient.AzIoTHub;
+using System;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace Rido.IoTClient.IntegrationTests
+{
+    public class HubClientFixture
+    {
+        readonly long tick = Environment.TickCount64;
+        readonly string hostname = "tests.azure-devices.net";
+        readonly string deviceId = "d5";
+        readonly string moduleId = "m1";
+        readonly string defaultKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.Empty.ToString("N")));
+
+        static async Task<HubClient> CreateAsync(ConnectionSettings cs)
+        {
+            IMqttClient mqtt = new MqttFactory().CreateMqttClient();
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(cs).Build());
+            if (connAck.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                throw new ApplicationException("Error connecting to broker" + connAck.ReasonString);
+            }
+            return new HubClient(mqtt) { ConnectionSettings = cs };
+        }
+
+        [Fact]
+        public async Task ConnectDeviceWithSas()
+        {
+            var cs = new ConnectionSettings()
+            {
+                HostName = hostname,
+                DeviceId = deviceId,
+                SharedAccessKey = defaultKey
+            };
+            var hubClient = await CreateAsync(cs);
+            Assert.True(hubClient.Connection.IsConnected);
+            Assert.Equal(deviceId, hubClient.Connection.Options.ClientId);
+            var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
+            var twin = await hubClient.GetTwinAsync();
+            Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
+            await hubClient.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
+            {
+                Reason = MqttClientDisconnectReason.NormalDisconnection
+            });
+            Assert.False(hubClient.Connection.IsConnected);
+        }
+
+        [Fact]
+        public async Task ConnectDeviceModuleWithSas()
+        {
+            var cs = new ConnectionSettings()
+            {
+                HostName = hostname,
+                DeviceId = deviceId,
+                ModuleId = moduleId,
+                SharedAccessKey = defaultKey
+            };
+            var hubClient = await CreateAsync(cs);
+            Assert.True(hubClient.Connection.IsConnected);
+            Assert.Equal($"{deviceId}/{moduleId}", hubClient.Connection.Options.ClientId);
+            var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
+            var twin = await hubClient.GetTwinAsync();
+            Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
+            await hubClient.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
+            {
+                Reason = MqttClientDisconnectReason.NormalDisconnection
+            });
+            Assert.False(hubClient.Connection.IsConnected);
+        }
+
+        [Fact]
+        public async Task ConnectDeviceWithX509()
+        {
+            var csx = new ConnectionSettings()
+            {
+                HostName = "tests.azure-devices.net",
+                Auth = "X509",
+                X509Key = "testdevice.pfx|1234"
+            };
+            var hubClient = await CreateAsync(csx);
+            Assert.True(hubClient.Connection.IsConnected);
+            Assert.Equal("testdevice", hubClient.Connection.Options.ClientId);
+            var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
+            var twin = await hubClient.GetTwinAsync();
+            Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
+            await hubClient.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
+            {
+                Reason = MqttClientDisconnectReason.NormalDisconnection
+            });
+            Assert.False(hubClient.Connection.IsConnected);
+        }
+
+        [Fact]
+        public async Task ConnectDeviceModuleWithX509()
+        {
+            var csx = new ConnectionSettings()
+            {
+                HostName = "tests.azure-devices.net",
+                Auth = "X509",
+                X509Key = "xd01_xmod01.pfx|1234"
+            };
+            var hubClient = await CreateAsync(csx);
+            Assert.True(hubClient.Connection.IsConnected);
+            Assert.Equal("xd01/xmod01", hubClient.Connection.Options.ClientId);
+            var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
+            var twin = await hubClient.GetTwinAsync();
+            Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
+            await hubClient.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
+            {
+                Reason = MqttClientDisconnectReason.NormalDisconnection
+            });
+            Assert.False(hubClient.Connection.IsConnected);
+        }
+    }
+}

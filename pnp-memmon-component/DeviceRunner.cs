@@ -33,15 +33,15 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp_sample.memmon.CreateDeviceClientAsync(_configuration.GetConnectionString("hub"), stoppingToken); 
+        client = await dtmi_rido_pnp_sample.memmon.CreateDeviceClientAsync(_configuration.GetConnectionString("hub"), stoppingToken);
         _logger.LogInformation("Connected");
 
-        client.Connection.DisconnectedAsync+=  async e => await Task.FromResult(reconnectCounter++);
+        client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
 
         client.Property_memMon_enabled.OnProperty_Updated = Property_memMon_enabled_UpdateHandler;
         client.Property_memMon_interval.OnProperty_Updated = Property_memMon_interval_UpdateHandler;
         client.Command_getRuntimeStats_Binder.OnCmdDelegate = Command_memMon_getRuntimeStats_Handler;
-        
+
         await client.Property_memMon_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
         await client.Property_memMon_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
         await client.Property_memMon_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
@@ -119,7 +119,7 @@ public class DeviceRunner : BackgroundService
     {
         string RenderData()
         {
-            void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth-1));
+            void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth - 1));
 
             string enabled_value = client?.Property_memMon_enabled?.PropertyValue.Value.ToString();
             string interval_value = client?.Property_memMon_interval?.PropertyValue.Value.ToString();
@@ -128,8 +128,8 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
             AppendLineWithPadRight(sb, $"{client?.ConnectionSettings?.DeviceId} ({client?.ConnectionSettings?.Auth})");
             AppendLineWithPadRight(sb, " ");
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}","Component", "Property", "Value".PadRight(15), "Version"));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}","---------", "--------", "-----".PadRight(15, '-'), "------"));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "Component", "Property", "Value".PadRight(15), "Version"));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "---------", "--------", "-----".PadRight(15, '-'), "------"));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Property_memMon_enabled?.PropertyValue.Version));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Property_memMon_interval?.PropertyValue.Version));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Property_memMon_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Property_memMon_started?.Version));

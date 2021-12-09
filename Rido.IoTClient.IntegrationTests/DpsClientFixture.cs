@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.IoTClient.Tests
+namespace Rido.IoTClient.IntegrationTests
 {
     public class DpsClientFixture
     {
@@ -11,8 +11,8 @@ namespace Rido.IoTClient.Tests
         {
             var dpsRes = await DpsClient.ProvisionWithSasAsync("0ne003861C6", "sasdpstest", "l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=");
             Assert.Equal("rido.azure-devices.net", dpsRes.registrationState.assignedHub);
-        }   
-        
+        }
+
         [Fact]
         public async Task ProvisionWithSasPnP()
         {

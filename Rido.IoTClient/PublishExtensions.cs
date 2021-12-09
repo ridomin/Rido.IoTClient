@@ -27,7 +27,7 @@ namespace Rido.IoTClient
                               .WithPayload(jsonPayload)
                               .Build();
 
-            var pubAck =  await client.PublishAsync(message, cancellation);
+            var pubAck = await client.PublishAsync(message, cancellation);
             if (pubAck.ReasonCode != MqttClientPublishReasonCode.Success)
             {
                 throw new ApplicationException("Error publishing: " + pubAck.ReasonString);
