@@ -5,6 +5,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddHostedService<DeviceRunner>();
     })
+    .ConfigureHostOptions(configureOptions => configureOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore)
     .Build();
 
 await host.RunAsync();

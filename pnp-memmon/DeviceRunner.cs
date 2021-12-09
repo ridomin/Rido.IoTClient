@@ -33,7 +33,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("hub"), stoppingToken);
+        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("broker"), stoppingToken);
         _logger.LogInformation("Connected");
 
         client.Connection.DisconnectedAsync += async e =>
