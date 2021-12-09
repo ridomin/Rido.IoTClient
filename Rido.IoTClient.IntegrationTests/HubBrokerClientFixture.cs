@@ -13,7 +13,7 @@ namespace Rido.IoTClient.IntegrationTests
         readonly long tick = Environment.TickCount64;
         readonly string hostname = "broker.azure-devices.net";
         readonly string deviceId = "d5";
-        readonly string moduleId = "m1";
+        //readonly string moduleId = "m1";
         readonly string defaultKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.Empty.ToString("N")));
 
         [Fact]
