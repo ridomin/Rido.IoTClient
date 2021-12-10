@@ -22,7 +22,7 @@ public class DeviceRunner : BackgroundService
     const bool default_enabled = true;
     const int default_interval = 8;
 
-    dtmi_rido_pnp.memmon client;
+    dtmi_rido_pnp.memmon_hive client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -33,24 +33,24 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("broker"), stoppingToken);
+        client = await dtmi_rido_pnp.memmon_hive.CreateClientAsync(_configuration.GetConnectionString("hive"), stoppingToken);
         _logger.LogInformation("Connected");
 
-        client.Connection.DisconnectedAsync += async e =>
-        {
-            await Task.Delay(1);
-            reconnectCounter++;
-            Console.WriteLine(e.Exception.ToString());
-        };
+        //client..DisconnectedAsync += async e =>
+        //{
+        //    await Task.Delay(1);
+        //    reconnectCounter++;
+        //    Console.WriteLine(e.Exception.ToString());
+        //};
 
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
 
-        await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
-        await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
+        await client.Property_enabled.InitPropertyAsync("{}", default_enabled, stoppingToken);
+        await client.Property_interval.InitPropertyAsync("{}", default_interval, stoppingToken);
 
-        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, false, stoppingToken);
+        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
 
         RefreshScreen(this);
 
@@ -133,8 +133,8 @@ public class DeviceRunner : BackgroundService
             string interval_value = client?.Property_interval.PropertyValue?.Value.ToString();
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
-            AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
-            AppendLineWithPadRight(sb, $"{client?.Connection.Options.ClientId} ({client.ConnectionSettings.Auth})");
+            //AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
+            //AppendLineWithPadRight(sb, $"{client?.Connection.Options.ClientId} ({client.ConnectionSettings.Auth})");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));
@@ -151,7 +151,7 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, $"WorkingSet: {telemetryWorkingSet.Bytes()}");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Time Running: {TimeSpan.FromMilliseconds(clock.ElapsedMilliseconds).Humanize(3)}");
-            AppendLineWithPadRight(sb, $"{client.ConnectionSettings}");
+            //AppendLineWithPadRight(sb, $"{client.ConnectionSettings}");
             AppendLineWithPadRight(sb, " ");
             return sb.ToString();
         }

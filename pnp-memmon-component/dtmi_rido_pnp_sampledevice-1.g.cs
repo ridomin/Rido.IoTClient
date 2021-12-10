@@ -7,31 +7,18 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class sampleDevice 
+    public class sampleDevice : HubClient
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 
-        HubClient hubClient;
-
-        public IMqttClient Connection => hubClient.Connection;
-
-        public ConnectionSettings ConnectionSettings
-        {
-            get => hubClient.ConnectionSettings;
-            set => hubClient.ConnectionSettings = value;
-        }
-
-        public string InitialTwin;
-
-        public DeviceInformationComponent Component_deviceInfo;
+        public deviceInformationComponent Component_deviceInfo;
         public memMonComponent Component_memMon;
         public ReadOnlyProperty<string> Property_serialNumber;
         public Command<EmptyCommandRequest, EmptyCommandResponse> Command_reboot;
 
-        private sampleDevice(IMqttClient c) 
+        private sampleDevice(IMqttClient c)  : base(c)
         {
-            hubClient = new HubClient(c);
-            Component_deviceInfo = new DeviceInformationComponent(c, "deviceInfo");
+            Component_deviceInfo = new deviceInformationComponent(c, "deviceInfo");
             Component_memMon = new memMonComponent(c, "memMon");
             Property_serialNumber = new ReadOnlyProperty<string>(c, "serialNumber");
             Command_reboot = new Command<EmptyCommandRequest, EmptyCommandResponse>(c, "reboot");
@@ -42,7 +29,7 @@ namespace dtmi_rido_pnp
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
             var mqtt = await HubClient.CreateAsync(cs, cancellationToken);
             var client = new sampleDevice(mqtt.Connection) { ConnectionSettings = cs };
-            client.InitialTwin = await client.hubClient.GetTwinAsync();
+            client.InitialTwin = await client.GetTwinAsync();
             return client;
         }
     }

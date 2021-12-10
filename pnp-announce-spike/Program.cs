@@ -9,7 +9,7 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
 Console.WriteLine("Hello, World!");
 
 var cs = ConnectionSettings.FromConnectionString(Environment.GetEnvironmentVariable("cs"));
-cs.ModelId = "dtmi:asf;1";
+
 
 IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger())
                             .CreateMqttClient(new MqttClientAdapterFactory());
@@ -23,12 +23,12 @@ var connAck = await mqtt.ConnectAsync(
 
 var v = await new UpdateTwinBinder(mqtt).UpdateTwinAsync(new { MyNameIs = "Jonas" });
 var twin = await new GetTwinBinder(mqtt).GetTwinAsync();
-var cmd = new Command<CmdRequest, CmdResponse>(mqtt, "myCommand");
+var cmd = new Command<EmptyCommandRequest, EmptyCommandResponse>(mqtt, "myCommand");
 
 cmd.OnCmdDelegate = async m =>
 {
     global::System.Console.WriteLine("Command Invoked");
-    return await Task.FromResult(new CmdResponse() { Status = 200 });
+    return await Task.FromResult(new EmptyCommandResponse() { Status = 200 });
 };
 
 Console.WriteLine(twin);
@@ -45,15 +45,6 @@ var puback = await mqtt.PublishAsync(msg);
 Console.WriteLine(puback.ReasonString);
 
 
-class CmdRequest : IBaseCommandRequest<CmdRequest>
-{
-    public CmdRequest DeserializeBody(string payload)
-    {
-        return new CmdRequest();
-    }
-}
-
-class CmdResponse : BaseCommandResponse { }
 
 
 //var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()

@@ -7,9 +7,9 @@ using System.Text.Json;
 namespace dtmi_rido_pnp
 {
 
-    public class DeviceInformationComponent : Component<DeviceInformation>
+    public class deviceInformationComponent : Component<DeviceInformation>
     {
-        public DeviceInformationComponent(IMqttClient c, string name) : base(c, name)
+        public deviceInformationComponent(IMqttClient c, string name) : base(c, name)
         {
             ComponentValue.Property_manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
             ComponentValue.Property_model = new ReadOnlyProperty<string>(c, "model");
