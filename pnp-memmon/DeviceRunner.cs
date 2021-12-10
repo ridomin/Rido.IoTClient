@@ -47,8 +47,8 @@ public class DeviceRunner : BackgroundService
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
 
-        await client.Property_enabled.InitPropertyAsync("{}", default_enabled, stoppingToken);
-        await client.Property_interval.InitPropertyAsync("{}", default_interval, stoppingToken);
+        await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
+        await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
 
         await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, false, stoppingToken);
 

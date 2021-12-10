@@ -2,12 +2,12 @@
 
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.Hive;
-using Rido.IoTClient.Hive.TopicBindings;
+using Rido.IoTClient.AzIoTHub;
+using Rido.IoTClient.AzIoTHub.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class memmon : HiveClient
+    public class memmon : HubClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -32,12 +32,12 @@ namespace dtmi_rido_pnp
             {
                 ModelId = modelId
             };
-            var mqtt = await HiveClient.CreateAsync(cs, cancellationToken);
+            var mqtt = await HubClient.CreateAsync(cs, cancellationToken);
             var client = new memmon(mqtt.Connection)
             {
                 ConnectionSettings = cs
             };
-            client.InitialTwin = "";// await client.GetTwinAsync(cancellationToken);
+            client.InitialTwin = await client.GetTwinAsync(cancellationToken);
             return client;
         }
     }
