@@ -8,17 +8,31 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
 
 namespace dtmi_rido_pnp_sample
 {
+    public class Cmd_reboot_request : IBaseCommandRequest<Cmd_reboot_request>
+    {
+        public Cmd_reboot_request DeserializeBody(string payload)
+        {
+            return new Cmd_reboot_request();
+        }
+    }
+
+    public class Cmd_reboot_response : BaseCommandResponse { }
+
     public class memmon : HubClient
     {
-        const string modelId = "dtmi:rido:pnp:sample:memmon;1";
+        const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 
         public Component<DeviceInformation> Component_deviceInfo;
         public Component<dtmi_rido_pnp_sample.pnp_memmon_1> Component_memMon;
- 
+        public ReadOnlyProperty<string> Property_serialNumber;
+        public Command<Cmd_reboot_request, Cmd_reboot_response> Command_reboot;
+
         private memmon(IMqttClient c) : base(c)
         {
             Component_deviceInfo = new deviceInfoComponent(c, "deviceInfo");
             Component_memMon = new memMonComponent(c, "memMon");
+            Property_serialNumber = new ReadOnlyProperty<string>(c, "serialNumber");
+            Command_reboot = new Command<Cmd_reboot_request, Cmd_reboot_response>(c, "reboot");
         }
 
         public static async Task<memmon> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken)

@@ -12,24 +12,24 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
     {
         readonly string name;
         readonly UpdateTwinBinder update;
-        public T CV { get; set; }
+        public T ComponentValue { get; set; }
 
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            this.CV = new T();
+            this.ComponentValue = new T();
             update = new UpdateTwinBinder(connection);
         }
-        public Task<int> UpdateTwinAsync() => UpdateTwinAsync(CV);
+        public Task<int> UpdateTwinAsync() => UpdateTwinAsync(ComponentValue);
 
         public async Task<int> UpdateTwinAsync(T instance)
         {
-            CV = instance;
+            ComponentValue = instance;
             Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
                 {
                     { name, new Dictionary<string, object>() }
                 };
-            dict[name] = CV.ToJsonDict();
+            dict[name] = ComponentValue.ToJsonDict();
             dict[name].Add("__t", "c");
             return await update.UpdateTwinAsync(dict);
         }

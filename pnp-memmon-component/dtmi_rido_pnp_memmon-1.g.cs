@@ -1,26 +1,46 @@
-﻿using dtmi_rido_pnp_sample;
-using MQTTnet.Client;
+﻿using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace dtmi_rido_pnp_sample
 {
+
+    public enum DiagnosticsMode
+    {
+        minimal = 0,
+        complete = 1,
+        full = 2
+    }
+
+    public class Cmd_getRuntimeStats_Request : IBaseCommandRequest<Cmd_getRuntimeStats_Request>
+    {
+        public DiagnosticsMode DiagnosticsMode { get; set; }
+
+        public Cmd_getRuntimeStats_Request DeserializeBody(string payload)
+        {
+            return new Cmd_getRuntimeStats_Request()
+            {
+                DiagnosticsMode = JsonSerializer.Deserialize<DiagnosticsMode>(payload)
+            };
+        }
+    }
+
+    public class Cmd_getRuntimeStats_Response : BaseCommandResponse
+    {
+        public Dictionary<string, string> diagnosticResults { get; set; } = new Dictionary<string, string>();
+    }
+
     class memMonComponent : Component<pnp_memmon_1>
     {
         public memMonComponent(IMqttClient c, string name) : base(c, name)
         {
-            CV = new pnp_memmon_1();
-            CV.Property_interval = new WritableProperty<int>(c, "interval", name);
-            CV.Property_enabled = new WritableProperty<bool>(c, "enabled", name);
-            CV.Property_started = new ReadOnlyProperty<DateTime>(c, "started", name);
-            CV.Telemetry_workingSet = new Telemetry<double>(c, "workingSet", name);
-            CV.Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats", name);
+            ComponentValue = new pnp_memmon_1();
+            ComponentValue.Property_interval = new WritableProperty<int>(c, "interval", name);
+            ComponentValue.Property_enabled = new WritableProperty<bool>(c, "enabled", name);
+            ComponentValue.Property_started = new ReadOnlyProperty<DateTime>(c, "started", name);
+            ComponentValue.Telemetry_workingSet = new Telemetry<double>(c, "workingSet", name);
+            ComponentValue.Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats", name);
         }
     }
 

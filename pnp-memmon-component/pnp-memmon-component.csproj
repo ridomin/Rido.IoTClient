@@ -18,20 +18,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Cmd_getRuntimeStats_Request.cs">
-			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
-		</Compile>
-		<Compile Update="Cmd_getRuntimeStats_Response.cs">
-			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
-		</Compile>
-		<Compile Update="dtmi_rido_pnp_sample_memmon-1.g.cs">
-			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
-		</Compile>
-		<Compile Update="dmt_azure_devicemanagement_deviceinformation.cs">
-			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
-		</Compile>
 		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
-			<DependentUpon>dtmi_rido_pnp_sample_memmon-1.json</DependentUpon>
+			<DependentUpon>dtmi_rido_pnp_sampledevice-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_azure_devicemanagement_deviceinformation-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sampledevice-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_rido_pnp_sampledevice-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sampledevice-1.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 </Project>

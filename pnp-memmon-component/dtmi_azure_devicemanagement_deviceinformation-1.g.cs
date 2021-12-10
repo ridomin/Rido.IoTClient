@@ -11,14 +11,14 @@ namespace dtmi_azure_devicemanagement
     {
         public deviceInfoComponent(IMqttClient c, string name) : base(c, name)
         {
-            CV.manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
-            CV.model = new ReadOnlyProperty<string>(c, "model");
-            CV.softwareVersion = new ReadOnlyProperty<string>(c, "softwareVersion");
-            CV.operatingSystemName = new ReadOnlyProperty<string>(c, "operatingSystemName");
-            CV.processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
-            CV.processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
-            CV.totalMemory = new ReadOnlyProperty<long>(c, "totalMemory");
-            CV.totalStorage = new ReadOnlyProperty<long>(c, "totalStorage");
+            ComponentValue.manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
+            ComponentValue.model = new ReadOnlyProperty<string>(c, "model");
+            ComponentValue.softwareVersion = new ReadOnlyProperty<string>(c, "softwareVersion");
+            ComponentValue.operatingSystemName = new ReadOnlyProperty<string>(c, "operatingSystemName");
+            ComponentValue.processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
+            ComponentValue.processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
+            ComponentValue.totalMemory = new ReadOnlyProperty<long>(c, "totalMemory");
+            ComponentValue.totalStorage = new ReadOnlyProperty<long>(c, "totalStorage");
         }
     }
 
