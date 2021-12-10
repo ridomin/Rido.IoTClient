@@ -8,7 +8,7 @@ using Rido.IoTClient.Hive.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class memmon_hive 
+    public class memmon_hive : HiveClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -18,7 +18,7 @@ namespace dtmi_rido_pnp
         public Telemetry<double> Telemetry_workingSet;
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
-        private memmon_hive(IMqttClient c)
+        private memmon_hive(IMqttClient c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");

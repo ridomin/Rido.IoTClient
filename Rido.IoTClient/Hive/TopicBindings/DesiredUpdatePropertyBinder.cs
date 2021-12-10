@@ -35,7 +35,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
                             if (ack != null)
                             {
                                 //_ = updateTwin.SendRequestWaitForResponse(ack);
-                                _ = propertyBinder.ReportProperty(ack.ToAck());
+                                _ = propertyBinder.UpdatePropertyAsync(ack.ToAck());
                             }
                         }
                     }

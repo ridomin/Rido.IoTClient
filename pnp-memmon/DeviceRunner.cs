@@ -36,12 +36,12 @@ public class DeviceRunner : BackgroundService
         client = await dtmi_rido_pnp.memmon_hive.CreateClientAsync(_configuration.GetConnectionString("hive"), stoppingToken);
         _logger.LogInformation("Connected");
 
-        //client..DisconnectedAsync += async e =>
-        //{
-        //    await Task.Delay(1);
-        //    reconnectCounter++;
-        //    Console.WriteLine(e.Exception.ToString());
-        //};
+        client.Connection.DisconnectedAsync += async e =>
+        {
+            await Task.Delay(1);
+            reconnectCounter++;
+            Console.WriteLine(e.Exception.ToString());
+        };
 
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
@@ -50,7 +50,7 @@ public class DeviceRunner : BackgroundService
         await client.Property_enabled.InitPropertyAsync("{}", default_enabled, stoppingToken);
         await client.Property_interval.InitPropertyAsync("{}", default_interval, stoppingToken);
 
-        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, stoppingToken);
+        await client.Property_started.UpdateTwinPropertyAsync(DateTime.Now, false, stoppingToken);
 
         RefreshScreen(this);
 

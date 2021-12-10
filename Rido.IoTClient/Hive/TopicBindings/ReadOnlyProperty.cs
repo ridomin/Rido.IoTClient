@@ -9,7 +9,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
     public class ReadOnlyProperty<T>
     {
         readonly UpdatePropertyBinder updateBinder;
-        readonly string name;
+        public string Name;
         readonly string component;
 
         public T PropertyValue;
@@ -18,22 +18,22 @@ namespace Rido.IoTClient.Hive.TopicBindings
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
             updateBinder = new UpdatePropertyBinder(connection);
-            this.name = name;
+            this.Name = name;
             this.component = component;
         }
 
-        public async Task UpdateTwinPropertyAsync(T newValue, CancellationToken cancellationToken = default)
+        public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            await updateBinder.ReportProperty(ToJson(), cancellationToken);
+            await updateBinder.UpdatePropertyAsync(ToJson(asComponent), cancellationToken);
         }
 
-        string ToJson()
+        string ToJson(bool asComponent = false)
         {
             string result;
-            if (string.IsNullOrEmpty(component))
+            if (asComponent == false)
             {
-                result = JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
+                result = JsonSerializer.Serialize(new Dictionary<string, object> { { Name, PropertyValue } });
             }
             else
             {
@@ -42,7 +42,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
                     { component, new Dictionary<string, object>() }
                 };
                 dict[component].Add("__t", "c");
-                dict[component].Add(name, PropertyValue);
+                dict[component].Add(Name, PropertyValue);
                 result = JsonSerializer.Serialize(dict);
             }
             return result;

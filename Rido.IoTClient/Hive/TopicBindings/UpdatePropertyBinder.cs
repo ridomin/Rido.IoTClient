@@ -13,7 +13,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             this.connection = connection;
         }
 
-        public async Task<MqttClientPublishResult> ReportProperty(object payload, CancellationToken cancellationToken = default) =>
+        public async Task<MqttClientPublishResult> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default) =>
             await connection.PublishAsync($"pnp/{connection.Options.ClientId}/props/reported", payload, cancellationToken);
     }
 }

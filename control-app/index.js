@@ -90,7 +90,7 @@ const updateReported = twin => {
         })
         client.on('message', (t, m) => {
             const msg = m ? JSON.parse(m.toString()) : {};
-            //console.log(t, msg)
+            console.log(t, msg)
             did = t.split('/')[1]
             if (t.startsWith(`pnp/client1/telemetry`)) {
                 data.addRow([new Date(),msg.workingSet])

@@ -31,7 +31,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task UpdatePropertyAsync() => await updatePropertyBinder.ReportProperty(this.PropertyValue.ToAck());
+        public async Task UpdatePropertyAsync() => await updatePropertyBinder.UpdatePropertyAsync(this.PropertyValue.ToAck());
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
@@ -44,7 +44,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             {
                 Value = defaultValue,
             };
-            _ = await updatePropertyBinder.ReportProperty(PropertyValue.ToAck(), cancellationToken);
+            _ = await updatePropertyBinder.UpdatePropertyAsync(PropertyValue.ToAck(), cancellationToken);
         }
     }
 }

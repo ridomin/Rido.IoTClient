@@ -2,12 +2,14 @@
 
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
+//using Rido.IoTClient.AzIoTHub;
+//using Rido.IoTClient.AzIoTHub.TopicBindings;
+using Rido.IoTClient.Hive;
+using Rido.IoTClient.Hive.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class sampleDevice : HubClient
+    public class sampleDevice : HiveClient
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 
@@ -27,9 +29,9 @@ namespace dtmi_rido_pnp
         public static async Task<sampleDevice> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var mqtt = await HubClient.CreateAsync(cs, cancellationToken);
+            var mqtt = await HiveClient.CreateAsync(cs, cancellationToken);
             var client = new sampleDevice(mqtt.Connection) { ConnectionSettings = cs };
-            client.InitialTwin = await client.GetTwinAsync();
+            client.InitialTwin = "{}"; // await client.GetTwinAsync();
             return client;
         }
     }
