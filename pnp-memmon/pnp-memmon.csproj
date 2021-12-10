@@ -31,11 +31,5 @@
 		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
 			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
 		</Compile>
-		<Compile Update="Cmd_getRuntimeStats_Request.cs">
-			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
-		</Compile>
-		<Compile Update="Cmd_getRuntimeStats_Response.cs">
-			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
-		</Compile>
 	</ItemGroup>
 </Project>
