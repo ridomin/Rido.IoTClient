@@ -144,7 +144,7 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Component_memMon.ComponentValue.Property_enabled?.PropertyValue.Version));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Component_memMon.ComponentValue.Property_interval.PropertyValue.Version));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Component_memMon.ComponentValue.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client.Component_memMon.ComponentValue.Property_started?.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "devInfo".PadRight(9), "model".PadRight(8), client?.Component_deviceInfo.ComponentValue.model.PropertyValue.PadLeft(15), client.Component_deviceInfo.ComponentValue.model.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "devInfo".PadRight(9), "model".PadRight(8), client?.Component_deviceInfo.ComponentValue.Property_model.PropertyValue.PadLeft(15), client.Component_deviceInfo.ComponentValue.Property_model.Version));
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Reconnects: {reconnectCounter}");
             AppendLineWithPadRight(sb, $"Telemetry: {telemetryCounter}");
@@ -167,13 +167,13 @@ public class DeviceRunner : BackgroundService
 
     static void SetThisDeviceInfo(dtmi_rido_pnp.DeviceInformation di)
     {
-        di.manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-        di.model.PropertyValue = Environment.OSVersion.Platform.ToString();
-        di.softwareVersion.PropertyValue = Environment.OSVersion.VersionString;
-        di.operatingSystemName.PropertyValue = Environment.GetEnvironmentVariable("OS");
-        di.processorArchitecture.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
-        di.processorManufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-        di.totalStorage.PropertyValue = System.IO.DriveInfo.GetDrives()[0].TotalSize;
-        di.totalMemory.PropertyValue = System.Environment.WorkingSet;
+        di.Property_manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        di.Property_model.PropertyValue = Environment.OSVersion.Platform.ToString();
+        di.Property_softwareVersion.PropertyValue = Environment.OSVersion.VersionString;
+        di.Property_operatingSystemName.PropertyValue = Environment.GetEnvironmentVariable("OS");
+        di.Property_processorArchitecture.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+        di.Property_processorManufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
+        di.Property_totalStorage.PropertyValue = System.IO.DriveInfo.GetDrives()[0].TotalSize;
+        di.Property_totalMemory.PropertyValue = System.Environment.WorkingSet;
     }
 }

@@ -11,39 +11,39 @@ namespace dtmi_rido_pnp
     {
         public DeviceInformationComponent(IMqttClient c, string name) : base(c, name)
         {
-            ComponentValue.manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
-            ComponentValue.model = new ReadOnlyProperty<string>(c, "model");
-            ComponentValue.softwareVersion = new ReadOnlyProperty<string>(c, "softwareVersion");
-            ComponentValue.operatingSystemName = new ReadOnlyProperty<string>(c, "operatingSystemName");
-            ComponentValue.processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
-            ComponentValue.processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
-            ComponentValue.totalMemory = new ReadOnlyProperty<long>(c, "totalMemory");
-            ComponentValue.totalStorage = new ReadOnlyProperty<long>(c, "totalStorage");
+            ComponentValue.Property_manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
+            ComponentValue.Property_model = new ReadOnlyProperty<string>(c, "model");
+            ComponentValue.Property_softwareVersion = new ReadOnlyProperty<string>(c, "softwareVersion");
+            ComponentValue.Property_operatingSystemName = new ReadOnlyProperty<string>(c, "operatingSystemName");
+            ComponentValue.Property_processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
+            ComponentValue.Property_processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
+            ComponentValue.Property_totalMemory = new ReadOnlyProperty<long>(c, "totalMemory");
+            ComponentValue.Property_totalStorage = new ReadOnlyProperty<long>(c, "totalStorage");
         }
     }
 
     public class DeviceInformation : ITwinSerializable
     {
-        public ReadOnlyProperty<string> manufacturer { get; set; } 
-        public ReadOnlyProperty<string> model { get; set; }
-        public ReadOnlyProperty<string> softwareVersion { get; set; }
-        public ReadOnlyProperty<string> operatingSystemName { get; set; }
-        public ReadOnlyProperty<string> processorArchitecture { get; set; }
-        public ReadOnlyProperty<string> processorManufacturer { get; set; }
-        public ReadOnlyProperty<long> totalMemory { get; set; }
-        public ReadOnlyProperty<long> totalStorage { get; set; }
+        public ReadOnlyProperty<string> Property_manufacturer { get; set; } 
+        public ReadOnlyProperty<string> Property_model { get; set; }
+        public ReadOnlyProperty<string> Property_softwareVersion { get; set; }
+        public ReadOnlyProperty<string> Property_operatingSystemName { get; set; }
+        public ReadOnlyProperty<string> Property_processorArchitecture { get; set; }
+        public ReadOnlyProperty<string> Property_processorManufacturer { get; set; }
+        public ReadOnlyProperty<long> Property_totalMemory { get; set; }
+        public ReadOnlyProperty<long> Property_totalStorage { get; set; }
 
         public Dictionary<string, object> ToJsonDict()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add(nameof(manufacturer), manufacturer.PropertyValue);
-            dic.Add(nameof(model), model.PropertyValue);
-            dic.Add(nameof(softwareVersion), softwareVersion.PropertyValue);
-            dic.Add(nameof(operatingSystemName), operatingSystemName.PropertyValue);
-            dic.Add(nameof(processorArchitecture), processorArchitecture.PropertyValue);
-            dic.Add(nameof(processorManufacturer), processorManufacturer.PropertyValue);
-            dic.Add(nameof(totalMemory), totalMemory.PropertyValue);
-            dic.Add(nameof(totalStorage), totalStorage.PropertyValue);
+            dic.Add(Property_manufacturer.Name, Property_manufacturer.PropertyValue);
+            dic.Add(Property_model.Name, Property_model.PropertyValue);
+            dic.Add(Property_softwareVersion.Name, Property_softwareVersion.PropertyValue);
+            dic.Add(Property_operatingSystemName.Name, Property_operatingSystemName.PropertyValue);
+            dic.Add(Property_processorArchitecture.Name, Property_processorArchitecture.PropertyValue);
+            dic.Add(Property_processorManufacturer.Name, Property_processorManufacturer.PropertyValue);
+            dic.Add(Property_totalMemory.Name, Property_totalMemory.PropertyValue);
+            dic.Add(Property_totalStorage.Name, Property_totalStorage.PropertyValue);
             return dic;
         }
     }
