@@ -22,7 +22,7 @@ public class DeviceRunner : BackgroundService
     const bool default_enabled = true;
     const int default_interval = 8;
 
-    dtmi_rido_pnp.memmon_hive client;
+    dtmi_rido_pnp.memmon client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -33,7 +33,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.memmon_hive.CreateClientAsync(_configuration.GetConnectionString("hive"), stoppingToken);
+        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
         _logger.LogInformation("Connected");
 
         client.Connection.DisconnectedAsync += async e =>
@@ -105,7 +105,6 @@ public class DeviceRunner : BackgroundService
             Status = 200
         };
 
-        //result.Add("runtime version", System.Reflection.Assembly.GetEntryAssembly()?.GetCustomAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>()?.FrameworkName ?? "n/a");
         result.diagnosticResults.Add("machine name", Environment.MachineName);
         result.diagnosticResults.Add("os version", Environment.OSVersion.ToString());
         if (req.DiagnosticsMode == DiagnosticsMode.complete)
@@ -133,8 +132,8 @@ public class DeviceRunner : BackgroundService
             string interval_value = client?.Property_interval.PropertyValue?.Value.ToString();
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
-            //AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
-            //AppendLineWithPadRight(sb, $"{client?.Connection.Options.ClientId} ({client.ConnectionSettings.Auth})");
+            AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
+            AppendLineWithPadRight(sb, $"{client?.Connection.Options.ClientId} ({client.ConnectionSettings.Auth})");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));
@@ -151,7 +150,7 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, $"WorkingSet: {telemetryWorkingSet.Bytes()}");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Time Running: {TimeSpan.FromMilliseconds(clock.ElapsedMilliseconds).Humanize(3)}");
-            //AppendLineWithPadRight(sb, $"{client.ConnectionSettings}");
+            AppendLineWithPadRight(sb, $"{client.ConnectionSettings}");
             AppendLineWithPadRight(sb, " ");
             return sb.ToString();
         }

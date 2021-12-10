@@ -1,11 +1,25 @@
 {
   "profiles": {
-    "pnp_memmon": {
+    "HubClassic": {
       "commandName": "Project",
       "environmentVariables": {
-        "ConnectionStrings__hub": "HostName=ridox.azure-devices.net;DeviceId=memmon32;SharedAccessKey=hFbDDUytbR3cfO5bF0K05FnhdQ513yPwZuIpfP9x25w=;SasMinutes=3",
-        "ConnectionStrings__broker": "HostName=broker.azure-devices.net;DeviceId=testdevice4;SharedAccessKey=uyDdPbqByut0QULV+B65KILbHRsLgGjRa9Kn2Ib8o98=",
-        "ConnectionStrings__hive": "HostName=f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud;DeviceId=client1;SharedAccessKey=Myclientpwd.000;Auth=Basic",
+        "ConnectionStrings__cs": "HostName=ridox.azure-devices.net;DeviceId=memmon32;SharedAccessKey=hFbDDUytbR3cfO5bF0K05FnhdQ513yPwZuIpfP9x25w=;SasMinutes=3",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
+    "HubBroker": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__cs": "HostName=broker.azure-devices.net;DeviceId=testdevice4;SharedAccessKey=uyDdPbqByut0QULV+B65KILbHRsLgGjRa9Kn2Ib8o98=",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
+    "Hive": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__cs": "HostName=f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud;DeviceId=client1;SharedAccessKey=Myclientpwd.000;Auth=Basic",
         "DOTNET_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true
@@ -13,7 +27,7 @@
     "pnp_memmon-central": {
       "commandName": "Project",
       "environmentVariables": {
-        "ConnectionStrings__hub": "IdScope=0ne00434908;DeviceId=memmon01;SharedAccessKey=3QFAN73JOlCLqP0bclHBYSVgD/otYvdSMkW+4F786ms=",
+        "ConnectionStrings__cs": "IdScope=0ne00434908;DeviceId=memmon01;SharedAccessKey=3QFAN73JOlCLqP0bclHBYSVgD/otYvdSMkW+4F786ms=",
         "DOTNET_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true
