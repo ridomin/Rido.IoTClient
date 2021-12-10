@@ -15,7 +15,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
         public UpdateTwinBinder(IMqttClient connection)
         {
             this.connection = connection;
-            _ = connection.SubscribeAsync("$az/iot/twin/patch/response/+");
+            _ = connection.SingleSubscribeAsync("$az/iot/twin/patch/response/+");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;

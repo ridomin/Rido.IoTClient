@@ -3,6 +3,7 @@ using MQTTnet.Client;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using Rido.IoTClient;
 
 namespace Rido.IoTClient.AzBroker.TopicBindings
 {
@@ -15,7 +16,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
 
         public Command(IMqttClient connection, string commandName, string componentName = "")
         {
-            _ = connection.SubscribeAsync("$az/iot/methods/+/+");
+            _ = connection.SingleSubscribeAsync("$az/iot/methods/+/+");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;

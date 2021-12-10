@@ -4,10 +4,10 @@ using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Text.Json;
 
-namespace dtmi_azure_devicemanagement
+namespace dtmi_rido_pnp
 {
 
-    class deviceInfoComponent : Component<dtmi_azure_devicemanagement.DeviceInformation>
+    class deviceInfoComponent : Component<DeviceInformation>
     {
         public deviceInfoComponent(IMqttClient c, string name) : base(c, name)
         {

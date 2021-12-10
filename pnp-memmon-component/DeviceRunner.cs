@@ -1,7 +1,6 @@
-using dtmi_rido_pnp_sample;
+using dtmi_rido_pnp;
 using Humanizer;
 using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Diagnostics;
 using System.Text;
 
@@ -20,7 +19,7 @@ public class DeviceRunner : BackgroundService
     int twinRecCounter = 0;
     int reconnectCounter = 0;
 
-    dtmi_rido_pnp_sample.memmon client;
+    dtmi_rido_pnp.sampleDevice client;
 
     const bool default_enabled = true;
     const int default_interval = 8;
@@ -31,12 +30,12 @@ public class DeviceRunner : BackgroundService
         _configuration = configuration;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken token)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp_sample.memmon.CreateDeviceClientAsync(_configuration.GetConnectionString("hub"), stoppingToken);
+        client = await dtmi_rido_pnp.sampleDevice.CreateDeviceClientAsync(_configuration.GetConnectionString("hub"), token);
         _logger.LogInformation("Connected");
-                
+
         client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
 
         client.Component_memMon.ComponentValue.Property_enabled.OnProperty_Updated = Property_memMon_enabled_UpdateHandler;
@@ -45,29 +44,29 @@ public class DeviceRunner : BackgroundService
         client.Command_reboot.OnCmdDelegate += async m =>
         {
             commandCounter++;
-            return await Task.FromResult(new Cmd_reboot_response() { Status = 200 });
+            return await Task.FromResult(new EmptyCommandResponse() { Status = 200 });
         };
 
-        await client.Component_memMon.ComponentValue.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
-        await client.Component_memMon.ComponentValue.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
+        await client.Component_memMon.ComponentValue.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, token);
+        await client.Component_memMon.ComponentValue.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, token);
 
-        await client.Component_memMon.ComponentValue.Property_started.UpdateTwinPropertyAsync(DateTime.Now, true, stoppingToken);
-        await client.Property_serialNumber.UpdateTwinPropertyAsync("S/N 123");
+        await client.Component_memMon.ComponentValue.Property_started.UpdateTwinPropertyAsync(DateTime.Now, true, token);
+        await client.Property_serialNumber.UpdateTwinPropertyAsync("S/N 123", false, token);
 
         SetThisDeviceInfo(client.Component_deviceInfo.ComponentValue);
-        await client.Component_deviceInfo.UpdateTwinAsync();
+        await client.Component_deviceInfo.UpdateTwinAsync(token);
 
         RefreshScreen(this);
 
-        while (!stoppingToken.IsCancellationRequested)
+        while (!token.IsCancellationRequested)
         {
             if (client?.Component_memMon.ComponentValue.Property_enabled.PropertyValue.Value == true)
             {
                 telemetryWorkingSet = Environment.WorkingSet;
-                await client.Component_memMon.ComponentValue.Telemetry_workingSet.SendTelemetryAsync(telemetryWorkingSet, stoppingToken);
+                await client.Component_memMon.ComponentValue.Telemetry_workingSet.SendTelemetryAsync(telemetryWorkingSet, token);
                 telemetryCounter++;
             }
-            await Task.Delay(client.Component_memMon.ComponentValue.Property_interval.PropertyValue.Value * 1000, stoppingToken);
+            await Task.Delay(client.Component_memMon.ComponentValue.Property_interval.PropertyValue.Value * 1000, token);
         }
     }
 
@@ -165,7 +164,7 @@ public class DeviceRunner : BackgroundService
         var screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
     }
 
-    static void SetThisDeviceInfo(dtmi_azure_devicemanagement.DeviceInformation di)
+    static void SetThisDeviceInfo(dtmi_rido_pnp.DeviceInformation di)
     {
         di.manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
         di.model.PropertyValue = Environment.OSVersion.Platform.ToString();

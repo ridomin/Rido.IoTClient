@@ -3,7 +3,7 @@ using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Text.Json;
 
-namespace dtmi_rido_pnp_sample
+namespace dtmi_rido_pnp
 {
 
     public enum DiagnosticsMode
@@ -31,11 +31,11 @@ namespace dtmi_rido_pnp_sample
         public Dictionary<string, string> diagnosticResults { get; set; } = new Dictionary<string, string>();
     }
 
-    class memMonComponent : Component<pnp_memmon_1>
+    class memMonComponent : Component<memmon>
     {
         public memMonComponent(IMqttClient c, string name) : base(c, name)
         {
-            ComponentValue = new pnp_memmon_1();
+            ComponentValue = new memmon();
             ComponentValue.Property_interval = new WritableProperty<int>(c, "interval", name);
             ComponentValue.Property_enabled = new WritableProperty<bool>(c, "enabled", name);
             ComponentValue.Property_started = new ReadOnlyProperty<DateTime>(c, "started", name);
@@ -44,7 +44,7 @@ namespace dtmi_rido_pnp_sample
         }
     }
 
-    public class pnp_memmon_1 : ITwinSerializable
+    public class memmon : ITwinSerializable
     {
         public ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
@@ -20,9 +21,9 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             this.ComponentValue = new T();
             update = new UpdateTwinBinder(connection);
         }
-        public Task<int> UpdateTwinAsync() => UpdateTwinAsync(ComponentValue);
+        public Task<int> UpdateTwinAsync(CancellationToken token = default) => UpdateTwinAsync(ComponentValue, token);
 
-        public async Task<int> UpdateTwinAsync(T instance)
+        public async Task<int> UpdateTwinAsync(T instance, CancellationToken token)
         {
             ComponentValue = instance;
             Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
@@ -31,7 +32,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                 };
             dict[name] = ComponentValue.ToJsonDict();
             dict[name].Add("__t", "c");
-            return await update.UpdateTwinAsync(dict);
+            return await update.UpdateTwinAsync(dict, token);
         }
     }
 }
