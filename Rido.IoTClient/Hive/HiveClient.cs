@@ -39,5 +39,7 @@ namespace Rido.IoTClient.Hive
                 ConnectionSettings = cs
             };
         }
+
+        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => Task.FromResult("");
     }
 }

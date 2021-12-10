@@ -6,12 +6,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Rido.IoTClient
 {
     public static class PubSubExtensions
     {
-        static readonly string[] subscribedTopics = new string[] { };
+        static readonly HashSet<string> subscribedTopics = new HashSet<string> { };
         public static async Task<MqttClientSubscribeResult> SingleSubscribeAsync(this IMqttClient client, string topic, CancellationToken cancellation = default)
         {
             MqttClientSubscribeResult subAck = new MqttClientSubscribeResult();
@@ -22,7 +23,8 @@ namespace Rido.IoTClient
                     .WithTopicFilter(topic)
                     .Build(),
                     cancellation);
-                subscribedTopics.Append(topic);
+                subscribedTopics.Add(topic);
+                Trace.TraceInformation("Sub to " + topic);
             }
 
             if (subAck.Items.Where(x => (int)x.ResultCode > 2).Count() >0 )

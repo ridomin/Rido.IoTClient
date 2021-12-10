@@ -48,6 +48,10 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
 
         PropertyAck<T> InitFromTwin(string twinJson, string propName, string componentName, T defaultValue)
         {
+            if (string.IsNullOrEmpty(twinJson))
+            {
+                return new PropertyAck<T>(propName, componentName) { Value = defaultValue};
+            }
 
             var root = JsonNode.Parse(twinJson);
             var desired = root?["desired"];

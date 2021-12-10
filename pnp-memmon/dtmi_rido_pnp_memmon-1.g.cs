@@ -2,12 +2,12 @@
 
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
+using Rido.IoTClient.AzBroker;
+using Rido.IoTClient.AzBroker.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class memmon : HubClient
+    public class memmon : HubBrokerClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -32,7 +32,7 @@ namespace dtmi_rido_pnp
             {
                 ModelId = modelId
             };
-            var mqtt = await HubClient.CreateAsync(cs, cancellationToken);
+            var mqtt = await HubBrokerClient.CreateAsync(cs, cancellationToken);
             var client = new memmon(mqtt.Connection)
             {
                 ConnectionSettings = cs

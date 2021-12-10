@@ -22,16 +22,16 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             this.component = component;
         }
 
-        public async Task UpdateTwinPropertyAsync(T newValue, CancellationToken cancellationToken = default)
+        public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            Version = await updateTwin.UpdateTwinAsync(ToJson(), cancellationToken);
+            Version = await updateTwin.UpdateTwinAsync(ToJson(asComponent), cancellationToken);
         }
 
-        string ToJson()
+        string ToJson(bool asComponent = false)
         {
             string result;
-            if (string.IsNullOrEmpty(component))
+            if (asComponent == false)
             {
                 result = JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
             }

@@ -17,7 +17,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
         public GetTwinBinder(IMqttClient conn)
         {
             connection = conn;
-            _ = connection.SingleSubscribeAsync("$az/iot/twin/get/response/+");
+            connection.SingleSubscribeAsync("$az/iot/twin/get/response/+").Wait();
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
@@ -52,7 +52,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             {
                 Trace.TraceError($"Error '{puback?.ReasonCode}' publishing twin GET");
             }
-            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
+            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
         }
 
     }
