@@ -75,11 +75,11 @@ namespace Rido.IoTClient.IntegrationTests
             var hubClient = await PnPClient.CreateAsync(csx);
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal("testdevice", hubClient.Connection.Options.ClientId);
-            //var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
+            var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
             var twin = await hubClient.GetTwinAsync();
             Assert.True(twin.Length > 0);
-            //Assert.Contains(tick.ToString(), twin);
-            //Assert.Contains(v.ToString(), twin);
+            Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
             await hubClient.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
             {
                 Reason = MqttClientDisconnectReason.NormalDisconnection
