@@ -13,25 +13,25 @@ namespace Rido.IoTClient
     public static class PubSubExtensions
     {
         static readonly HashSet<string> subscribedTopics = new HashSet<string> { };
-        public static MqttClientSubscribeResult SingleSubscribe(this IMqttClient client, string topic, CancellationToken cancellation = default)
+        public static async Task<MqttClientSubscribeResult> SingleSubscribe(this IMqttClient client, string topic, CancellationToken cancellation = default)
         {
             MqttClientSubscribeResult subAck = new MqttClientSubscribeResult();
-            if (!subscribedTopics.Contains(topic))
-            {
-                subAck = client.SubscribeAsync(
+            //if (!subscribedTopics.Contains(topic))
+            //{
+                _ = await client.SubscribeAsync(
                     new MqttClientSubscribeOptionsBuilder()
                     .WithTopicFilter(topic)
                     .Build(),
-                    cancellation).Result;
-                subscribedTopics.Add(topic);
+                    cancellation);
+               // subscribedTopics.Add(topic);
                 Trace.TraceInformation("Sub to " + topic);
-            }
+            //}
 
-            if (subAck.Items.Where(x => (int)x.ResultCode > 2).Count() >0 )
-            {
-                subAck.Items.ForEach(x => Trace.TraceError($"+ {x.TopicFilter.Topic} {x.ResultCode}"));
-                throw new ApplicationException($"Error subscribing to `{topic}`");
-            }
+            //if (subAck.Items.Where(x => (int)x.ResultCode > 2).Count() >0 )
+            //{
+            //    subAck.Items.ForEach(x => Trace.TraceError($"+ {x.TopicFilter.Topic} {x.ResultCode}"));
+            //    throw new ApplicationException($"Error subscribing to `{topic}`");
+            //}
 
             return subAck;
         }

@@ -44,7 +44,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             {
                 Trace.TraceError($"Error '{puback?.ReasonCode}' publishing twin GET");
             }
-            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
+            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
         }
     }
 }
