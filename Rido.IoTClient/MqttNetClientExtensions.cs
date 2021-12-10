@@ -13,16 +13,16 @@ namespace Rido.IoTClient
     public static class PubSubExtensions
     {
         static readonly HashSet<string> subscribedTopics = new HashSet<string> { };
-        public static async Task<MqttClientSubscribeResult> SingleSubscribeAsync(this IMqttClient client, string topic, CancellationToken cancellation = default)
+        public static MqttClientSubscribeResult SingleSubscribe(this IMqttClient client, string topic, CancellationToken cancellation = default)
         {
             MqttClientSubscribeResult subAck = new MqttClientSubscribeResult();
             if (!subscribedTopics.Contains(topic))
             {
-                subAck = await client.SubscribeAsync(
+                subAck = client.SubscribeAsync(
                     new MqttClientSubscribeOptionsBuilder()
                     .WithTopicFilter(topic)
                     .Build(),
-                    cancellation);
+                    cancellation).Result;
                 subscribedTopics.Add(topic);
                 Trace.TraceInformation("Sub to " + topic);
             }

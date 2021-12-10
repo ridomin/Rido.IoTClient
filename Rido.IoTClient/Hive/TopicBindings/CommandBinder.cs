@@ -15,7 +15,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public Command(IMqttClient connection, string commandName, string componentName = "")
         {
-            _ = connection.SingleSubscribeAsync($"pnp/+/commands/#");
+            _ = connection.SingleSubscribe($"pnp/+/commands/#");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
