@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzBroker
 {
-    public class HubBrokerClient
+    public class PnPClient
     {
         public IMqttClient Connection;
         public string InitialTwin = string.Empty;
@@ -18,14 +18,14 @@ namespace Rido.IoTClient.AzBroker
         readonly GetTwinBinder GetTwinBinder;
         readonly UpdateTwinBinder UpdateTwinBinder;
 
-        public HubBrokerClient(IMqttClient c)
+        public PnPClient(IMqttClient c)
         {
             Connection = c;
             GetTwinBinder = new GetTwinBinder(c);
             UpdateTwinBinder = new UpdateTwinBinder(c);
         }
 
-        public static async Task<HubBrokerClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             await DpsClient.ProvisionIfNeededAsync(cs);
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
@@ -35,7 +35,7 @@ namespace Rido.IoTClient.AzBroker
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
-            return new HubBrokerClient(mqtt);
+            return new PnPClient(mqtt);
         }
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => 

@@ -24,16 +24,13 @@
       },
       "dotnetRunMessages": true
     },
-    "pnp_memmon-central": {
+    "Central": {
       "commandName": "Project",
       "environmentVariables": {
         "ConnectionStrings__cs": "IdScope=0ne00434908;DeviceId=memmon01;SharedAccessKey=3QFAN73JOlCLqP0bclHBYSVgD/otYvdSMkW+4F786ms=",
         "DOTNET_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true
-    },
-    "Docker (1)": {
-      "commandName": "Docker"
     }
   }
 }

@@ -9,7 +9,7 @@ using Rido.IoTClient.Hive.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class sampleDevice : HiveClient
+    public class sampleDevice : PnPClient
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 
@@ -29,7 +29,7 @@ namespace dtmi_rido_pnp
         public static async Task<sampleDevice> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var mqtt = await HiveClient.CreateAsync(cs, cancellationToken);
+            var mqtt = await PnPClient.CreateAsync(cs, cancellationToken);
             var client = new sampleDevice(mqtt.Connection) { ConnectionSettings = cs };
             client.InitialTwin = "{}"; // await client.GetTwinAsync();
             return client;

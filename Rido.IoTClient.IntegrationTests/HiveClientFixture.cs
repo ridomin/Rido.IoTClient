@@ -15,7 +15,7 @@ namespace Rido.IoTClient.IntegrationTests
         readonly string deviceId = "client1";
         readonly string defaultKey = "Myclientpwd.000";
 
-        async Task<HiveClient> CreateHiveClient()
+        async Task<PnPClient> CreateHiveClient()
         {
             var cs = new ConnectionSettings()
             {
@@ -23,7 +23,7 @@ namespace Rido.IoTClient.IntegrationTests
                 DeviceId = deviceId,
                 SharedAccessKey = defaultKey
             };
-            return await HiveClient.CreateAsync(cs);
+            return await PnPClient.CreateAsync(cs);
         }
 
         [Fact]
