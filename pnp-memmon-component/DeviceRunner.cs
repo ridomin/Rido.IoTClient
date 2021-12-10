@@ -143,7 +143,8 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "---------", "--------", "-----".PadRight(15, '-'), "------"));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Component_memMon.ComponentValue.Property_enabled?.PropertyValue.Version));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Component_memMon.ComponentValue.Property_interval.PropertyValue.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Component_memMon.ComponentValue.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Component_memMon.ComponentValue.Property_started?.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Component_memMon.ComponentValue.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client.Component_memMon.ComponentValue.Property_started?.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "devInfo".PadRight(9), "model".PadRight(8), client?.Component_deviceInfo.ComponentValue.model.PropertyValue.PadLeft(15), client.Component_deviceInfo.ComponentValue.model.Version));
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Reconnects: {reconnectCounter}");
             AppendLineWithPadRight(sb, $"Telemetry: {telemetryCounter}");

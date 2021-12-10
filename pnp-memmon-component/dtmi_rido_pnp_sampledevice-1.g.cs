@@ -23,15 +23,15 @@ namespace dtmi_rido_pnp
 
         public string InitialTwin;
 
-        public Component<DeviceInformation> Component_deviceInfo;
-        public Component<memmon> Component_memMon;
+        public DeviceInformationComponent Component_deviceInfo;
+        public memMonComponent Component_memMon;
         public ReadOnlyProperty<string> Property_serialNumber;
         public Command<EmptyCommandRequest, EmptyCommandResponse> Command_reboot;
 
         private sampleDevice(IMqttClient c) 
         {
             hubClient = new HubClient(c);
-            Component_deviceInfo = new deviceInfoComponent(c, "deviceInfo");
+            Component_deviceInfo = new DeviceInformationComponent(c, "deviceInfo");
             Component_memMon = new memMonComponent(c, "memMon");
             Property_serialNumber = new ReadOnlyProperty<string>(c, "serialNumber");
             Command_reboot = new Command<EmptyCommandRequest, EmptyCommandResponse>(c, "reboot");

@@ -31,7 +31,7 @@ namespace dtmi_rido_pnp
         public Dictionary<string, string> diagnosticResults { get; set; } = new Dictionary<string, string>();
     }
 
-    class memMonComponent : Component<memmon>
+    public class memMonComponent : Component<memmon>
     {
         public memMonComponent(IMqttClient c, string name) : base(c, name)
         {
@@ -51,7 +51,6 @@ namespace dtmi_rido_pnp
         public WritableProperty<int> Property_interval;
         public Telemetry<double> Telemetry_workingSet;
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
-             
 
         public Dictionary<string, object> ToJsonDict()
         {
