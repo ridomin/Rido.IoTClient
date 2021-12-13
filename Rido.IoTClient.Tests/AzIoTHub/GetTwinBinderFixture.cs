@@ -24,14 +24,14 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public void GetTwinAsync()
         {
             var twinTask = binder.GetTwinAsync();
-            mockClient.SimulateNewMessage($"$iothub/twin/res/200/?$rid={RidCounter.Current}", sampleTwin);
+            mockClient.SimulateNewMessage($"$iothub/twin/res/200/?$rid={RidCounter.Current}", SampleTwin);
             Assert.Equal($"$iothub/twin/GET/?$rid={RidCounter.Current}", mockClient.topicRecceived);
             var twin = twinTask.Result;
-            Assert.Equal(twin, sampleTwin);
+            Assert.Equal(twin, SampleTwin);
         }
 
         static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
-        static string sampleTwin
+        static string SampleTwin
         {
             get => Stringify(new
             {
