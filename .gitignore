@@ -27,3 +27,4 @@ bld/
 .vs/
 
 **/launchSettings.json
+TestResults/
