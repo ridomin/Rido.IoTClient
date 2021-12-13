@@ -1,5 +1,4 @@
 ﻿using MQTTnet;
-using MQTTnet.Client;
 using Rido.IoTClient.AzDps;
 using System.Threading.Tasks;
 using Xunit;

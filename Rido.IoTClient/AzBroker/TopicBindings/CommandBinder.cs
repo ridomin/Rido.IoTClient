@@ -3,7 +3,6 @@ using MQTTnet.Client;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using Rido.IoTClient;
 
 namespace Rido.IoTClient.AzBroker.TopicBindings
 {

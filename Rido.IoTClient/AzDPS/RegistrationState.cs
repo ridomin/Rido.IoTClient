@@ -12,7 +12,7 @@ namespace Rido.IoTClient.AzDps
 
         [JsonPropertyName("deviceId")]
         public string DeviceId { get; set; }
-        
+
         [JsonPropertyName("subStatus")]
         public string SubStatus { get; set; }
     }

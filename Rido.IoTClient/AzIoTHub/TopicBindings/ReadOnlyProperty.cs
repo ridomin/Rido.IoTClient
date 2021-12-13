@@ -19,7 +19,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         {
             updateTwin = new UpdateTwinBinder(connection);
             this.Name = name;
-            this.component =  component;
+            this.component = component;
         }
 
         public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)

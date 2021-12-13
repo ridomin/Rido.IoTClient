@@ -38,10 +38,10 @@ namespace Rido.IoTClient.AzBroker
             return new PnPClient(mqtt);
         }
 
-        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => 
+        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) =>
             GetTwinBinder.GetTwinAsync(cancellationToken);
 
-        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => 
+        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) =>
             UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
 
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Rido.IoTClient
+﻿namespace Rido.IoTClient
 {
     public class EmptyCommandRequest : IBaseCommandRequest<EmptyCommandRequest>
     {

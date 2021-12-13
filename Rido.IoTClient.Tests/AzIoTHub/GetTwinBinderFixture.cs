@@ -1,10 +1,5 @@
-﻿using MQTTnet.Client;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
-using System;
+﻿using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Rido.IoTClient.Tests.AzIoTHub

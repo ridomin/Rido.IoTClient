@@ -1,4 +1,3 @@
-using MQTTnet;
 using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub;
 using System;

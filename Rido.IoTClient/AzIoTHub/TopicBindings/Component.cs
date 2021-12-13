@@ -1,15 +1,12 @@
 ﻿using MQTTnet.Client;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
     public class Component<T>
-        where T: ITwinSerializable, new()
+        where T : ITwinSerializable, new()
     {
         readonly string name;
         readonly UpdateTwinBinder update;

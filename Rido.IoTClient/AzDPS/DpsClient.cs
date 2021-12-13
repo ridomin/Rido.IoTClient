@@ -1,6 +1,5 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Diagnostics;
 using Rido.IoTClient.AzIoTHub;
 using System;
 using System.Collections.Generic;
@@ -10,15 +9,14 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzDps
 {
-    public class DpsClient 
+    public class DpsClient
     {
         readonly IMqttClient mqttClient;
-        
+
         public DpsClient(IMqttClient c)
         {
             mqttClient = c;
@@ -163,7 +161,7 @@ namespace Rido.IoTClient.AzDps
                     else
                     {
                         tcs.TrySetResult(dpsRes);
-                        
+
                     }
                 }
             };

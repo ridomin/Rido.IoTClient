@@ -1,12 +1,10 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace Rido.IoTClient
 {

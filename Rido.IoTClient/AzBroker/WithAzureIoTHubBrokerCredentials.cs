@@ -31,7 +31,7 @@ namespace Rido.IoTClient.AzBroker
                     cs.DeviceId = clientId;
                 }
 
-                return WithAzureIoTHubCredentialsX509(builder, cs.HostName,cs.DeviceId, cs.ModuleId, cert, cs.ModelId);
+                return WithAzureIoTHubCredentialsX509(builder, cs.HostName, cs.DeviceId, cs.ModuleId, cert, cs.ModelId);
             }
             else
             {

@@ -40,7 +40,7 @@ namespace Rido.IoTClient.AzIoTHub
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
-            return new PnPClient(mqtt) { ConnectionSettings = cs} ;
+            return new PnPClient(mqtt) { ConnectionSettings = cs };
         }
     }
 }
