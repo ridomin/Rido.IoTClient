@@ -126,7 +126,7 @@ public class DeviceRunner : BackgroundService
     {
         string RenderData()
         {
-            void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth - 1));
+            void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth > 1 ? Console.BufferWidth - 1 : 300));
 
             string enabled_value = client?.Property_enabled?.PropertyValue.Value.ToString();
             string interval_value = client?.Property_interval.PropertyValue?.Value.ToString();
