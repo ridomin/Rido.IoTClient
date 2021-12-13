@@ -16,7 +16,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
 
         public Command(IMqttClient connection, string commandName, string componentName = "")
         {
-            _ = connection.SingleSubscribe("$az/iot/methods/+/+");
+            _ = connection.SingleSubscribeAsync("$az/iot/methods/+/+");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;

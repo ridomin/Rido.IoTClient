@@ -11,7 +11,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated = null;
         public DesiredUpdatePropertyBinder(IMqttClient connection, string propertyName, string componentName = "")
         {
-            _ = connection.SingleSubscribe($"pnp/{connection.Options.ClientId}/props/set/#");
+            _ = connection.SingleSubscribeAsync($"pnp/{connection.Options.ClientId}/props/set/#");
             //UpdateTwinBinder updateTwin = new UpdateTwinBinder(connection);
             UpdatePropertyBinder propertyBinder = new UpdatePropertyBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>

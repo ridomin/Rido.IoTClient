@@ -56,7 +56,7 @@ namespace Rido.IoTClient.Tests
         public Task<MqttClientPublishResult> PublishAsync(MqttApplicationMessage applicationMessage, CancellationToken cancellationToken = default)
         {
             topicRecceived = applicationMessage.Topic;
-            payloadReceived = Encoding.UTF8.GetString(applicationMessage.Payload);
+            payloadReceived = applicationMessage.Payload != null ? Encoding.UTF8.GetString(applicationMessage.Payload) : string.Empty;
             return Task.FromResult(new MqttClientPublishResult() { ReasonCode = MqttClientPublishReasonCode.Success });
         }
 
