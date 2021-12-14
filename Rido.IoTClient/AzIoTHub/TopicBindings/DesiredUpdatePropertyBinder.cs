@@ -20,21 +20,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                  {
                      string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                      JsonNode desired = JsonNode.Parse(msg);
-                     JsonNode desiredProperty = null;
-                     if (string.IsNullOrEmpty(componentName))
-                     {
-                         desiredProperty = desired?[propertyName];
-                     }
-                     else
-                     {
-                         if (desired[componentName] != null &&
-                             desired[componentName][propertyName] != null &&
-                             desired[componentName]["__t"] != null &&
-                             desired[componentName]["__t"].GetValue<string>() == "c")
-
-                             desiredProperty = desired?[componentName][propertyName];
-                     }
-
+                     JsonNode desiredProperty = TwinParser.ReadPropertyFromDesired(desired, propertyName, componentName);
                      if (desiredProperty != null)
                      {
                          if (OnProperty_Updated != null)
@@ -54,5 +40,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                  }
              };
         }
+
+       
     }
 }

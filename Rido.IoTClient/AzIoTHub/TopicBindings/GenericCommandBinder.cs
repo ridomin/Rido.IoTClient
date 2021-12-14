@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-
-    public class Command<T, TResponse>
-        where T : IBaseCommandRequest<T>, new()
-        where TResponse : BaseCommandResponse
+    public class GenericCommand
     {
-        public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
+        public Func<GenericCommandRequest, Task<GenericCommandResponse>> OnCmdDelegate { get; set; }
 
-        public Command(IMqttClient connection, string commandName, string componentName = "")
+        public GenericCommand(IMqttClient connection)
         {
-            var fullCommandName = string.IsNullOrEmpty(componentName) ? commandName : $"{componentName}*{commandName}";
-            _ = connection.SubscribeAsync($"$iothub/methods/POST/{fullCommandName}");
+            _ = connection.SubscribeAsync("$iothub/methods/POST/#");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
-
-
-                if (topic.StartsWith($"$iothub/methods/POST/{fullCommandName}"))
+                if (topic.StartsWith($"$iothub/methods/POST/"))
                 {
+                    var segments = topic.Split('/');
+                    var cmdName = segments[3];
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                    T req = new T().DeserializeBody(msg);
+                    GenericCommandRequest req = new GenericCommandRequest()
+                    {
+                        CommandName = cmdName,
+                        CommandPayload = msg
+                    };
                     if (OnCmdDelegate != null && req != null)
                     {
                         (int rid, _) = TopicParser.ParseTopic(topic);
-                        TResponse response = await OnCmdDelegate.Invoke(req);
+                        GenericCommandResponse response = await OnCmdDelegate.Invoke(req);
                         _ = connection.PublishAsync($"$iothub/methods/res/{response.Status}/?$rid={rid}", response);
                     }
                 }

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Rido.IoTClient.IntegrationTests
 {
-    public class HubBrokerClientFixture
+    public class HubBrokerPnPClientFixture
     {
         readonly long tick = Environment.TickCount64;
         readonly string hostname = "broker.azure-devices.net";

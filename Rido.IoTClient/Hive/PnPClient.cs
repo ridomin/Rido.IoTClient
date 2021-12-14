@@ -40,6 +40,8 @@ namespace Rido.IoTClient.Hive
             };
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => Task.FromResult("");
+#pragma warning restore IDE0060 // Remove unused parameter
     }
 }

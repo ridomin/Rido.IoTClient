@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Rido.IoTClient.IntegrationTests
 {
-    public class HiveClientFixture
+    public class HivePnPClientFixture
     {
         readonly long tick = Environment.TickCount64;
         readonly string hostname = "f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud";

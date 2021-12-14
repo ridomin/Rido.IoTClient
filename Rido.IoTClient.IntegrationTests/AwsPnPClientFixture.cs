@@ -85,6 +85,7 @@ namespace Rido.IoTClient.IntegrationTests
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             var shadow = await client.GetShadowAsync();
+            Assert.NotNull(shadow);
             var updRes = await client.UpdateShadowAsync(new
             {
                 name = "rido2"
@@ -104,9 +105,10 @@ namespace Rido.IoTClient.IntegrationTests
                 X509Key = "TheThing.pfx|1234"
             };
             PnPClient client = await PnPClient.CreateAsync(cs);
+            bool received = false;
             client.desiredUpdatePropertyBinder.OnProperty_Updated = async m =>
             {
-                
+                received = true;
                 return await Task.FromResult(new PropertyAck<string>("name")
                 {
                     Status = 200,
@@ -116,12 +118,11 @@ namespace Rido.IoTClient.IntegrationTests
                 });
             };
             Assert.True(client.Connection.IsConnected);
-            var shadow = await client.GetShadowAsync();
             var updRes = await client.UpdateShadowAsync(new
             {
                 name = "rido2"
             });
-            Assert.True(updRes > 0);
+            Assert.True(received);
         }
 
 
