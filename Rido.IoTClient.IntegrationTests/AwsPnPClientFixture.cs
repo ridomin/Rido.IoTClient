@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using MQTTnet.Client;
+using MQTTnet;
+
 namespace Rido.IoTClient.IntegrationTests
 {
     public class AwsPnPClientFixture
@@ -26,29 +28,31 @@ namespace Rido.IoTClient.IntegrationTests
             Assert.False(client.Connection.IsConnected);
         }
 
-        //[Fact]
-        //public async Task PubSub()
-        //{
-        //    ConnectionSettings cs = new()
-        //    {
-        //        HostName = "a38jrw6jte2l2x-ats.iot.us-west-2.amazonaws.com",
-        //        ClientId = "pnpclient-testPubSub",
-        //        Auth = "X509",
-        //        DeviceId = "PubSubSample",
-        //        X509Key = "aws.pfx|1234"
-        //    };
-        //    PnPClient client = await PnPClient.CreateAsync(cs);
-        //    await client.Connection.SubscribeAsync("topic_1");
-        //    bool received = false;
-        //    client.Connection.ApplicationMessageReceivedAsync += async m =>
-        //    {
-        //        received = true;
-        //        await Task.Yield();
-        //    };
-        //    await client.Connection.PublishAsync("topic_1", "{ \"hello\" : 123}");
-        //    await Task.Delay(100);
-        //    Assert.True(received);
-        //}
+        [Fact]
+        public async Task PubSub()
+        {
+            ConnectionSettings cs = new()
+            {
+                HostName = "a38jrw6jte2l2x-ats.iot.us-west-2.amazonaws.com",
+                ClientId = "pnpclient-testPubSub",
+                Auth = "X509",
+                DeviceId = "PubSubSample",
+                X509Key = "aws.pfx|1234"
+            };
+            IMqttClient connection = new MqttFactory().CreateMqttClient();
+            await connection.ConnectAsync(new MqttClientOptionsBuilder().WithAwsX509Credentials(cs).Build());
+
+            await connection.SubscribeAsync("topic_1");
+            bool received = false;
+            connection.ApplicationMessageReceivedAsync += async m =>
+            {
+                received = true;
+                await Task.Yield();
+            };
+            await connection.PublishAsync("topic_1", "{ \"hello\" : 123}");
+            await Task.Delay(100);
+            Assert.True(received);
+        }
 
         [Fact]
         public async Task GetShadow()
