@@ -15,6 +15,7 @@ namespace Rido.IoTClient
         public string IdScope { get; set; }
         public string HostName { get; set; }
         public string DeviceId { get; set; }
+        public string ClientId { get; set; }
         public string SharedAccessKey { get; set; }
         public string X509Key { get; set; } //paht-to.pfx|pfxpwd
         public string ModelId { get; set; }
@@ -62,6 +63,7 @@ namespace Rido.IoTClient
             this.IdScope = GetStringValue(map, nameof(this.IdScope));
             this.HostName = GetStringValue(map, nameof(this.HostName));
             this.DeviceId = GetStringValue(map, nameof(this.DeviceId));
+            this.ClientId = GetStringValue(map, nameof(this.ClientId));
             this.SharedAccessKey = GetStringValue(map, nameof(this.SharedAccessKey));
             this.ModuleId = GetStringValue(map, nameof(this.ModuleId));
             this.X509Key = GetStringValue(map, nameof(this.X509Key));
@@ -96,6 +98,7 @@ namespace Rido.IoTClient
             AppendIfNotEmpty(result, nameof(this.ModuleId), ModuleId);
             AppendIfNotEmpty(result, nameof(this.SharedAccessKey), SharedAccessKey);
             AppendIfNotEmpty(result, nameof(this.ModelId), ModelId);
+            AppendIfNotEmpty(result, nameof(this.ClientId), ClientId);
             AppendIfNotEmpty(result, nameof(this.SasMinutes), SasMinutes.ToString());
             AppendIfNotEmpty(result, nameof(this.RetryInterval), RetryInterval.ToString());
             AppendIfNotEmpty(result, nameof(this.MaxRetries), MaxRetries.ToString());
