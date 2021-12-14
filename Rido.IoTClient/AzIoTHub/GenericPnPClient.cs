@@ -11,11 +11,11 @@ namespace Rido.IoTClient.AzIoTHub
     public class GenericPnPClient : PnPClient
     {
         public GenericCommand Command;
-        
+        public GenericDesiredUpdatePropertyBinder genericDesiredUpdatePropertyBinder;
         public GenericPnPClient(IMqttClient c) : base(c)
         {
             Command = new GenericCommand(c);
-            
+            genericDesiredUpdatePropertyBinder = new GenericDesiredUpdatePropertyBinder(c);
         }
 
         public static new async Task<GenericPnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)

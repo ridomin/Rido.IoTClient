@@ -4,8 +4,6 @@ using Microsoft.Extensions.Logging;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,6 +37,16 @@ namespace pnp_generic_client
                     Status = 200,
                     ReponsePayload = JsonSerializer.Serialize(new { myResponse = "whatever" })
                 });
+            };
+
+            client.genericDesiredUpdatePropertyBinder.OnProperty_Updated = async m =>
+            {
+                return await Task.FromResult(new GenericPropertyAck
+                {
+                    Value = m.ToJsonString(),
+                    Status = 200,
+                    Version = m["$version"].GetValue<int>()
+                }); 
             };
 
             while (!stoppingToken.IsCancellationRequested)
