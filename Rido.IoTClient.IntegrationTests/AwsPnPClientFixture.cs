@@ -92,6 +92,38 @@ namespace Rido.IoTClient.IntegrationTests
             Assert.True(updRes > 0);
         }
 
+        [Fact]
+        public async Task ReceiveShadowUpdate()
+        {
+            ConnectionSettings cs = new()
+            {
+                HostName = "a38jrw6jte2l2x-ats.iot.us-west-2.amazonaws.com",
+                ClientId = "test-shadow",
+                DeviceId = "TheThing",
+                Auth = "X509",
+                X509Key = "TheThing.pfx|1234"
+            };
+            PnPClient client = await PnPClient.CreateAsync(cs);
+            client.desiredUpdatePropertyBinder.OnProperty_Updated = async m =>
+            {
+                
+                return await Task.FromResult(new PropertyAck<string>("name")
+                {
+                    Status = 200,
+                    Version = m.Version,
+                    Value = m.Value
+                    
+                });
+            };
+            Assert.True(client.Connection.IsConnected);
+            var shadow = await client.GetShadowAsync();
+            var updRes = await client.UpdateShadowAsync(new
+            {
+                name = "rido2"
+            });
+            Assert.True(updRes > 0);
+        }
 
-}
+
+    }
 }

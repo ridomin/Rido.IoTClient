@@ -19,7 +19,8 @@ namespace Rido.IoTClient.Aws.TopicBindings
                  if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update"))
                  {
                      string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                     JsonNode desired = JsonNode.Parse(msg);
+                     JsonNode root = JsonNode.Parse(msg);
+                     JsonNode desired = root["state"]["desired"];
                      JsonNode desiredProperty = null;
                      if (string.IsNullOrEmpty(componentName))
                      {
@@ -42,7 +43,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                              var property = new PropertyAck<T>(propertyName, componentName)
                              {
                                  Value = desiredProperty.GetValue<T>(),
-                                 Version = desired?["$version"]?.GetValue<int>() ?? 0
+                                 Version = root["version"]?.GetValue<int>() ?? 0
                              };
                              var ack = await OnProperty_Updated(property);
                              if (ack != null)
