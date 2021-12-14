@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class UpdateShadowBinder
     {
-        TaskCompletionSource<string> pendingRequest;
+        TaskCompletionSource<int> pendingRequest;
         readonly IMqttClient connection;
         readonly string deviceId;
         public UpdateShadowBinder(IMqttClient connection, string deviceId)
@@ -25,7 +26,9 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/accepted"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                    pendingRequest.SetResult(msg);
+                    JsonNode node = JsonNode.Parse(msg);
+                    int version = node["version"].GetValue<int>();
+                    pendingRequest.SetResult(version);
                 }
                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/rejected"))
                 {
@@ -36,16 +39,18 @@ namespace Rido.IoTClient.Aws.TopicBindings
             };
         }
 
-        public async Task<string> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default)
+        public async Task<int> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default)
         {
+            pendingRequest = new TaskCompletionSource<int>();
             Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>
             {
-                { "state", new Dictionary<string, object>() }
+                {
+                    "state", new Dictionary<string, object>()
+                    {
+                       { "desired", payload}
+                    }
+                }
             };
-            data["state"].Add("desired", payload);
-            
-
-            pendingRequest = new TaskCompletionSource<string>();
             var puback = await connection.PublishAsync($"$aws/things/{deviceId}/shadow/update", data, cancellationToken);
             if (puback.ReasonCode != MqttClientPublishReasonCode.Success)
             {

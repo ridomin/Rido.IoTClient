@@ -19,7 +19,7 @@ namespace Rido.IoTClient.AzIoTHub
                 string pfxpath = segments[0];
                 string pfxpwd = segments[1];
                 var cert = new X509Certificate2(pfxpath, pfxpwd);
-                var clientId = cert.Subject[3..];
+                var clientId = cert.Subject[3..].Replace(" ","");
                 if (clientId.Contains('/')) //is a module
                 {
                     var segmentsId = clientId.Split('/');
@@ -64,7 +64,7 @@ namespace Rido.IoTClient.AzIoTHub
 
         public static MqttClientOptionsBuilder WithAzureIoTHubCredentialsX509(this MqttClientOptionsBuilder builder, string hostName, X509Certificate cert, string modelId)
         {
-            string clientId = cert.Subject[3..];
+            string clientId = cert.Subject[3..].Replace(" ", "");
 
             builder
                 .WithTcpServer(hostName, 8883)

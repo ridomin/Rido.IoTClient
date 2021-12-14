@@ -11,12 +11,12 @@ namespace Rido.IoTClient.Aws.TopicBindings
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated = null;
         public DesiredUpdatePropertyBinder(IMqttClient connection, string deviceId, string propertyName, string componentName = "")
         {
-            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/documents");
+            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update");
             //UpdateTwinBinder updateTwin = new UpdateTwinBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>
              {
                  var topic = m.ApplicationMessage.Topic;
-                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/documents"))
+                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update"))
                  {
                      string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                      JsonNode desired = JsonNode.Parse(msg);

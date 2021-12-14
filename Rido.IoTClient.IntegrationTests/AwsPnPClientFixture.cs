@@ -89,7 +89,7 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 name = "rido2"
             });
-            Assert.NotNull(updRes);
+            Assert.True(updRes > 0);
         }
 
 

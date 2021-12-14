@@ -88,6 +88,30 @@ namespace Rido.IoTClient.IntegrationTests
         }
 
         [Fact]
+        public async Task ConnectDeviceWithAwsX509()
+        {
+            var csx = new ConnectionSettings()
+            {
+                HostName = "ridox.azure-devices.net",
+                Auth = "X509",
+                X509Key = "TheThing.pfx|1234"
+            };
+            var hubClient = await PnPClient.CreateAsync(csx);
+            Assert.True(hubClient.Connection.IsConnected);
+            Assert.Equal("AWSIoTCertificate", hubClient.Connection.Options.ClientId);
+            var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
+            var twin = await hubClient.GetTwinAsync();
+            Assert.True(twin.Length > 0);
+            Assert.Contains(tick.ToString(), twin);
+            Assert.Contains(v.ToString(), twin);
+            await hubClient.Connection.DisconnectAsync(new MqttClientDisconnectOptions()
+            {
+                Reason = MqttClientDisconnectReason.NormalDisconnection
+            });
+            Assert.False(hubClient.Connection.IsConnected);
+        }
+
+        [Fact]
         public async Task ConnectDeviceModuleWithX509()
         {
             var csx = new ConnectionSettings()
