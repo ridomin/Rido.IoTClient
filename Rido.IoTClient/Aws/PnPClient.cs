@@ -19,12 +19,14 @@ namespace Rido.IoTClient.Aws
 
         public ConnectionSettings ConnectionSettings;
         readonly GetShadowBinder getShadowBinder;
+        readonly UpdateShadowBinder updateShadowBinder;
 
         public PnPClient(IMqttClient c, ConnectionSettings cs)
         {
             this.Connection = c;
             this.ConnectionSettings = cs;
             getShadowBinder = new GetShadowBinder(c, ConnectionSettings.DeviceId);
+            updateShadowBinder = new UpdateShadowBinder(c, cs.DeviceId);
         }
 
         public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
@@ -44,5 +46,6 @@ namespace Rido.IoTClient.Aws
         }
 
         public Task<string> GetShadowAsync(CancellationToken cancellationToken = default) => getShadowBinder.GetShadow(cancellationToken);
+        public Task<string> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default) => updateShadowBinder.UpdateShadowAsync(payload, cancellationToken);
     }
 }

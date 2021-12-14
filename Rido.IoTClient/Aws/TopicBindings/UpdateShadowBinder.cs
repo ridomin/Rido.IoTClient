@@ -1,6 +1,7 @@
 ﻿using MQTTnet.Client;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
@@ -10,14 +11,14 @@ namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class UpdateShadowBinder
     {
-        readonly static TaskCompletionSource<string> pendingRequest =  new TaskCompletionSource<string>();
+        TaskCompletionSource<string> pendingRequest;
         readonly IMqttClient connection;
         readonly string deviceId;
         public UpdateShadowBinder(IMqttClient connection, string deviceId)
         {
             this.deviceId = deviceId;
             this.connection = connection;
-            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/accepted");
+            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/+");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
@@ -26,20 +27,32 @@ namespace Rido.IoTClient.Aws.TopicBindings
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     pendingRequest.SetResult(msg);
                 }
+                if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/rejected"))
+                {
+                    string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
+                    pendingRequest.SetException(new ApplicationException(msg));
+                }
                 await Task.Yield();
             };
         }
 
         public async Task<string> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default)
-        { 
-            var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
-            var puback = await connection.PublishAsync($"$aws/things/{deviceId}/shadow/update", payload, cancellationToken);
+        {
+            Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>
+            {
+                { "state", new Dictionary<string, object>() }
+            };
+            data["state"].Add("desired", payload);
+            
+
+            pendingRequest = new TaskCompletionSource<string>();
+            var puback = await connection.PublishAsync($"$aws/things/{deviceId}/shadow/update", data, cancellationToken);
             if (puback.ReasonCode != MqttClientPublishReasonCode.Success)
             {
                 Trace.TraceError("Error publishing message: " + puback.ReasonString);
                 throw new ApplicationException(puback.ReasonString);
             }
-            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
+            return await pendingRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
         }
     }
 }
