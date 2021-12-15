@@ -33,7 +33,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                              var ack = await OnProperty_Updated(property);
                              if (ack != null)
                              {
-                                 _ = updateTwin.UpdateTwinAsync(ack.ToAck());
+                                 _ = updateTwin.UpdateTwinAsync(ack.ToAckDict());
                              }
                          }
                      }

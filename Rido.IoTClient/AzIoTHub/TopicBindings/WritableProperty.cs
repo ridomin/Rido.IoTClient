@@ -29,7 +29,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task UpdateTwinAsync() => await updateTwin.UpdateTwinAsync(this.PropertyValue.ToAck());
+        public async Task UpdateTwinAsync() => await updateTwin.UpdateTwinAsync(this.PropertyValue.ToAckDict());
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
@@ -37,12 +37,12 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             if (desiredBinder.OnProperty_Updated != null && (PropertyValue.DesiredVersion > 1))
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
-                _ = updateTwin.UpdateTwinAsync(ack.ToAck(), cancellationToken);
+                _ = updateTwin.UpdateTwinAsync(ack.ToAckDict(), cancellationToken);
                 PropertyValue = ack;
             }
             else
             {
-                _ = updateTwin.UpdateTwinAsync(PropertyValue.ToAck());
+                _ = updateTwin.UpdateTwinAsync(PropertyValue.ToAckDict());
             }
         }
 

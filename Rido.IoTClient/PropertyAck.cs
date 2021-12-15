@@ -33,24 +33,6 @@ namespace Rido.IoTClient
         [JsonPropertyName("value")]
         public T Value { get; set; } = default;
 
-        public string ToAck()
-        {
-            if (string.IsNullOrEmpty(compName))
-            {
-                return JsonSerializer.Serialize(new Dictionary<string, object>() { { propName, this } });
-            }
-            else
-            {
-                Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
-                {
-                    { compName, new Dictionary<string, object>() }
-                };
-                dict[compName].Add("__t", "c");
-                dict[compName].Add(propName, this);
-                return JsonSerializer.Serialize(dict);
-            }
-        }
-
         public Dictionary<string,object> ToAckDict()
         {
             if (string.IsNullOrEmpty(compName))

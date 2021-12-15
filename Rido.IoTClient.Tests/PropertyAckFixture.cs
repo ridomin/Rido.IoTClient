@@ -34,7 +34,7 @@ namespace Rido.IoTClient.Tests
                     value = 1.2,
                 }
             });
-            Assert.Equal(expectedJson, wp.ToAck());
+            Assert.Equal(expectedJson, Stringify(wp.ToAckDict()));
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace Rido.IoTClient.Tests
                     value = 1.2,
                 }
             });
-            Assert.Equal(expectedJson, wp.ToAck());
+            Assert.Equal(expectedJson, Stringify(wp.ToAckDict()));
         }
 
 
@@ -80,7 +80,7 @@ namespace Rido.IoTClient.Tests
                     value = "2011-11-10T08:31:12",
                 }
             });
-            Assert.Equal(expectedJson, wpDate.ToAck());
+            Assert.Equal(expectedJson, Stringify(wpDate.ToAckDict()));
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace Rido.IoTClient.Tests
                     value = false,
                 }
             });
-            Assert.Equal(expectedJson, wpBoolean.ToAck());
+            Assert.Equal(expectedJson, Stringify(wpBoolean.ToAckDict()));
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace Rido.IoTClient.Tests
                     },
                 }
             });
-            Assert.Equal(expectedJson, prop.ToAck());
+            Assert.Equal(expectedJson, Stringify(prop.ToAckDict()));
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace Rido.IoTClient.Tests
                     }
                 }
             });
-            Assert.Equal(expectedJson, wp.ToAck());
+            Assert.Equal(expectedJson, Stringify(wp.ToAckDict()));
         }
     }
 }

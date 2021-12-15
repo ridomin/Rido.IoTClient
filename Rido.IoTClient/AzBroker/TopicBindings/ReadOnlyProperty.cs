@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,15 +26,15 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
         public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            Version = await updateTwin.UpdateTwinAsync(ToJson(asComponent), cancellationToken);
+            Version = await updateTwin.UpdateTwinAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
-        string ToJson(bool asComponent = false)
+        Dictionary<string, object> ToJsonDict(bool asComponent = false)
         {
-            string result;
+            Dictionary<string, object> result;
             if (asComponent == false)
             {
-                result = JsonSerializer.Serialize(new Dictionary<string, object> { { name, PropertyValue } });
+                result = new Dictionary<string, object> { { name, PropertyValue } };
             }
             else
             {
@@ -43,7 +44,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
                 };
                 dict[component].Add("__t", "c");
                 dict[component].Add(name, PropertyValue);
-                result = JsonSerializer.Serialize(dict);
+                result = dict.ToDictionary(pair => pair.Key, pair =>(object)pair.Value);
             }
             return result;
         }
