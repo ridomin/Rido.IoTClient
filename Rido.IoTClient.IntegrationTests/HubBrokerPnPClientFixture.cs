@@ -69,11 +69,11 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 HostName = hostname,
                 Auth = "X509",
-                X509Key = "testdevice.pfx|1234"
+                X509Key = "testdevice22.pfx|1234"
             };
             var hubClient = await PnPClient.CreateAsync(csx);
             Assert.True(hubClient.Connection.IsConnected);
-            Assert.Equal("testdevice", hubClient.Connection.Options.ClientId);
+            Assert.Equal("testdevice22", hubClient.Connection.Options.ClientId);
             var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
             var twin = await hubClient.GetTwinAsync();
             Assert.True(twin.Length > 0);

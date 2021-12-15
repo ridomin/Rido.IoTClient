@@ -15,8 +15,8 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
                 Auth = "X509",
-                ClientId = "ridodevice01",
-                X509Key = "ridodevice01.pfx|1234"
+                ClientId = "testdevice22",
+                X509Key = "testdevice22.pfx|1234"
             };
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
@@ -31,9 +31,8 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
                 Auth = "X509",
-                ClientId = "ridodevice01",
-                DeviceId = "ridodevice01",
-                X509Key = "ridodevice01.pfx|1234"
+                ClientId = "testdevice22",
+                X509Key = "testdevice22.pfx|1234"
             };
             IMqttClient connection = new MqttFactory().CreateMqttClient();
             await connection.ConnectAsync(new MqttClientOptionsBuilder().WithAwsX509Credentials(cs).Build());
@@ -57,9 +56,8 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
                 Auth = "X509",
-                ClientId = "ridodevice02",
-                DeviceId = "ridodevice02",
-                X509Key = "ridodevice01.pfx|1234"
+                ClientId = "testdevice22",
+                X509Key = "testdevice22.pfx|1234"
             };
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
@@ -74,9 +72,8 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
                 Auth = "X509",
-                ClientId = "ridodevice02",
-                DeviceId = "ridodevice02",
-                X509Key = "ridodevice01.pfx|1234"
+                ClientId = "testdevice22",
+                X509Key = "testdevice22.pfx|1234"
             };
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);

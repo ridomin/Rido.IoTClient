@@ -22,8 +22,8 @@ namespace Rido.IoTClient.Aws
         {
             this.Connection = c;
             this.ConnectionSettings = cs;
-            getShadowBinder = new GetShadowBinder(c, ConnectionSettings.DeviceId);
-            updateShadowBinder = new UpdateShadowBinder(c, cs.DeviceId);
+            getShadowBinder = new GetShadowBinder(c, ConnectionSettings.ClientId);
+            updateShadowBinder = new UpdateShadowBinder(c, cs.ClientId);
             //desiredUpdatePropertyBinder = new DesiredUpdatePropertyBinder<string>(c, cs.DeviceId, "name");
         }
 
