@@ -29,7 +29,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
                 };
             dict[name] = ComponentValue.ToJsonDict();
             dict[name].Add("__t", "c");
-            _ = await update.UpdatePropertyAsync(dict, token);
+            _ = await update.ReportPropertyAsync(dict, token);
             return 0;
         }
     }

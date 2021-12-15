@@ -42,7 +42,7 @@ namespace Rido.IoTClient.AzBroker
             GetTwinBinder.GetTwinAsync(cancellationToken);
 
         public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) =>
-            UpdateTwinBinder.UpdatePropertyAsync(payload, cancellationToken);
+            UpdateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
 
     }
 }

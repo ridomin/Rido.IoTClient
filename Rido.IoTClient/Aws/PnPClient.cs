@@ -44,6 +44,6 @@ namespace Rido.IoTClient.Aws
         }
 
         public Task<string> GetShadowAsync(CancellationToken cancellationToken = default) => getShadowBinder.GetShadow(cancellationToken);
-        public Task<int> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default) => updateShadowBinder.UpdatePropertyAsync(payload, cancellationToken);
+        public Task<int> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default) => updateShadowBinder.ReportPropertyAsync(payload, cancellationToken);
     }
 }

@@ -25,7 +25,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         public async Task UpdateShadowPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            await updateBinder.UpdatePropertyAsync(ToJsonDict(asComponent), cancellationToken);
+            await updateBinder.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
         Dictionary<string, object> ToJsonDict(bool asComponent = false)

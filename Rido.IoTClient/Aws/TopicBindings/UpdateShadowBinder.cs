@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class UpdateShadowBinder : IUpdatePropoertyBinder
+    public class UpdateShadowBinder : IReportPropoertyBinder
     {
         TaskCompletionSource<int> pendingRequest;
         readonly IMqttClient connection;
@@ -54,7 +54,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             };
         }
 
-        public async Task<int> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default)
+        public async Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default)
         {
             pendingRequest = new TaskCompletionSource<int>();
             Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>

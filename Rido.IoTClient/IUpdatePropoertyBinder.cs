@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient
 {
-    public interface IUpdatePropoertyBinder
+    public interface IReportPropoertyBinder
     {
-        Task<int> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default);
+        Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default);
     }
 }

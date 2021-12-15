@@ -31,7 +31,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task UpdatePropertyAsync() => await updatePropertyBinder.UpdatePropertyAsync(this.PropertyValue.ToAckDict());
+        public async Task UpdatePropertyAsync() => await updatePropertyBinder.ReportPropertyAsync(this.PropertyValue.ToAckDict());
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
@@ -40,12 +40,12 @@ namespace Rido.IoTClient.Aws.TopicBindings
             if (desiredBinder.OnProperty_Updated != null && (PropertyValue.DesiredVersion > 1))
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
-                _ = updatePropertyBinder.UpdatePropertyAsync(ack.ToAckDict(), cancellationToken);
+                _ = updatePropertyBinder.ReportPropertyAsync(ack.ToAckDict(), cancellationToken);
                 PropertyValue = ack;
             }
             else
             {
-                _ = updatePropertyBinder.UpdatePropertyAsync(PropertyValue.ToAckDict());
+                _ = updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict());
             }
         }
 

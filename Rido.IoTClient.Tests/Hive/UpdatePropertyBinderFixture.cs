@@ -11,7 +11,7 @@ namespace Rido.IoTClient.Tests.Hive
         {
             var mqttClient = new MockMqttClient();
             var updateProp = new UpdatePropertyBinder(mqttClient);
-            await updateProp.UpdatePropertyAsync(new { myProp = 1 });
+            await updateProp.ReportPropertyAsync(new { myProp = 1 });
             Assert.Equal("pnp/mock/props/reported", mqttClient.topicRecceived);
             Assert.Equal("{\"myProp\":1}", mqttClient.payloadReceived);
         }
