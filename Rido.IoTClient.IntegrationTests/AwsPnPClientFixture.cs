@@ -8,16 +8,18 @@ namespace Rido.IoTClient.IntegrationTests
 {
     public class AwsPnPClientFixture
     {
+        ConnectionSettings cs = new()
+        {
+            HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
+            Auth = "X509",
+            ClientId = "testdevice22",
+            X509Key = "testdevice22.pfx|1234"
+        };
+
         [Fact]
         public async Task Connect()
         {
-            ConnectionSettings cs = new()
-            {
-                HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
-                Auth = "X509",
-                ClientId = "testdevice22",
-                X509Key = "testdevice22.pfx|1234"
-            };
+            
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             await client.Connection.DisconnectAsync(new MQTTnet.Client.MqttClientDisconnectOptions() { Reason = MQTTnet.Client.MqttClientDisconnectReason.NormalDisconnection });
@@ -27,13 +29,6 @@ namespace Rido.IoTClient.IntegrationTests
         [Fact]
         public async Task PubSub()
         {
-            ConnectionSettings cs = new()
-            {
-                HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
-                Auth = "X509",
-                ClientId = "testdevice22",
-                X509Key = "testdevice22.pfx|1234"
-            };
             IMqttClient connection = new MqttFactory().CreateMqttClient();
             await connection.ConnectAsync(new MqttClientOptionsBuilder().WithAwsX509Credentials(cs).Build());
 
@@ -52,13 +47,6 @@ namespace Rido.IoTClient.IntegrationTests
         [Fact]
         public async Task GetShadow()
         {
-            ConnectionSettings cs = new()
-            {
-                HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
-                Auth = "X509",
-                ClientId = "testdevice22",
-                X509Key = "testdevice22.pfx|1234"
-            };
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             var shadow = await client.GetShadowAsync();
@@ -68,13 +56,6 @@ namespace Rido.IoTClient.IntegrationTests
         [Fact]
         public async Task UpdateShadow()
         {
-            ConnectionSettings cs = new()
-            {
-                HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
-                Auth = "X509",
-                ClientId = "testdevice22",
-                X509Key = "testdevice22.pfx|1234"
-            };
             PnPClient client = await PnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             var shadow = await client.GetShadowAsync();

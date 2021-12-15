@@ -1,6 +1,7 @@
 ﻿using MQTTnet.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Rido.IoTClient.Aws
@@ -11,6 +12,7 @@ namespace Rido.IoTClient.Aws
         {
             var segments = cs.X509Key.Split('|');
             var cert = new X509Certificate2(segments[0], segments[1], X509KeyStorageFlags.Exportable);
+            Trace.TraceInformation($"Loaded cert {cert.Subject} {cert.Thumbprint}");
             builder
                 .WithTcpServer(cs.HostName, 8883)
                 .WithKeepAlivePeriod(new TimeSpan(0, 0, 0, 300))
