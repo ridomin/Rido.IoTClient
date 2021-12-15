@@ -17,7 +17,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
-            updateBinder = new UpdateShadowBinder(connection, connection.Options.ClientId);
+            updateBinder = new UpdateShadowBinder(connection);
             this.Name = name;
             this.component = component;
         }
@@ -25,7 +25,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         public async Task UpdateShadowPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            await updateBinder.UpdateShadowAsync(ToJsonDict(asComponent), cancellationToken);
+            await updateBinder.UpdatePropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
         Dictionary<string, object> ToJsonDict(bool asComponent = false)

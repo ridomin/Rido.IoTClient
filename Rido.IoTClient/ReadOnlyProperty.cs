@@ -7,13 +7,13 @@ namespace Rido.IoTClient
 {
     public class xxReadOnlyProperty<T>
     {
-        readonly IUpdateTwinBinder updateTwin;
+        readonly IUpdatePropoertyBinder updateTwin;
         public readonly string Name;
         readonly string component;
         public T PropertyValue;
         public int Version;
 
-        public xxReadOnlyProperty(IUpdateTwinBinder updateBinder, string name, string component = "")
+        public xxReadOnlyProperty(IUpdatePropoertyBinder updateBinder, string name, string component = "")
         {
             updateTwin = updateBinder;
             this.Name = name;
@@ -23,7 +23,7 @@ namespace Rido.IoTClient
         public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            Version = await updateTwin.UpdateTwinAsync(ToJsonDict(asComponent), cancellationToken);
+            Version = await updateTwin.UpdatePropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
         Dictionary<string, object> ToJsonDict(bool asComponent = false)

@@ -23,7 +23,7 @@ namespace Rido.IoTClient.Aws
             this.Connection = c;
             this.ConnectionSettings = cs;
             getShadowBinder = new GetShadowBinder(c, ConnectionSettings.ClientId);
-            updateShadowBinder = new UpdateShadowBinder(c, cs.ClientId);
+            updateShadowBinder = new UpdateShadowBinder(c);
             //desiredUpdatePropertyBinder = new DesiredUpdatePropertyBinder<string>(c, cs.DeviceId, "name");
         }
 
@@ -44,6 +44,6 @@ namespace Rido.IoTClient.Aws
         }
 
         public Task<string> GetShadowAsync(CancellationToken cancellationToken = default) => getShadowBinder.GetShadow(cancellationToken);
-        public Task<int> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default) => updateShadowBinder.UpdateShadowAsync(payload, cancellationToken);
+        public Task<int> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default) => updateShadowBinder.UpdatePropertyAsync(payload, cancellationToken);
     }
 }

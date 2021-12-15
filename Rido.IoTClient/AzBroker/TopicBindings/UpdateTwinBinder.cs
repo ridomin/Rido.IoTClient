@@ -7,10 +7,21 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzBroker.TopicBindings
 {
-    public class UpdateTwinBinder
+    public class UpdateTwinBinder : IUpdatePropoertyBinder
     {
         readonly static ConcurrentDictionary<int, TaskCompletionSource<int>> pendingRequests = new ConcurrentDictionary<int, TaskCompletionSource<int>>();
         readonly IMqttClient connection;
+
+        private static UpdateTwinBinder instance;
+
+        public static UpdateTwinBinder GetInstance(IMqttClient connection)
+        {
+            if (instance == null || instance.connection != connection)
+            {
+                instance = new UpdateTwinBinder(connection);
+            }
+            return instance;
+        }
 
         public UpdateTwinBinder(IMqttClient connection)
         {
@@ -31,7 +42,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             };
         }
 
-        public async Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default)
+        public async Task<int> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default)
         {
             var rid = RidCounter.NextValue();
             var puback = await connection.PublishAsync($"$az/iot/twin/patch/reported/?rid={rid}", payload, cancellationToken);

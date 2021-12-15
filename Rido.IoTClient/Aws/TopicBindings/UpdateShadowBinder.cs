@@ -7,24 +7,31 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-
-
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class UpdateShadowBinder
+    public class UpdateShadowBinder : IUpdatePropoertyBinder
     {
         TaskCompletionSource<int> pendingRequest;
         readonly IMqttClient connection;
-        readonly string deviceId;
-        public UpdateShadowBinder(IMqttClient connection, string deviceId)
+
+        private static UpdateShadowBinder instance;
+
+        public static UpdateShadowBinder GetInstance(IMqttClient c)
         {
-            this.deviceId = deviceId;
+            if (instance == null || instance.connection != c)
+            {
+                instance = new UpdateShadowBinder(c);
+            }
+            return instance;
+        }
+        public UpdateShadowBinder(IMqttClient connection)
+        {
             this.connection = connection;
-            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/+");
+            _ = connection.SubscribeAsync($"$aws/things/{connection.Options.ClientId}/shadow/update/+");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
-                if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/accepted"))
+                if (topic.StartsWith($"$aws/things/{connection.Options.ClientId}/shadow/update/accepted"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     JsonNode node = JsonNode.Parse(msg);
@@ -34,7 +41,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                         pendingRequest.SetResult(version);
                     }
                 }
-                if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/rejected"))
+                if (topic.StartsWith($"$aws/things/{connection.Options.ClientId}/shadow/update/rejected"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     if (pendingRequest != null && !pendingRequest.Task.IsCompleted)
@@ -47,7 +54,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             };
         }
 
-        public async Task<int> UpdateShadowAsync(object payload, CancellationToken cancellationToken = default)
+        public async Task<int> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default)
         {
             pendingRequest = new TaskCompletionSource<int>();
             Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>
@@ -59,7 +66,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                     }
                 }
             };
-            var puback = await connection.PublishAsync($"$aws/things/{deviceId}/shadow/update", data, cancellationToken);
+            var puback = await connection.PublishAsync($"$aws/things/{connection.Options.ClientId}/shadow/update", data, cancellationToken);
             if (puback.ReasonCode != MqttClientPublishReasonCode.Success)
             {
                 Trace.TraceError("Error publishing message: " + puback.ReasonString);

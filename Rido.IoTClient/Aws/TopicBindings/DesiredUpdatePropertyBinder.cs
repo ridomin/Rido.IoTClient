@@ -13,7 +13,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         {
             string deviceId = connection.Options.ClientId;
             _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/accepted");
-            UpdateShadowBinder updateShadow = new UpdateShadowBinder(connection, deviceId);
+            UpdateShadowBinder updateShadow = new UpdateShadowBinder(connection);
             //UpdateTwinBinder updateTwin = new UpdateTwinBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>
              {
@@ -50,7 +50,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                              var ack = await OnProperty_Updated(property);
                              if (ack != null)
                              {
-                                 _ = updateShadow.UpdateShadowAsync(ack.ToAckDict());
+                                 _ = updateShadow.UpdatePropertyAsync(ack.ToAckDict());
                              }
                          }
                      }

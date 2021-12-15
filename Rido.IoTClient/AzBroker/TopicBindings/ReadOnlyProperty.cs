@@ -25,7 +25,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
         public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
-            Version = await updateTwin.UpdateTwinAsync(ToJsonDict(asComponent), cancellationToken);
+            Version = await updateTwin.UpdatePropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
         Dictionary<string, object> ToJsonDict(bool asComponent = false)

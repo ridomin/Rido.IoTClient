@@ -4,16 +4,36 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Hive.TopicBindings
 {
-    public class UpdatePropertyBinder
+    public class UpdatePropertyBinder : IUpdatePropoertyBinder
     {       
         readonly IMqttClient connection;
 
+        private static UpdatePropertyBinder instance;
+
+        public static UpdatePropertyBinder GetInstance(IMqttClient connection)
+        {
+            if (instance == null || instance.connection != connection)
+            {
+                instance = new UpdatePropertyBinder(connection);
+            }
+            return instance;
+
+        }
         public UpdatePropertyBinder(IMqttClient connection)
         {
             this.connection = connection;
         }
 
-        public async Task<MqttClientPublishResult> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default) =>
-            await connection.PublishAsync($"pnp/{connection.Options.ClientId}/props/reported", payload, cancellationToken);
+        public async Task<int> UpdatePropertyAsync(object payload, CancellationToken cancellationToken = default)
+        {
+            var puback = await connection.PublishAsync($"pnp/{connection.Options.ClientId}/props/reported", payload, cancellationToken);
+            if (puback.ReasonCode == MqttClientPublishReasonCode.Success)
+            {
+                return 0;
+            }
+            return -1;
+        }
+
+        
     }
 }

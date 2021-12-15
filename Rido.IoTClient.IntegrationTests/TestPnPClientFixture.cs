@@ -43,7 +43,7 @@ namespace Rido.IoTClient.IntegrationTests
             {
                 if (disposing)
                 {
-                    client.Dispose();
+                    client.Connection.Dispose();
                 }
                 disposedValue = true;
             }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub
 {
-    public class PnPClient : IDisposable
+    public class PnPClient //: IDisposable
     {
         public readonly IMqttClient Connection;
 
@@ -17,7 +17,7 @@ namespace Rido.IoTClient.AzIoTHub
         public string InitialTwin = string.Empty;
 
         readonly GetTwinBinder GetTwinBinder;
-        public readonly IUpdateTwinBinder updateTwinBinder;
+        public readonly IUpdatePropoertyBinder updateTwinBinder;
 
         public PnPClient(IMqttClient connection)
         {
@@ -28,7 +28,7 @@ namespace Rido.IoTClient.AzIoTHub
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => GetTwinBinder.GetTwinAsync(cancellationToken);
 
-        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => updateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
+        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => updateTwinBinder.UpdatePropertyAsync(payload, cancellationToken);
 
         public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
@@ -43,10 +43,9 @@ namespace Rido.IoTClient.AzIoTHub
             return new PnPClient(mqtt) { ConnectionSettings = cs };
         }
 
-        public void Dispose()
-        {
-            Connection.DisconnectAsync(MqttClientDisconnectReason.NormalDisconnection);
-            Connection.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    Connection.Dispose();
+        //}
     }
 }
