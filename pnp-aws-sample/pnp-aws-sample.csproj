@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-pnp_aws_sample-5ADF1288-CBC7-40EE-A808-17426010F48B</UserSecretsId>
+    <RootNamespace>pnp_aws_sample</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Humanizer" Version="2.13.14" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="memmon1.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

@@ -8,6 +8,8 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
+    
+
 namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class UpdateShadowBinder
@@ -28,12 +30,19 @@ namespace Rido.IoTClient.Aws.TopicBindings
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     JsonNode node = JsonNode.Parse(msg);
                     int version = node["version"].GetValue<int>();
-                    pendingRequest.SetResult(version);
+                    if (pendingRequest != null && !pendingRequest.Task.IsCompleted)
+                    {
+                        pendingRequest.SetResult(version);
+                    }
                 }
                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/rejected"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                    pendingRequest.SetException(new ApplicationException(msg));
+                    if (pendingRequest !=null && !pendingRequest.Task.IsCompleted)
+                    {
+                        pendingRequest.SetException(new ApplicationException(msg));
+                    }
+                    Trace.TraceWarning(msg);
                 }
                 await Task.Yield();
             };
@@ -47,7 +56,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 {
                     "state", new Dictionary<string, object>()
                     {
-                       { "desired", payload}
+                       { "reported", payload}
                     }
                 }
             };

@@ -26,7 +26,10 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 if (topic.StartsWith(topicBase + "/get/accepted"))
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                    pendingGetShadowRequest.SetResult(msg);
+                    if (pendingGetShadowRequest != null)
+                    {
+                        pendingGetShadowRequest.SetResult(msg);
+                    }
                 }
                 await Task.Yield();
             };

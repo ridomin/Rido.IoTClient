@@ -43,7 +43,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                 {
                     myProp = new
                     {
-                        ac = 201,
+                        ac = 203,
                         av = 1,
                         value = 4.3
                     }
@@ -54,7 +54,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             await wp.InitPropertyAsync(twin, 0.2);
             Assert.Equal(4.3, wp.PropertyValue.Value);
             Assert.Equal(1, wp.PropertyValue.Version);
-            Assert.Equal(201, wp.PropertyValue.Status);
+            Assert.Equal(203, wp.PropertyValue.Status);
         }
 
         [Fact]
@@ -201,7 +201,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                         __t = "c",
                         myProp = new
                         {
-                            ac = 201,
+                            ac = 203,
                             av = 1,
                             value = 4.3
                         }
@@ -213,7 +213,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             await wpWithComp.InitPropertyAsync(twin, 0.2);
             Assert.Equal(4.3, wpWithComp.PropertyValue.Value);
             Assert.Equal(1, wpWithComp.PropertyValue.Version);
-            Assert.Equal(201, wpWithComp.PropertyValue.Status);
+            Assert.Equal(203, wpWithComp.PropertyValue.Status);
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                     {
                         myProp = new
                         {
-                            ac = 201,
+                            ac = 203,
                             av = 1,
                             value = 4.3
                         }
@@ -240,7 +240,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             await wpWithComp.InitPropertyAsync(twin, 0.2);
             Assert.Equal(0.2, wpWithComp.PropertyValue.Value);
             Assert.Equal(0, wpWithComp.PropertyValue.Version);
-            Assert.Equal(201, wpWithComp.PropertyValue.Status);
+            Assert.Equal(203, wpWithComp.PropertyValue.Status);
         }
 
     }

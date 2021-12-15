@@ -9,14 +9,16 @@ namespace Rido.IoTClient.Aws.TopicBindings
     public class DesiredUpdatePropertyBinder<T>
     {
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated = null;
-        public DesiredUpdatePropertyBinder(IMqttClient connection, string deviceId, string propertyName, string componentName = "")
+        public DesiredUpdatePropertyBinder(IMqttClient connection, string propertyName, string componentName = "")
         {
-            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update");
+            string deviceId = connection.Options.ClientId;
+            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/accepted");
+            UpdateShadowBinder updateShadow = new UpdateShadowBinder(connection, deviceId);
             //UpdateTwinBinder updateTwin = new UpdateTwinBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>
              {
                  var topic = m.ApplicationMessage.Topic;
-                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update"))
+                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/accepted"))
                  {
                      string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                      JsonNode root = JsonNode.Parse(msg);
@@ -48,7 +50,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                              var ack = await OnProperty_Updated(property);
                              if (ack != null)
                              {
-                                // _ = updateTwin.UpdateTwinAsync(ack.ToAck());
+                                _ = updateShadow.UpdateShadowAsync(ack.ToAckDict());
                              }
                          }
                      }

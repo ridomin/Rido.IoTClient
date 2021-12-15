@@ -1,17 +1,19 @@
 ﻿using MQTTnet.Client;
 using System;
+using System.Diagnostics;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.AzIoTHub.TopicBindings
+namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class WritableProperty<T>
     {
         public PropertyAck<T> PropertyValue;
         readonly string propertyName;
         readonly string componentName;
-        readonly UpdateTwinBinder updateTwin;
+        //readonly UpdateTwinBinder updateTwin;
+        readonly UpdateShadowBinder updatePropertyBinder;
         readonly DesiredUpdatePropertyBinder<T> desiredBinder;
 
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated
@@ -24,25 +26,27 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         {
             propertyName = name;
             componentName = component;
-            updateTwin = new UpdateTwinBinder(connection);
+            //updateTwin = new UpdateTwinBinder(connection);
+            updatePropertyBinder = new UpdateShadowBinder(connection, connection.Options.ClientId);
             PropertyValue = new PropertyAck<T>(name, componentName);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task UpdateTwinAsync() => await updateTwin.UpdateTwinAsync(this.PropertyValue.ToAck());
+        public async Task UpdatePropertyAsync() => await updatePropertyBinder.UpdateShadowAsync(this.PropertyValue.ToAck());
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
             PropertyValue = InitFromTwin(twin, propertyName, componentName, defaultValue);
+
             if (desiredBinder.OnProperty_Updated != null && (PropertyValue.DesiredVersion > 1))
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
-                _ = updateTwin.UpdateTwinAsync(ack.ToAck(), cancellationToken);
+                _ = updatePropertyBinder.UpdateShadowAsync(ack.ToAckDict(), cancellationToken);
                 PropertyValue = ack;
             }
             else
             {
-                _ = updateTwin.UpdateTwinAsync(PropertyValue.ToAck());
+                _ = updatePropertyBinder.UpdateShadowAsync(PropertyValue.ToAckDict());
             }
         }
 
@@ -54,31 +58,16 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             }
 
             var root = JsonNode.Parse(twinJson);
-            var desired = root?["desired"];
-            var reported = root?["reported"];
+            var desired = root["state"]["desired"];
+            var reported = root["state"]["reported"];
             T desired_Prop = default;
-            int desiredVersion = desired["$version"].GetValue<int>();
+            int desiredVersion = root["version"].GetValue<int>();
             PropertyAck<T> result = new PropertyAck<T>(propName, componentName) { DesiredVersion = desiredVersion };
-
             bool desiredFound = false;
-            if (!string.IsNullOrEmpty(componentName))
+            if (desired?[propName] != null)
             {
-                if (desired[componentName] != null &&
-                    desired[componentName]["__t"] != null &&
-                    desired[componentName]["__t"]?.GetValue<string>() == "c" &&
-                    desired[componentName][propName] != null)
-                {
-                    desired_Prop = desired[componentName][propName].GetValue<T>();
-                    desiredFound = true;
-                }
-            }
-            else
-            {
-                if (desired[propName] != null)
-                {
-                    desired_Prop = desired[propName].GetValue<T>();
-                    desiredFound = true;
-                }
+                desired_Prop = desired[propName].GetValue<T>();
+                desiredFound = true;
             }
 
             bool reportedFound = false;
@@ -86,30 +75,13 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             int reported_Prop_version = 0;
             int reported_Prop_status = 001;
             string reported_Prop_description = String.Empty;
-
-            if (!string.IsNullOrEmpty(componentName))
+            if (reported?[propName] != null)
             {
-                if (reported[componentName] != null &&
-                    reported[componentName]["__t"]?.GetValue<string>() == "c" &&
-                    reported[componentName][propName] != null)
-                {
-                    reported_Prop = reported[componentName][propName]["value"].GetValue<T>();
-                    reported_Prop_version = reported[componentName][propName]["av"]?.GetValue<int>() ?? -1;
-                    reported_Prop_status = reported[componentName][propName]["ac"].GetValue<int>();
-                    reported_Prop_description = reported[componentName][propName]["ad"]?.GetValue<string>();
-                    reportedFound = true;
-                }
-            }
-            else
-            {
-                if (reported[propName] != null)
-                {
-                    reported_Prop = reported[propName]["value"].GetValue<T>();
-                    reported_Prop_version = reported[propName]["av"]?.GetValue<int>() ?? -1;
-                    reported_Prop_status = reported[propName]["ac"].GetValue<int>();
-                    reported_Prop_description = reported[propName]["ad"]?.GetValue<string>();
-                    reportedFound = true;
-                }
+                reported_Prop = reported[propName]["value"].GetValue<T>();
+                reported_Prop_version = reported[propName]["av"]?.GetValue<int>() ?? -1;
+                reported_Prop_status = reported[propName]["ac"].GetValue<int>();
+                reported_Prop_description = reported[propName]["ad"]?.GetValue<string>();
+                reportedFound = true;
             }
 
             if (!desiredFound && !reportedFound)
@@ -159,6 +131,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                     Value = desired_Prop
                 };
             }
+
             return result;
         }
     }

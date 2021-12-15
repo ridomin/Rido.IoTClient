@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using System.Linq;
 namespace Rido.IoTClient
 {
     public class PropertyAck<T>
@@ -48,6 +48,24 @@ namespace Rido.IoTClient
                 dict[compName].Add("__t", "c");
                 dict[compName].Add(propName, this);
                 return JsonSerializer.Serialize(dict);
+            }
+        }
+
+        public Dictionary<string,object> ToAckDict()
+        {
+            if (string.IsNullOrEmpty(compName))
+            {
+                return new Dictionary<string, object>() { { propName, this } };
+            }
+            else
+            {
+                Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
+                {
+                    { compName, new Dictionary<string, object>() }
+                };
+                dict[compName].Add("__t", "c");
+                dict[compName].Add(propName, this);
+                return dict.ToDictionary(pair => pair.Key, pair => (object)pair.Value);
             }
         }
     }

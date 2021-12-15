@@ -25,7 +25,9 @@ namespace pnp_generic_client
         {
             var client = await GenericPnPClient.CreateAsync(new ConnectionSettings(_configuration.GetConnectionString("cs")));
 
-            await client.UpdateTwinAsync(new { started = DateTime.Now });
+            await client.UpdateTwinAsync(new { started = DateTime.Now }, stoppingToken);
+            var twin = await client.GetTwinAsync(stoppingToken);
+            _logger.LogInformation(twin);
 
             _logger.LogInformation("connected " + client.ConnectionSettings);
 
@@ -41,6 +43,7 @@ namespace pnp_generic_client
 
             client.genericDesiredUpdatePropertyBinder.OnProperty_Updated = async m =>
             {
+                _logger.LogInformation("Processing desired: " + m.ToJsonString());
                 return await Task.FromResult(new GenericPropertyAck
                 {
                     Value = m.ToJsonString(),

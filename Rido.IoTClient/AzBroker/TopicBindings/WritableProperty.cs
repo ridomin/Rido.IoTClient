@@ -115,7 +115,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
                     //DesiredVersion = desiredVersion,
                     Version = reported_Prop_version,
                     Value = defaultValue,
-                    Status = 201,
+                    Status = 203,
                     Description = "Init from default value"
                 };
             }
