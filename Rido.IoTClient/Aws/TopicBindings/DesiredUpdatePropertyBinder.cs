@@ -50,7 +50,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                              var ack = await OnProperty_Updated(property);
                              if (ack != null)
                              {
-                                _ = updateShadow.UpdateShadowAsync(ack.ToAckDict());
+                                 _ = updateShadow.UpdateShadowAsync(ack.ToAckDict());
                              }
                          }
                      }

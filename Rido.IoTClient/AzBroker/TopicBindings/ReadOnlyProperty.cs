@@ -1,7 +1,6 @@
 ﻿using MQTTnet.Client;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,7 +43,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
                 };
                 dict[component].Add("__t", "c");
                 dict[component].Add(name, PropertyValue);
-                result = dict.ToDictionary(pair => pair.Key, pair =>(object)pair.Value);
+                result = dict.ToDictionary(pair => pair.Key, pair => (object)pair.Value);
             }
             return result;
         }

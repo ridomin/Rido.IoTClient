@@ -19,7 +19,7 @@ namespace Rido.IoTClient.AzIoTHub
                 string pfxpath = segments[0];
                 string pfxpwd = segments[1];
                 var cert = new X509Certificate2(pfxpath, pfxpwd);
-                var clientId = cert.Subject[3..].Replace(" ","");
+                var clientId = cert.Subject[3..].Replace(" ", "");
                 if (clientId.Contains('/')) //is a module
                 {
                     var segmentsId = clientId.Split('/');

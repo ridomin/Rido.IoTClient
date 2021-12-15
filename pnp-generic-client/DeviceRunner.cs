@@ -49,7 +49,7 @@ namespace pnp_generic_client
                     Value = m.ToJsonString(),
                     Status = 200,
                     Version = m["$version"].GetValue<int>()
-                }); 
+                });
             };
 
             while (!stoppingToken.IsCancellationRequested)

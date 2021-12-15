@@ -1,7 +1,5 @@
 ﻿using MQTTnet.Client;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +15,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         public GetShadowBinder(IMqttClient conn, string deviceId)
         {
             connection = conn;
-            topicBase= $"$aws/things/{deviceId}/shadow";
+            topicBase = $"$aws/things/{deviceId}/shadow";
             connection.SubscribeAsync(topicBase + "/get/accepted");
             connection.ApplicationMessageReceivedAsync += async m =>
             {

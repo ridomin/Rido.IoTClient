@@ -1,12 +1,8 @@
-﻿using Rido.IoTClient.Aws;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MQTTnet;
+using MQTTnet.Client;
+using Rido.IoTClient.Aws;
 using System.Threading.Tasks;
 using Xunit;
-using MQTTnet.Client;
-using MQTTnet;
 
 namespace Rido.IoTClient.IntegrationTests
 {
@@ -114,7 +110,7 @@ namespace Rido.IoTClient.IntegrationTests
         //            Status = 200,
         //            Version = m.Version,
         //            Value = m.Value
-                    
+
         //        });
         //    };
         //    Assert.True(client.Connection.IsConnected);

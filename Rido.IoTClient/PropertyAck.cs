@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Linq;
+using System.Text.Json.Serialization;
 namespace Rido.IoTClient
 {
     public class PropertyAck<T>
@@ -33,7 +32,7 @@ namespace Rido.IoTClient
         [JsonPropertyName("value")]
         public T Value { get; set; } = default;
 
-        public Dictionary<string,object> ToAckDict()
+        public Dictionary<string, object> ToAckDict()
         {
             if (string.IsNullOrEmpty(compName))
             {

@@ -41,6 +41,6 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
              };
         }
 
-       
+
     }
 }
