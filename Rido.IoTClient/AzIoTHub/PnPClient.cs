@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub
 {
-    public class PnPClient
+    public class PnPClient : IDisposable
     {
         public readonly IMqttClient Connection;
 
@@ -41,6 +41,12 @@ namespace Rido.IoTClient.AzIoTHub
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
             return new PnPClient(mqtt) { ConnectionSettings = cs };
+        }
+
+        public void Dispose()
+        {
+            Connection.DisconnectAsync(MqttClientDisconnectReason.NormalDisconnection);
+            Connection.Dispose();
         }
     }
 }

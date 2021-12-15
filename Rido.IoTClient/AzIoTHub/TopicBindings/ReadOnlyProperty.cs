@@ -9,7 +9,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
     public class ReadOnlyProperty<T>
     {
         readonly UpdateTwinBinder updateTwin;
-        readonly string name;
+        public readonly string Name;
         readonly string component;
         public T PropertyValue;
         public int Version;
@@ -17,7 +17,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
             updateTwin = new UpdateTwinBinder(connection);
-            this.name = name;
+            this.Name = name;
             this.component = component;
         }
 
@@ -32,7 +32,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             Dictionary<string, object> result;
             if (asComponent == false)
             {
-                result = new Dictionary<string, object> { { name, PropertyValue } };
+                result = new Dictionary<string, object> { { Name, PropertyValue } };
             }
             else
             {
@@ -41,7 +41,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                     { component, new Dictionary<string, object>() }
                 };
                 dict[component].Add("__t", "c");
-                dict[component].Add(name, PropertyValue);
+                dict[component].Add(Name, PropertyValue);
                 result = dict.ToDictionary(pair => pair.Key, pair => (object)pair.Value);
             }
             return result;
