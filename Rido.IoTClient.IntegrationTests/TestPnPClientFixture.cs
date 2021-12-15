@@ -11,7 +11,8 @@ namespace Rido.IoTClient.IntegrationTests
 {
     public class TestPnPClientFixture : IDisposable
     {
-        TestPnPClient client;
+        readonly TestPnPClient client;
+        private bool disposedValue;
 
         public TestPnPClientFixture()
         {
@@ -24,10 +25,6 @@ namespace Rido.IoTClient.IntegrationTests
             client = TestPnPClient.CreateAsync(cs).Result;
         }
 
-        public void Dispose()
-        {
-            client.Dispose();
-        }
 
         [Fact]
         public async Task ValidateReadOnlyProperty()
@@ -37,6 +34,26 @@ namespace Rido.IoTClient.IntegrationTests
             var twin = JsonNode.Parse(twinJson);
             Assert.NotNull(twin);
             Assert.Equal("rido", twin?["reported"]?[client.Property_person.Name]?["Name"]?.GetValue<string>());
+            Assert.Equal("rido", client.Property_person.PropertyValue.Name);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    client.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Rido.IoTClient.IntegrationTests
 {
     public class AwsPnPClientFixture
     {
-        ConnectionSettings cs = new()
+        readonly ConnectionSettings cs = new()
         {
             HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
             Auth = "X509",

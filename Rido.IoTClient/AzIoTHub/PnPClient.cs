@@ -17,18 +17,18 @@ namespace Rido.IoTClient.AzIoTHub
         public string InitialTwin = string.Empty;
 
         readonly GetTwinBinder GetTwinBinder;
-        readonly UpdateTwinBinder UpdateTwinBinder;
+        public readonly IUpdateTwinBinder updateTwinBinder;
 
         public PnPClient(IMqttClient connection)
         {
             this.Connection = connection;
             GetTwinBinder = new GetTwinBinder(connection);
-            UpdateTwinBinder = new UpdateTwinBinder(connection);
+            updateTwinBinder = UpdateTwinBinder.GetInstance(connection);
         }
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => GetTwinBinder.GetTwinAsync(cancellationToken);
 
-        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => UpdateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
+        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) => updateTwinBinder.UpdateTwinAsync(payload, cancellationToken);
 
         public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {

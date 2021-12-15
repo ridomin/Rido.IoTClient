@@ -17,13 +17,13 @@ namespace dtmi_rido_pnp
         public Rido.IoTClient.Hive.TopicBindings.Telemetry<double> Telemetry_workingSet;
         public Rido.IoTClient.Hive.TopicBindings.Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
-        public ReadOnlyProperty<DateTime> Property_started;
+        public Rido.IoTClient.Aws.TopicBindings.ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;
         public WritableProperty<int> Property_interval;
 
         private memmon_1(IMqttClient c, ConnectionSettings cs) : base(c, cs)
         {
-            Property_started = new ReadOnlyProperty<DateTime>(c, "started");
+            Property_started = new Rido.IoTClient.Aws.TopicBindings.ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
             Telemetry_workingSet = new Rido.IoTClient.Hive.TopicBindings.Telemetry<double>(c, "workingSet");

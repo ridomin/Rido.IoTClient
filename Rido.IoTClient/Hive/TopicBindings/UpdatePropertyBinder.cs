@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Rido.IoTClient.Hive.TopicBindings
 {
     public class UpdatePropertyBinder
-    {
+    {       
         readonly IMqttClient connection;
 
         public UpdatePropertyBinder(IMqttClient connection)

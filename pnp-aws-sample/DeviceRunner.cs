@@ -33,7 +33,7 @@ namespace pnp_aws_sample
         {
             _logger.LogInformation("Connecting..");
             client = await dtmi_rido_pnp.memmon_1.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            _logger.LogInformation("Connected " + client.ConnectionSettings);
+            //_logger.LogInformation(client.ConnectionSettings.ToString());
 
             client.Connection.DisconnectedAsync += async e =>
             {
