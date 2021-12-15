@@ -31,7 +31,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             await wp.InitPropertyAsync(twin, 0.2);
             Assert.Equal(0.2, wp.PropertyValue.Value);
             Assert.Equal(0, wp.PropertyValue.Version);
-            Assert.Equal(201, wp.PropertyValue.Status);
+            Assert.Equal(203, wp.PropertyValue.Status);
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             await wpWithComp.InitPropertyAsync(twin, 0.2);
             Assert.Equal(0.2, wpWithComp.PropertyValue.Value);
             Assert.Equal("Init from default value", wpWithComp.PropertyValue.Description);
-            Assert.Equal(201, wpWithComp.PropertyValue.Status);
+            Assert.Equal(203, wpWithComp.PropertyValue.Status);
             Assert.Null(wpWithComp.PropertyValue.DesiredVersion);
         }
 
