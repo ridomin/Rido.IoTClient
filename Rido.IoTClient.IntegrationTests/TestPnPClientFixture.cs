@@ -11,7 +11,7 @@ namespace Rido.IoTClient.IntegrationTests
 {
     public class TestPnPClientFixture : IDisposable
     {
-        readonly TestPnPClient client;
+        TestPnPClient client = null;
         private bool disposedValue;
 
         public TestPnPClientFixture()
@@ -22,13 +22,13 @@ namespace Rido.IoTClient.IntegrationTests
                 DeviceId = "d5",
                 SharedAccessKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.Empty.ToString("N")))
             };
-            client = TestPnPClient.CreateAsync(cs).Result;
         }
 
 
         [Fact]
         public async Task ValidateReadOnlyProperty()
         {
+            client = TestPnPClient.CreateAsync(cs).Result;
             await client.Property_person.UpdateTwinPropertyAsync(new Person { Name = "rido", Age = 33 });
             var twinJson = await client.GetTwinAsync();
             var twin = JsonNode.Parse(twinJson);
