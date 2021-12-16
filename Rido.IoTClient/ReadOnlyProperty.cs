@@ -7,13 +7,13 @@ namespace Rido.IoTClient
 {
     public class xxReadOnlyProperty<T>
     {
-        readonly IReportPropoertyBinder updateTwin;
+        readonly IReportPropertyBinder updateTwin;
         public readonly string Name;
         readonly string component;
         public T PropertyValue;
         public int Version;
 
-        public xxReadOnlyProperty(IReportPropoertyBinder updateBinder, string name, string component = "")
+        public xxReadOnlyProperty(IReportPropertyBinder updateBinder, string name, string component = "")
         {
             updateTwin = updateBinder;
             this.Name = name;

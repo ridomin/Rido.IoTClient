@@ -15,7 +15,7 @@ namespace Rido.IoTClient.Aws
 
         public ConnectionSettings ConnectionSettings;
         readonly GetShadowBinder getShadowBinder;
-        readonly IReportPropoertyBinder updateShadowBinder;
+        readonly IReportPropertyBinder updateShadowBinder;
         public readonly DesiredUpdatePropertyBinder<string> desiredUpdatePropertyBinder;
 
         public PnPClient(IMqttClient c, ConnectionSettings cs)

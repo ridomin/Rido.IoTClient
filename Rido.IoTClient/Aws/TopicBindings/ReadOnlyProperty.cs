@@ -8,7 +8,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class ReadOnlyProperty<T>
     {
-        readonly IReportPropoertyBinder updateBinder;
+        readonly IReportPropertyBinder updateBinder;
         public string Name;
         readonly string component;
 

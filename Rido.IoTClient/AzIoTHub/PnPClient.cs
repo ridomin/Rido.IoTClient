@@ -17,7 +17,7 @@ namespace Rido.IoTClient.AzIoTHub
         public string InitialTwin = string.Empty;
 
         readonly GetTwinBinder GetTwinBinder;
-        public readonly IReportPropoertyBinder updateTwinBinder;
+        public readonly IReportPropertyBinder updateTwinBinder;
 
         public PnPClient(IMqttClient connection)
         {

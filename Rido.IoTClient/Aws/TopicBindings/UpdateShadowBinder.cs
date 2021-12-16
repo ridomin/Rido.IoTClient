@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class UpdateShadowBinder : IReportPropoertyBinder
+    public class UpdateShadowBinder : IReportPropertyBinder
     {
         TaskCompletionSource<int> pendingRequest;
         readonly IMqttClient connection;
