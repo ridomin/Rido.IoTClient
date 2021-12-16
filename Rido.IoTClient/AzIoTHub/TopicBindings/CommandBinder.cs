@@ -16,7 +16,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public Command(IMqttClient connection, string commandName, string componentName = "")
         {
             var fullCommandName = string.IsNullOrEmpty(componentName) ? commandName : $"{componentName}*{commandName}";
-            _ = connection.SubscribeAsync($"$iothub/methods/POST/{fullCommandName}");
+            _ = connection.SubscribeAsync($"$iothub/methods/POST/#");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;

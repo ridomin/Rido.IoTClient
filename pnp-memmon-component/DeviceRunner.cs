@@ -33,7 +33,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken token)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.sampleDevice.CreateDeviceClientAsync(_configuration.GetConnectionString("hive"), token);
+        client = await dtmi_rido_pnp.sampleDevice.CreateDeviceClientAsync(_configuration.GetConnectionString("cs"), token);
         _logger.LogInformation("Connected");
 
         client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);

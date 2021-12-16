@@ -30,7 +30,8 @@ namespace Rido.IoTClient.Aws.TopicBindings
                      }
                      else
                      {
-                         if (desired[componentName] != null &&
+                         if (desired != null &&
+                            desired[componentName] != null &&
                              desired[componentName][propertyName] != null &&
                              desired[componentName]["__t"] != null &&
                              desired[componentName]["__t"].GetValue<string>() == "c")

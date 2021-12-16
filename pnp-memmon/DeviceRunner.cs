@@ -81,16 +81,16 @@ public class DeviceRunner : BackgroundService
         return await Task.FromResult(ack);
     }
 
-    async Task<PropertyAck<int>> Property_interval_UpdateHandler(PropertyAck<int> req)
+    async Task<PropertyAck<int>> Property_interval_UpdateHandler(PropertyAck<int> p)
     {
         ArgumentNullException.ThrowIfNull(client);
         twinRecCounter++;
-        var ack = new PropertyAck<int>("interval")
+        var ack = new PropertyAck<int>(p.Name)
         {
             Description = (client.Property_enabled?.PropertyValue.Value == true) ? "desired notification accepted" : "disabled, not accepted",
             Status = (client.Property_enabled?.PropertyValue.Value == true) ? 200 : 205,
-            Version = req.Version,
-            Value = req.Value
+            Version = p.Version,
+            Value = p.Value
         };
         client.Property_interval.PropertyValue = ack;
         return await Task.FromResult(ack);

@@ -32,11 +32,12 @@ namespace dtmi_rido_pnp
             {
                 ModelId = modelId
             };
-            var mqtt = await PnPClient.CreateAsync(cs, cancellationToken);
-            var client = new memmon(mqtt.Connection)
+
+            var client = new memmon(await IoTHubConnectionFactory.CreateAsync(cs, cancellationToken))
             {
                 ConnectionSettings = cs
             };
+
             client.InitialTwin = await client.GetTwinAsync(cancellationToken);
             return client;
         }
