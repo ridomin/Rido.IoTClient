@@ -22,13 +22,8 @@ namespace Rido.IoTClient.Hive
 
         public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
-            IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient(new MqttClientAdapterFactory());
-            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
-                .WithTcpServer(cs.HostName, 8883)
-                .WithTls()
-                .WithClientId(cs.DeviceId)
-                .WithCredentials(cs.DeviceId, cs.SharedAccessKey)
-                .Build(), cancellationToken);
+            IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithBasicAuth(cs).Build(), cancellationToken);
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
             {
                 Trace.TraceError(connAck.ReasonString);

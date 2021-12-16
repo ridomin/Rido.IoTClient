@@ -5,14 +5,14 @@ namespace Rido.IoTClient
 {
     public class PropertyAck<T>
     {
-        readonly string propName;
-        readonly string compName;
+        public readonly string Name;
+        public readonly string ComponentName;
         public PropertyAck(string name) : this(name, "") { }
 
         public PropertyAck(string name, string component)
         {
-            propName = name;
-            compName = component;
+            Name = name;
+            ComponentName = component;
         }
 
         [JsonIgnore]
@@ -34,18 +34,18 @@ namespace Rido.IoTClient
 
         public Dictionary<string, object> ToAckDict()
         {
-            if (string.IsNullOrEmpty(compName))
+            if (string.IsNullOrEmpty(ComponentName))
             {
-                return new Dictionary<string, object>() { { propName, this } };
+                return new Dictionary<string, object>() { { Name, this } };
             }
             else
             {
                 Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
                 {
-                    { compName, new Dictionary<string, object>() }
+                    { ComponentName, new Dictionary<string, object>() }
                 };
-                dict[compName].Add("__t", "c");
-                dict[compName].Add(propName, this);
+                dict[ComponentName].Add("__t", "c");
+                dict[ComponentName].Add(Name, this);
                 return dict.ToDictionary(pair => pair.Key, pair => (object)pair.Value);
             }
         }

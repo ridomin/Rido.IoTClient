@@ -6,22 +6,29 @@ using Xunit;
 
 namespace Rido.IoTClient.Tests.AzIoTHub
 {
+
+    class AComplexObj
+    {
+        public string MyProperty { get; set; } = "initial value";
+    }
+
     public class TwinWritablePropertyFixture
     {
         static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
-        readonly WritableProperty<double> wp;
+        
         readonly IMqttClient connection;
 
         public TwinWritablePropertyFixture()
         {
             connection = new MockMqttClient();
-            wp = new WritableProperty<double>(connection, "myProp");
+            
         }
 
         [Fact]
         public async Task InitEmptyTwin()
         {
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "blah");
             string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
@@ -37,6 +44,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         [Fact]
         public async Task InitTwinWithReported()
         {
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "myProp");
             string twin = Stringify(new
             {
                 reported = new
@@ -58,8 +66,38 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         }
 
         [Fact]
-        public async Task InitTwinWithDesiredTriggersUpdate()
+        public async Task InitTwinWithReportedComplex()
         {
+            var wpComplexObj = new WritableProperty<AComplexObj>(connection, "myComplexObj");
+            string twin = Stringify(new
+            {
+                reported = new
+                {
+                    myComplexObj = new
+                    {
+                        ac = 203,
+                        av = 1,
+                        value = new
+                        {
+                            MyProperty = "fake twin value"
+                        }
+                    }
+                },
+                desired = new Dictionary<string, object>() { { "$version", 1 } },
+            });
+
+            await wpComplexObj.InitPropertyAsync(twin, new AComplexObj());
+            Assert.Equal("fake twin value", wpComplexObj.PropertyValue.Value.MyProperty);
+            Assert.Equal(1, wpComplexObj.PropertyValue.Version);
+            Assert.Equal(203, wpComplexObj.PropertyValue.Status);
+        }
+
+
+        [Fact]
+        public async Task InitTwinComplexWithDesiredTriggersUpdate()
+        {
+            WritableProperty<AComplexObj> wp = new WritableProperty<AComplexObj>(connection, "myComplexObj");
+            Assert.Null(wp.PropertyValue.Value);
             wp.OnProperty_Updated = async p =>
             {
                 p.Status = 200;
@@ -68,21 +106,18 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
-                desired = new Dictionary<string, object>() { { "$version", 2 }, { "myProp", 3.1 } },
+                desired = new Dictionary<string, object>() { { "$version", 2 }, { "myComplexObj", new AComplexObj { MyProperty = "twinValue" } } }
             });
-            await wp.InitPropertyAsync(twin, 0.2);
-            Assert.Equal(3.1, wp.PropertyValue.Value);
+            await wp.InitPropertyAsync(twin, new AComplexObj());
+            Assert.Equal("twinValue", wp.PropertyValue.Value.MyProperty);
             Assert.Equal(200, wp.PropertyValue.Status);
             Assert.Equal(2, wp.PropertyValue.Version);
             Assert.Equal(2, wp.PropertyValue.DesiredVersion);
         }
 
 
-
-
-
         [Fact]
-        public async Task InitTwinWithDesiredInComponent()
+        public async Task InitComponentTwinWithDesiredComponent()
         {
             var wpWithComp = new WritableProperty<double>(connection, "myProp", "myComp");
             string twin = Stringify(new
@@ -111,6 +146,38 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.Equal(0, wpWithComp.PropertyValue.Status);
             Assert.Equal(2, wpWithComp.PropertyValue.DesiredVersion);
         }
+
+        [Fact]
+        public async Task InitComplexComponentTwinWithDesiredComponent()
+        {
+            var wpWithComp = new WritableProperty<AComplexObj>(connection, "myComplexObj", "myComp");
+            string twin = Stringify(new
+            {
+                reported = new Dictionary<string, object>() { { "$version", 1 } },
+                desired = new Dictionary<string, object>() {
+                    {
+                        "$version", 2
+                    },
+                    {
+
+                        "myComp", new Dictionary<string, object>() {
+                            {
+                                "__t", "c"
+                            },
+                            {
+                                "myComplexObj", new AComplexObj { MyProperty = "twinValue"}
+                            }
+                        }
+                    }
+                }
+            }); ;
+            await wpWithComp.InitPropertyAsync(twin, new AComplexObj());
+            Assert.Equal("twinValue", wpWithComp.PropertyValue.Value.MyProperty);
+            Assert.Null(wpWithComp.PropertyValue.Description);
+            Assert.Equal(0, wpWithComp.PropertyValue.Status);
+            Assert.Equal(2, wpWithComp.PropertyValue.DesiredVersion);
+        }
+
 
         [Fact]
         public async Task InitTwinWithReportedInComponent()

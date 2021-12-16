@@ -67,15 +67,15 @@ public class DeviceRunner : BackgroundService
         }
     }
 
-    async Task<PropertyAck<bool>> Property_enabled_UpdateHandler(PropertyAck<bool> req)
+    async Task<PropertyAck<bool>> Property_enabled_UpdateHandler(PropertyAck<bool> p)
     {
         twinRecCounter++;
-        var ack = new PropertyAck<bool>("enabled")
+        var ack = new PropertyAck<bool>(p.Name)
         {
             Description = "desired notification accepted",
             Status = 200,
-            Version = req.Version,
-            Value = req.Value
+            Version = p.Version,
+            Value = p.Value
         };
         client.Property_enabled.PropertyValue = ack;
         return await Task.FromResult(ack);

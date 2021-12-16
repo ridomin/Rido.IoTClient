@@ -16,20 +16,30 @@ namespace Rido.IoTClient.IntegrationTests
         public string MachineName { get; set; } = Environment.MachineName;
     }
 
-    
+    public class desiredState
+    {
+        public int telemetryInterval { get; set; }
+        public bool commandsEnabled { get; set; }
+        public bool telemetryEnabled { get; set; }
+    }
 
     public class TestPnPClient : PnPClient
     {
         public readonly ReadOnlyProperty<DeviceInfo> Property_deviceInfo;
+        public readonly WritableProperty<desiredState> Property_deviceDesiredState;
         private TestPnPClient(IMqttClient connection) : base(connection)
         {
             Property_deviceInfo = new ReadOnlyProperty<DeviceInfo>(connection, "deviceInfo");
+            Property_deviceDesiredState = new WritableProperty<desiredState>(connection, "desiredState");
         }
         
         public static async Task<TestPnPClient> CreateAsync(ConnectionSettings cs)
         {
-            var client = await PnPClient.CreateAsync(cs);
-            return new TestPnPClient(client.Connection);
+            var connection = await IoTHubConnectionFactory.CreateAsync(cs);
+            var client = new TestPnPClient(connection) { ConnectionSettings = cs };
+            var twin = await client.GetTwinAsync();
+            client.InitialTwin = twin;
+            return client; 
         }
     }
 }

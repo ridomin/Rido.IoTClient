@@ -8,7 +8,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
     public class ReadOnlyProperty<T>
     {
-        readonly UpdateTwinBinder updateTwin;
+        readonly IPropertyStoreWriter updateTwin;
         public readonly string Name;
         readonly string component;
         public T PropertyValue;

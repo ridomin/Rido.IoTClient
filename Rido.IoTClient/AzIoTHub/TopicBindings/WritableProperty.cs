@@ -1,5 +1,7 @@
 ﻿using MQTTnet.Client;
 using System;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public PropertyAck<T> PropertyValue;
         readonly string propertyName;
         readonly string componentName;
-        readonly UpdateTwinBinder updateTwin;
+        readonly IPropertyStoreWriter updateTwin;
         readonly DesiredUpdatePropertyBinder<T> desiredBinder;
 
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated
@@ -29,7 +31,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task UpdateTwinAsync() => await updateTwin.ReportPropertyAsync(this.PropertyValue.ToAckDict());
+        public async Task UpdateTwinAsync(CancellationToken token = default) => await updateTwin.ReportPropertyAsync(this.PropertyValue.ToAckDict(), token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
@@ -42,7 +44,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             }
             else
             {
-                _ = updateTwin.ReportPropertyAsync(PropertyValue.ToAckDict());
+                _ = updateTwin.ReportPropertyAsync(PropertyValue.ToAckDict(), cancellationToken);
             }
         }
 
@@ -68,7 +70,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                     desired[componentName]["__t"]?.GetValue<string>() == "c" &&
                     desired[componentName][propName] != null)
                 {
-                    desired_Prop = desired[componentName][propName].GetValue<T>();
+                    desired_Prop = desired[componentName][propName].Deserialize<T>();
                     desiredFound = true;
                 }
             }
@@ -76,7 +78,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             {
                 if (desired[propName] != null)
                 {
-                    desired_Prop = desired[propName].GetValue<T>();
+                    desired_Prop = desired[propName].Deserialize<T>();
                     desiredFound = true;
                 }
             }
@@ -104,7 +106,8 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             {
                 if (reported[propName] != null)
                 {
-                    reported_Prop = reported[propName]["value"].GetValue<T>();
+                    reported_Prop = reported[propName]["value"].Deserialize<T>();
+
                     reported_Prop_version = reported[propName]["av"]?.GetValue<int>() ?? -1;
                     reported_Prop_status = reported[propName]["ac"].GetValue<int>();
                     reported_Prop_description = reported[propName]["ad"]?.GetValue<string>();

@@ -12,7 +12,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public GetTwinBinderFixture()
         {
             mockClient = new MockMqttClient();
-            binder = new GetTwinBinder(mockClient);
+            binder = GetTwinBinder.GetInstance(mockClient);
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         {
             var twinTask = binder.ReadPropertiesDocAsync();
             mockClient.SimulateNewMessage($"$iothub/twin/res/200/?$rid={RidCounter.Current}", SampleTwin);
-            Assert.Equal($"$iothub/twin/GET/?$rid={RidCounter.Current}", mockClient.topicRecceived);
+            Assert.StartsWith("$iothub/twin/GET/?$rid=", mockClient.topicRecceived);
             Assert.Equal(string.Empty, mockClient.payloadReceived);
             var twin = twinTask.Result;
             Assert.Equal(twin, SampleTwin);
