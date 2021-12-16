@@ -22,7 +22,7 @@ namespace Rido.IoTClient.AzBroker
         {
             Connection = c;
             GetTwinBinder = new GetTwinBinder(c);
-            UpdateTwinBinder = new UpdateTwinBinder(c);
+            UpdateTwinBinder = UpdateTwinBinder.GetInstance(c);
         }
 
         public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)

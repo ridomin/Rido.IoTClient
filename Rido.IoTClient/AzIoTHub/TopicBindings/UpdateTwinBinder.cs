@@ -22,7 +22,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             }
             return instance;
         }
-        public UpdateTwinBinder(IMqttClient connection)
+        UpdateTwinBinder(IMqttClient connection)
         {
             this.connection = connection;
             _ = connection.SubscribeAsync("$iothub/twin/res/#");

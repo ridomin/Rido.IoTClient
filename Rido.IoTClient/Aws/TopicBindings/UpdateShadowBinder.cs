@@ -24,7 +24,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             }
             return instance;
         }
-        public UpdateShadowBinder(IMqttClient connection)
+        UpdateShadowBinder(IMqttClient connection)
         {
             this.connection = connection;
             _ = connection.SubscribeAsync($"$aws/things/{connection.Options.ClientId}/shadow/update/+");

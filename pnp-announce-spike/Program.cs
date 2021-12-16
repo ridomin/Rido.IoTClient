@@ -21,7 +21,7 @@ var connAck = await mqtt.ConnectAsync(
 
 //var deviceInfo = new ReadOnlyProperty<string>(mqtt, "serialNumber", "deviceInfo");
 
-var v = await new UpdateTwinBinder(mqtt).ReportPropertyAsync(new { MyNameIs = "Jonas" });
+var v = await UpdateTwinBinder.GetInstance(mqtt).ReportPropertyAsync(new { MyNameIs = "Jonas" });
 var twin = await new GetTwinBinder(mqtt).GetTwinAsync();
 var cmd = new Command<EmptyCommandRequest, EmptyCommandResponse>(mqtt, "myCommand");
 

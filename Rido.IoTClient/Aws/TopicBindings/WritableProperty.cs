@@ -25,8 +25,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         {
             propertyName = name;
             componentName = component;
-            //updateTwin = new UpdateTwinBinder(connection);
-            updatePropertyBinder = new UpdateShadowBinder(connection);
+            updatePropertyBinder = UpdateShadowBinder.GetInstance(connection);
             PropertyValue = new PropertyAck<T>(name, componentName);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
