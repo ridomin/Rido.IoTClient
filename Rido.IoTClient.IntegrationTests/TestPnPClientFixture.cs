@@ -14,7 +14,7 @@ namespace Rido.IoTClient.IntegrationTests
     {
         TestPnPClient? client = null;
         private bool disposedValue;
-        ConnectionSettings cs = null;
+        ConnectionSettings? cs = null;
         public TestPnPClientFixture()
         {
             cs = new ConnectionSettings()
