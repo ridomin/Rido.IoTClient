@@ -18,7 +18,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         [Fact]
         public void GetTwinAsync()
         {
-            var twinTask = binder.GetTwinAsync();
+            var twinTask = binder.ReadPropertiesDocAsync();
             mockClient.SimulateNewMessage($"$iothub/twin/res/200/?$rid={RidCounter.Current}", SampleTwin);
             Assert.Equal($"$iothub/twin/GET/?$rid={RidCounter.Current}", mockClient.topicRecceived);
             Assert.Equal(string.Empty, mockClient.payloadReceived);
