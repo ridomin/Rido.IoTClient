@@ -19,7 +19,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             return instance;
 
         }
-        public UpdatePropertyBinder(IMqttClient connection)
+        private UpdatePropertyBinder(IMqttClient connection)
         {
             this.connection = connection;
         }

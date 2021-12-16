@@ -26,7 +26,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             propertyName = name;
             componentName = component;
             //updateTwin = new UpdateTwinBinder(connection);
-            updatePropertyBinder = new UpdatePropertyBinder(connection);
+            updatePropertyBinder = UpdatePropertyBinder.GetInstance(connection);
             PropertyValue = new PropertyAck<T>(name, componentName);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }

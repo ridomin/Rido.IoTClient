@@ -17,7 +17,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
-            updateBinder = new UpdatePropertyBinder(connection);
+            updateBinder = UpdatePropertyBinder.GetInstance(connection);
             this.Name = name;
             this.component = component;
         }

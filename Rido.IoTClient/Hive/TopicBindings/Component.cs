@@ -16,7 +16,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
         {
             this.name = name;
             this.ComponentValue = new T();
-            update = new UpdatePropertyBinder(connection);
+            update = UpdatePropertyBinder.GetInstance(connection);
         }
         public Task<int> UpdateTwinAsync(CancellationToken token = default) => UpdateTwinAsync(ComponentValue, token);
 
