@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-    public class GetTwinBinder : IPropertyStoreReaderBinder
+    public class GetTwinBinder : IPropertyStoreReader
     {
         readonly static ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
         readonly IMqttClient connection;

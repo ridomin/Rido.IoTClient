@@ -9,20 +9,23 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.IntegrationTests
 {
-    public class Person
+    public class DeviceInfo
     {
-        public string? Name { get; set; }
-        public int Age { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public DateTime Started { get; set; } = DateTime.Now;
+        public string MachineName { get; set; } = Environment.MachineName;
     }
+
+    
 
     public class TestPnPClient : PnPClient
     {
-        public readonly ReadOnlyProperty<Person> Property_person;
+        public readonly ReadOnlyProperty<DeviceInfo> Property_deviceInfo;
         private TestPnPClient(IMqttClient connection) : base(connection)
         {
-            Property_person = new ReadOnlyProperty<Person>(connection, "person");
+            Property_deviceInfo = new ReadOnlyProperty<DeviceInfo>(connection, "deviceInfo");
         }
-
+        
         public static async Task<TestPnPClient> CreateAsync(ConnectionSettings cs)
         {
             var client = await PnPClient.CreateAsync(cs);
