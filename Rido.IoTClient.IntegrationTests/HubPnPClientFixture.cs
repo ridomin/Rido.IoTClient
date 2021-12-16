@@ -24,8 +24,8 @@ namespace Rido.IoTClient.IntegrationTests
                 SharedAccessKey = defaultKey
             };
             var hubClient = await PnPClient.CreateAsync(cs);
-            Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal(deviceId, hubClient.Connection.Options.ClientId);
+            Assert.True(hubClient.Connection.IsConnected);
             var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
             var twin = await hubClient.GetTwinAsync();
             Assert.True(twin.Length > 0);
