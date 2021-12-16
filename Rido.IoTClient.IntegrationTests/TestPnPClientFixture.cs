@@ -6,17 +6,18 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Xunit;
+using Rido.IoTClient;
 
 namespace Rido.IoTClient.IntegrationTests
 {
     public class TestPnPClientFixture : IDisposable
     {
-        TestPnPClient client = null;
+        TestPnPClient? client = null;
         private bool disposedValue;
-
+        ConnectionSettings cs = null;
         public TestPnPClientFixture()
         {
-            var cs = new ConnectionSettings()
+            cs = new ConnectionSettings()
             {
                 HostName = "tests.azure-devices.net",
                 DeviceId = "d5",
