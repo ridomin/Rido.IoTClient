@@ -55,6 +55,7 @@ namespace pnp_temperature_controller
                 await client.Telemetry_workingSet.SendTelemetryAsync(Environment.WorkingSet, stoppingToken);
                 await client.Component_thermostat1.ComponentValue.Telemetry_temperature.SendTelemetryAsync(temperature1, stoppingToken);
                 await client.Component_thermostat2.ComponentValue.Telemetry_temperature.SendTelemetryAsync(temperature2, stoppingToken);
+                Console.WriteLine($"-> t: t1 {temperature1} , t2 {temperature2}");
                 await Task.Delay(15000, stoppingToken);
             }
         }
@@ -63,7 +64,14 @@ namespace pnp_temperature_controller
         {
             ArgumentNullException.ThrowIfNull(client);
             ArgumentNullException.ThrowIfNull(prop);
+            var t1tt = client.Component_thermostat1.ComponentValue.Property_targetTemperature.PropertyValue;
             Console.WriteLine("\n adjusting t1 temp  to: " + prop.Value);
+
+            t1tt.Value = temperature1;
+            t1tt.Status = 202;
+            t1tt.Description = "t1 updating to " + temperature1;
+            t1tt.Version = prop.DesiredVersion;
+            await client.Component_thermostat1.ComponentValue.Property_targetTemperature.UpdateTwinAsync();
 
             double step = (prop.Value - temperature1) / 5d;
             for (int i = 1; i <= 5; i++)
@@ -77,18 +85,27 @@ namespace pnp_temperature_controller
                 readings1.Add(DateTimeOffset.Now, temperature1);
                 await Task.Delay(1000);
             }
-            client.Component_thermostat1.ComponentValue.Property_targetTemperature.PropertyValue.Value = temperature1;
-            client.Component_thermostat1.ComponentValue.Property_targetTemperature.PropertyValue.Status = 200;
+            t1tt.Value = temperature1;
+            t1tt.Status = 200;
+            t1tt.Description = "Temp updated to " + temperature1;
+            t1tt.Version = prop.DesiredVersion;
             await client.Component_thermostat1.ComponentValue.Property_targetTemperature.UpdateTwinAsync();
 
-            Console.WriteLine("\n temp adjusted to: " + prop.Value);
+            Console.WriteLine("\n t1 temp adjusted to: " + prop.Value);
         }
 
         async Task AdjustTempInStepsAsync_2(PropertyAck<double> prop)
         {
             ArgumentNullException.ThrowIfNull(client);
             ArgumentNullException.ThrowIfNull(prop);
+            var t2tt = client.Component_thermostat2.ComponentValue.Property_targetTemperature.PropertyValue;
             Console.WriteLine("\n adjusting t2 temp  to: " + prop.Value);
+
+            t2tt.Value = temperature2;
+            t2tt.Status = 202;
+            t2tt.Description = "t2 updating to " + temperature1;
+            t2tt.Version = prop.DesiredVersion;
+            await client.Component_thermostat2.ComponentValue.Property_targetTemperature.UpdateTwinAsync();
 
             double step = (prop.Value - temperature2) / 5d;
             for (int i = 1; i <= 5; i++)
@@ -102,8 +119,10 @@ namespace pnp_temperature_controller
                 readings2.Add(DateTimeOffset.Now, temperature2);
                 await Task.Delay(1000);
             }
-            client.Component_thermostat2.ComponentValue.Property_targetTemperature.PropertyValue.Value = temperature1;
-            client.Component_thermostat2.ComponentValue.Property_targetTemperature.PropertyValue.Status = 200;
+            t2tt.Value = temperature1;
+            t2tt.Status = 200;
+            t2tt.Description = "Temp updated to " + temperature2;
+            t2tt.Version = prop.DesiredVersion;
             await client.Component_thermostat2.ComponentValue.Property_targetTemperature.UpdateTwinAsync();
 
             Console.WriteLine("\n t2 temp adjusted to: " + prop.Value);
@@ -167,20 +186,14 @@ namespace pnp_temperature_controller
         async Task<PropertyAck<double>> OnProperty_t1_targetTemperatue_Handler(PropertyAck<double> prop)
         {
             Console.WriteLine("\n<- w: t1-targetTemperature received " + prop.Value);
-            _ = AdjustTempInStepsAsync_1(prop);
-            prop.Status = 202;
-            prop.Version = prop.DesiredVersion;
-            prop.Description = "Temperature accepted " + prop.Value;
+            await AdjustTempInStepsAsync_1(prop);
             return await Task.FromResult(prop);
         }
 
         async Task<PropertyAck<double>> OnProperty_t2_targetTemperatue_Handler(PropertyAck<double> prop)
         {
             Console.WriteLine("\n<- w: t2-targetTemperature received " + prop.Value);
-            _ = AdjustTempInStepsAsync_2(prop);
-            prop.Status = 202;
-            prop.Version = prop.DesiredVersion;
-            prop.Description = "Temperature accepted " + prop.Value;
+            await AdjustTempInStepsAsync_2(prop);
             return await Task.FromResult(prop);
         }
 
@@ -188,8 +201,8 @@ namespace pnp_temperature_controller
         {
             di.Property_manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
             di.Property_model.PropertyValue = Environment.OSVersion.Platform.ToString();
-            di.Property_softwareVersion.PropertyValue = Environment.OSVersion.VersionString;
-            di.Property_operatingSystemName.PropertyValue = Environment.GetEnvironmentVariable("OS");
+            di.swVersion.PropertyValue = Environment.OSVersion.VersionString;
+            di.Property_osName.PropertyValue = Environment.GetEnvironmentVariable("OS");
             di.Property_processorArchitecture.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
             di.Property_processorManufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
             di.Property_totalStorage.PropertyValue = System.IO.DriveInfo.GetDrives()[0].TotalSize;

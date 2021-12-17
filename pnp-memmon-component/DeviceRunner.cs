@@ -169,8 +169,8 @@ public class DeviceRunner : BackgroundService
     {
         di.Property_manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
         di.Property_model.PropertyValue = Environment.OSVersion.Platform.ToString();
-        di.Property_softwareVersion.PropertyValue = Environment.OSVersion.VersionString;
-        di.Property_operatingSystemName.PropertyValue = Environment.GetEnvironmentVariable("OS");
+        di.Property_swVersion.PropertyValue = Environment.OSVersion.VersionString;
+        di.Property_osName.PropertyValue = Environment.GetEnvironmentVariable("OS");
         di.Property_processorArchitecture.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
         di.Property_processorManufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
         di.Property_totalStorage.PropertyValue = System.IO.DriveInfo.GetDrives()[0].TotalSize;

@@ -8,7 +8,10 @@
         public new void Add(TKey key, TValue value)
         {
             orderedKeys.Enqueue(key);
-            if (size != 0 && Count >= size) Remove(orderedKeys.Dequeue());
+            if (size != 0 && Count >= size)
+            {
+                Remove(orderedKeys.Dequeue());
+            }
             base.Add(key, value);
         }
     }
