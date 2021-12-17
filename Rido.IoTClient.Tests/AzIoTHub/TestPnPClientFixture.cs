@@ -64,7 +64,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             );
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
-            await Task.Delay(10);
+            await Task.Delay(20);
             Assert.True(updateTask.IsCompleted);
             Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
             Assert.Equal(Stringify(new
