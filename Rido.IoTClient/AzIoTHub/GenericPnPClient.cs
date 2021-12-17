@@ -19,13 +19,5 @@ namespace Rido.IoTClient.AzIoTHub
         public Task<MqttClientPublishResult> SendTelemetryAsync(object payload, CancellationToken t = default) =>
             Connection.PublishAsync($"devices/{Connection.Options.ClientId}/messages/events/", payload, t);
 
-        public static async Task<GenericPnPClient> CreateAsync(ConnectionSettings cs, CancellationToken token = default)
-        {
-            var connection = await IoTHubConnectionFactory.CreateAsync(cs, token);
-            var client = new GenericPnPClient(connection) { ConnectionSettings = cs };
-            client.InitialState = await client.GetTwinAsync(token);
-            return client;
-        }
-
     }
 }

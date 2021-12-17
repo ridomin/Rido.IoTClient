@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MQTTnet;
+using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
 using System;
@@ -23,7 +25,13 @@ namespace pnp_generic_client
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await GenericPnPClient.CreateAsync(new ConnectionSettings(_configuration.GetConnectionString("cs")), stoppingToken);
+            var mqtt = new MqttFactory().CreateMqttClient(MqttNetTraceLogger.CreateTraceLogger());
+            var cs = new ConnectionSettings(_configuration.GetConnectionString("cs")) { SasMinutes = 2, RetryInterval = 10 };
+
+            await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(cs).Build(), stoppingToken);
+            var client = new GenericPnPClient(mqtt) { ConnectionSettings = cs };
+            _logger.LogInformation($"Connected to {client.ConnectionSettings}");
+
             await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             var twin = await client.GetTwinAsync(stoppingToken);
 
@@ -55,5 +63,7 @@ namespace pnp_generic_client
                 await Task.Delay(5000, stoppingToken);
             }
         }
+
+        
     }
 }

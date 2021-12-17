@@ -5,7 +5,7 @@ const hivehost = 'f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud'
 const username = 'client1'
 const password = 'Myclientpwd.000'
 
-const clientId = 'webApp'
+const clientId = 'webApp' + Date.now()
 
 let onCommandResponse = resp => {}
 
