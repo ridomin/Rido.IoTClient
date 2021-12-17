@@ -201,7 +201,7 @@ namespace pnp_temperature_controller
         {
             di.Property_manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
             di.Property_model.PropertyValue = Environment.OSVersion.Platform.ToString();
-            di.swVersion.PropertyValue = Environment.OSVersion.VersionString;
+            di.Property_swVersion.PropertyValue = Environment.OSVersion.VersionString;
             di.Property_osName.PropertyValue = Environment.GetEnvironmentVariable("OS");
             di.Property_processorArchitecture.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
             di.Property_processorManufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");

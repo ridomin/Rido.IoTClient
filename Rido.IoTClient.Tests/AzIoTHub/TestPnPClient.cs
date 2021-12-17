@@ -4,9 +4,31 @@ using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System;
+using System.Collections.Generic;
 
 namespace Rido.IoTClient.Tests.AzIoTHub
 {
+
+    public class TestInfo : Component
+    {
+        public ReadOnlyProperty<string> Property_name;
+        public WritableProperty<DeviceInfo> Property_deviceInfo;
+        public Command<EmptyCommandRequest, EmptyCommandResponse> Command_start;
+        public TestInfo(IMqttClient c, string name) : base(c, name)
+        {
+            Property_name = new ReadOnlyProperty<string>(c, "name", name);
+            Property_deviceInfo = new WritableProperty<DeviceInfo>(c, "deviceInfo", name);
+            Command_start = new Command<EmptyCommandRequest, EmptyCommandResponse>(c, "start", name);
+        }
+
+        public override Dictionary<string, object> ToJsonDict()
+        {
+            var dict = new Dictionary<string, object>();
+            dict.Add(Property_name.Name, Property_name.PropertyValue);
+            return dict;
+        }
+    }
+
     public class DeviceInfo
     {
         public string UserName { get; set; } = string.Empty;
@@ -29,15 +51,17 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public readonly WritableProperty<DesiredDeviceState> Property_deviceDesiredState;
         public readonly Command<EmptyCommandRequest, EmptyCommandResponse> Command_run;
         public readonly Command<EmptyCommandRequest, EmptyCommandResponse> Command_walk;
+        public readonly TestInfo Component_testInfo;
 
-        internal TestPnPClient(IMqttClient connection) : base(connection)
+        internal TestPnPClient(IMqttClient c) : base(c)
         {
-            Property_counter = new ReadOnlyProperty<int>(connection, "counter");
-            Property_deviceInfo = new ReadOnlyProperty<DeviceInfo>(connection, "deviceInfo");
-            Property_message = new WritableProperty<string>(connection, "message");
-            Property_deviceDesiredState = new WritableProperty<DesiredDeviceState>(connection, "desiredState");
-            Command_run = new Command<EmptyCommandRequest, EmptyCommandResponse>(connection, "run");
-            Command_walk = new Command<EmptyCommandRequest, EmptyCommandResponse>(connection, "walk");
+            Property_counter = new ReadOnlyProperty<int>(c, "counter");
+            Property_deviceInfo = new ReadOnlyProperty<DeviceInfo>(c, "deviceInfo");
+            Property_message = new WritableProperty<string>(c, "message");
+            Property_deviceDesiredState = new WritableProperty<DesiredDeviceState>(c, "desiredState");
+            Command_run = new Command<EmptyCommandRequest, EmptyCommandResponse>(c, "run");
+            Command_walk = new Command<EmptyCommandRequest, EmptyCommandResponse>(c, "walk");
+            Component_testInfo = new TestInfo(c, "testInfo");
         }
     }
 }

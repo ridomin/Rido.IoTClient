@@ -12,7 +12,7 @@ namespace dtmi_azure_devicemanagement
         {
             Property_manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
             Property_model = new ReadOnlyProperty<string>(c, "model");
-            swVersion = new ReadOnlyProperty<string>(c, "swVersion");
+            Property_swVersion = new ReadOnlyProperty<string>(c, "swVersion");
             Property_osName = new ReadOnlyProperty<string>(c, "osName");
             Property_processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
             Property_processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
@@ -22,7 +22,7 @@ namespace dtmi_azure_devicemanagement
 
         public ReadOnlyProperty<string> Property_manufacturer { get; set; } 
         public ReadOnlyProperty<string> Property_model { get; set; }
-        public ReadOnlyProperty<string> swVersion { get; set; }
+        public ReadOnlyProperty<string> Property_swVersion { get; set; }
         public ReadOnlyProperty<string> Property_osName { get; set; }
         public ReadOnlyProperty<string> Property_processorArchitecture { get; set; }
         public ReadOnlyProperty<string> Property_processorManufacturer { get; set; }
@@ -35,7 +35,7 @@ namespace dtmi_azure_devicemanagement
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add(Property_manufacturer.Name, Property_manufacturer.PropertyValue);
             dic.Add(Property_model.Name, Property_model.PropertyValue);
-            dic.Add(swVersion.Name, swVersion.PropertyValue);
+            dic.Add(Property_swVersion.Name, Property_swVersion.PropertyValue);
             dic.Add(Property_osName.Name, Property_osName.PropertyValue);
             dic.Add(Property_processorArchitecture.Name, Property_processorArchitecture.PropertyValue);
             dic.Add(Property_processorManufacturer.Name, Property_processorManufacturer.PropertyValue);

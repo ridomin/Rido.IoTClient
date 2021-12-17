@@ -17,7 +17,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             update = UpdateTwinBinder.GetInstance(connection);
         }
 
-        public async Task<int> ReportPropertyAsync(CancellationToken token)
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default)
         {
             Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
                 {
