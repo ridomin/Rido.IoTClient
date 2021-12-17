@@ -6,7 +6,7 @@ using Rido.IoTClient;
 using Rido.IoTClient.AzBroker;
 using Rido.IoTClient.AzBroker.TopicBindings;
 
-namespace dtmi_rido_pnp_AzBroker
+namespace dtmi_rido_pnp_IoTHubPreview
 {
     public class memmon : IoTHubBrokerPnPClient
     {

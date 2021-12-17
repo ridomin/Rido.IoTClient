@@ -5,7 +5,7 @@ using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
     
-namespace dtmi_rido_pnp
+namespace dtmi_rido_pnp_IoTHubClassic
 {
     public class memmon : IoTHubPnPClient
     {

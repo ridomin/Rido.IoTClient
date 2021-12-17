@@ -3,7 +3,7 @@ using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
 
-using dtmi_rido_pnp;
+using dtmi_rido_pnp_HiveBroker;
 
 namespace pnp_memmon;
 

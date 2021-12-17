@@ -9,7 +9,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
     public class ReadOnlyProperty<T>
     {
-        readonly UpdatePropertyBinder updateBinder;
+        readonly IReportPropertyBinder updateBinder;
         public string Name;
         readonly string component;
 

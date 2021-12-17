@@ -6,7 +6,7 @@ using Rido.IoTClient;
 using Rido.IoTClient.PnPMqtt;
 using Rido.IoTClient.PnPMqtt.TopicBindings;
 
-namespace dtmi_rido_pnp_hive
+namespace dtmi_rido_pnp_HiveBroker
 {
     public class memmon : PnPClient
     {

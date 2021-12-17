@@ -31,6 +31,14 @@
         "DOTNET_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true
+    },
+    "Aws": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__cs": "HostName=a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com;ClientId=memmon1;Auth=X509;X509Key=memmon1.pfx|1234",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
     }
   }
 }

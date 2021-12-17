@@ -3,12 +3,12 @@
 using MQTTnet;
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.AzBroker;
-using Rido.IoTClient.PnPMqtt.TopicBindings;
+using Rido.IoTClient.Aws;
+using Rido.IoTClient.Aws.TopicBindings;
 
-namespace dtmi_rido_pnp_AzBroker
+namespace dtmi_rido_pnp_AwsShadow
 {
-    public class memmon : IoTHubBrokerPnPClient
+    public class memmon : AwsPnPClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -33,7 +33,7 @@ namespace dtmi_rido_pnp_AzBroker
             {
                 ModelId = modelId
             };
-            var connection = await IoTHubBrokerConnectionFactory.CreateAsync(cs, cancellationToken);
+            var connection = await AwsConnectionFactory.CreateAsync(cs, cancellationToken);
             var client = new memmon(connection)
             {
                 ConnectionSettings = cs
