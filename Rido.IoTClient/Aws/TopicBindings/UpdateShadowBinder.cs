@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class UpdateShadowBinder : IReportPropertyBinder
+    public class UpdateShadowBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
         TaskCompletionSource<int> pendingRequest;
         readonly IMqttClient connection;
@@ -27,9 +27,10 @@ namespace Rido.IoTClient.Aws.TopicBindings
         UpdateShadowBinder(IMqttClient connection)
         {
             this.connection = connection;
-            _ = connection.SubscribeAsync($"$aws/things/{connection.Options.ClientId}/shadow/update/+");
+            _ = connection.SubscribeAsync($"$aws/things/{connection.Options.ClientId}/shadow/update/accepted");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
+                await Task.Yield();
                 var topic = m.ApplicationMessage.Topic;
                 if (topic.StartsWith($"$aws/things/{connection.Options.ClientId}/shadow/update/accepted"))
                 {
@@ -41,16 +42,6 @@ namespace Rido.IoTClient.Aws.TopicBindings
                         pendingRequest.SetResult(version);
                     }
                 }
-                if (topic.StartsWith($"$aws/things/{connection.Options.ClientId}/shadow/update/rejected"))
-                {
-                    string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
-                    if (pendingRequest != null && !pendingRequest.Task.IsCompleted)
-                    {
-                        pendingRequest.SetException(new ApplicationException(msg));
-                    }
-                    Trace.TraceWarning(msg);
-                }
-                await Task.Yield();
             };
         }
 
@@ -72,7 +63,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 Trace.TraceError("Error publishing message: " + puback.ReasonString);
                 throw new ApplicationException(puback.ReasonString);
             }
-            return await pendingRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
+            return await pendingRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(50));
         }
     }
 }

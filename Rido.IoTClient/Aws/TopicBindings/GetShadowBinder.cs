@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class GetShadowBinder
+    public class GetShadowBinder : IPropertyStoreReader
     {
         TaskCompletionSource<string> pendingGetShadowRequest;
         readonly IMqttClient connection;
         readonly string topicBase;
 
-        public GetShadowBinder(IMqttClient conn, string deviceId)
+        public GetShadowBinder(IMqttClient conn)
         {
             connection = conn;
+            string deviceId = conn.Options.ClientId;
             topicBase = $"$aws/things/{deviceId}/shadow";
             connection.SubscribeAsync(topicBase + "/get/accepted");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
 
-                if (topic.StartsWith(topicBase + "/get/accepted"))
+                if (topic.StartsWith(topicBase + "/get/accepted")) 
                 {
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     if (pendingGetShadowRequest != null)
@@ -33,11 +34,11 @@ namespace Rido.IoTClient.Aws.TopicBindings
             };
         }
 
-        public async Task<string> GetShadow(CancellationToken token)
+        public async Task<string> ReadPropertiesDocAsync(CancellationToken cancellationToken = default)
         {
             pendingGetShadowRequest = new TaskCompletionSource<string>();
-            await connection.PublishAsync(topicBase + "/get", string.Empty, token);
-            return await pendingGetShadowRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
+            await connection.PublishAsync(topicBase + "/get", string.Empty, cancellationToken);
+            return await pendingGetShadowRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(50));
         }
     }
 }

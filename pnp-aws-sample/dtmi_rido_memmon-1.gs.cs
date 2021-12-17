@@ -16,7 +16,7 @@ namespace dtmi_rido_pnp
         public WritableProperty<bool> Property_enabled;
         public WritableProperty<int> Property_interval;
 
-        private memmon_1(IMqttClient c, ConnectionSettings cs) : base(c, cs)
+        private memmon_1(IMqttClient c) : base(c)
         {
             Property_started = new Rido.IoTClient.Aws.TopicBindings.ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
@@ -31,8 +31,7 @@ namespace dtmi_rido_pnp
             {
                 //ModelId = modelId
             };
-            var mqtt = await AwsPnPClient.CreateAsync(cs, cancellationToken);
-            var client = new memmon_1(mqtt.Connection, cs);
+            var client = new memmon_1(await AwsConnectionFactory.CreateAsync(cs)) { ConnectionSettings = cs};
             client.InitialTwin = await client.GetShadowAsync(cancellationToken);
             return client;
         }

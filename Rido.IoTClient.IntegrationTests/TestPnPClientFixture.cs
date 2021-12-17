@@ -9,7 +9,7 @@ namespace Rido.IoTClient.IntegrationTests
 {
     public class TestPnPClientFixture
     {
-        ConnectionSettings cs = new ConnectionSettings()
+        readonly ConnectionSettings cs = new()
         {
             HostName = "tests.azure-devices.net",
             DeviceId = "d10",

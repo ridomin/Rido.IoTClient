@@ -29,7 +29,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         [Fact]
         public async Task InitEmptyTwin()
         {
-            WritableProperty<double> wp = new WritableProperty<double>(connection, "blah");
+            WritableProperty<double> wp = new(connection, "blah");
             string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
@@ -45,7 +45,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         [Fact]
         public async Task InitTwinWithReported()
         {
-            WritableProperty<double> wp = new WritableProperty<double>(connection, "myProp");
+            WritableProperty<double> wp = new(connection, "myProp");
             string twin = Stringify(new
             {
                 reported = new
@@ -96,7 +96,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         [Fact]
         public async Task InitTwinWithDesiredTriggersUpdate()
         {
-            WritableProperty<double> wp = new WritableProperty<double>(connection, "myDouble");
+            WritableProperty<double> wp = new(connection, "myDouble");
             Assert.Equal(0,wp.PropertyValue.Value);
             bool received = false;
             wp.OnProperty_Updated = async p =>
@@ -118,7 +118,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         [Fact]
         public async Task InitTwinComplexWithDesiredTriggersUpdate()
         {
-            WritableProperty<AComplexObj> wp = new WritableProperty<AComplexObj>(connection, "myComplexObj");
+            WritableProperty<AComplexObj> wp = new(connection, "myComplexObj");
             Assert.Null(wp.PropertyValue.Value);
             wp.OnProperty_Updated = async p =>
             {

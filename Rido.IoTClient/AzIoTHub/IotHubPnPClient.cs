@@ -1,9 +1,5 @@
-﻿using MQTTnet;
-using MQTTnet.Client;
-using Rido.IoTClient.AzDps;
+﻿using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
-using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 

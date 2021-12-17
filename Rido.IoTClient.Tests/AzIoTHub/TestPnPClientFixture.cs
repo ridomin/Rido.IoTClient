@@ -18,7 +18,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
     {
         static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
-        MockMqttClient connection;
+        readonly MockMqttClient connection;
 
         public TestPnPClientFixture()
         {
@@ -32,7 +32,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.NotNull(client);
             Assert.Equal(2, connection.numSubscriptions);
             var list = connection.GetInvocationList();
-            Assert.Equal(2, list.Count());
+            Assert.Equal(2, list.Length);
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.GetTwinBinder", list[0].Method.DeclaringType?.FullName?.ToString());
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[1].Method.DeclaringType?.FullName?.ToString());
         }
@@ -44,7 +44,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.NotNull(client);
             Assert.Equal(6, connection.numSubscriptions);
             var list = connection.GetInvocationList();
-            Assert.Equal(6, list.Count());
+            Assert.Equal(6, list.Length);
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.GetTwinBinder", list[0].Method.DeclaringType?.FullName?.ToString());
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[1].Method.DeclaringType?.FullName?.ToString());
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.DesiredUpdatePropertyBinder", list[2].Method.DeclaringType?.FullName?.ToString());
@@ -73,7 +73,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                 {
                     UserName = "mockUser",
                     Started = DateTime.MinValue,
-                    MachineName = Environment.MachineName
+                    Environment.MachineName
                 }
             }), connection.payloadReceived);
 

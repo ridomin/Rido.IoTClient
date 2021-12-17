@@ -18,7 +18,7 @@ namespace pnp_aws_sample
         int twinRecCounter = 0;
         int reconnectCounter = 0;
 
-        const bool default_enabled = true;
+        const bool default_enabled = false;
         const int default_interval = 8;
 
         dtmi_rido_pnp.memmon_1 client;
