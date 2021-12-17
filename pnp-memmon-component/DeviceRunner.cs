@@ -50,8 +50,8 @@ public class DeviceRunner : BackgroundService
         await client.Component_memMon.ComponentValue.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, token);
         await client.Component_memMon.ComponentValue.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, token);
 
-        await client.Component_memMon.ComponentValue.Property_started.UpdateTwinPropertyAsync(DateTime.Now, true, token);
-        await client.Property_serialNumber.UpdateTwinPropertyAsync("S/N 123", false, token);
+        await client.Component_memMon.ComponentValue.Property_started.ReportPropertyAsync(DateTime.Now, true, token);
+        await client.Property_serialNumber.ReportPropertyAsync("S/N 123", false, token);
 
         SetThisDeviceInfo(client.Component_deviceInfo.ComponentValue);
         await client.Component_deviceInfo.UpdateTwinAsync(token);
