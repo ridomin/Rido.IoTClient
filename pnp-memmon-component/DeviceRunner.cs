@@ -38,35 +38,35 @@ public class DeviceRunner : BackgroundService
 
         client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
 
-        client.Component_memMon.ComponentValue.Property_enabled.OnProperty_Updated = Property_memMon_enabled_UpdateHandler;
-        client.Component_memMon.ComponentValue.Property_interval.OnProperty_Updated = Property_memMon_interval_UpdateHandler;
-        client.Component_memMon.ComponentValue.Command_getRuntimeStats.OnCmdDelegate = Command_memMon_getRuntimeStats_Handler;
+        client.Component_memMon.Property_enabled.OnProperty_Updated = Property_memMon_enabled_UpdateHandler;
+        client.Component_memMon.Property_interval.OnProperty_Updated = Property_memMon_interval_UpdateHandler;
+        client.Component_memMon.Command_getRuntimeStats.OnCmdDelegate = Command_memMon_getRuntimeStats_Handler;
         client.Command_reboot.OnCmdDelegate += async m =>
         {
             commandCounter++;
             return await Task.FromResult(new EmptyCommandResponse() { Status = 200 });
         };
 
-        await client.Component_memMon.ComponentValue.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, token);
-        await client.Component_memMon.ComponentValue.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, token);
+        await client.Component_memMon.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, token);
+        await client.Component_memMon.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, token);
 
-        await client.Component_memMon.ComponentValue.Property_started.ReportPropertyAsync(DateTime.Now, true, token);
+        await client.Component_memMon.Property_started.ReportPropertyAsync(DateTime.Now, true, token);
         await client.Property_serialNumber.ReportPropertyAsync("S/N 123", false, token);
 
-        SetThisDeviceInfo(client.Component_deviceInfo.ComponentValue);
+        SetThisDeviceInfo(client.Component_deviceInfo);
         await client.Component_deviceInfo.ReportPropertyAsync(token);
 
         RefreshScreen(this);
 
         while (!token.IsCancellationRequested)
         {
-            if (client?.Component_memMon.ComponentValue.Property_enabled.PropertyValue.Value == true)
+            if (client?.Component_memMon.Property_enabled.PropertyValue.Value == true)
             {
                 telemetryWorkingSet = Environment.WorkingSet;
-                await client.Component_memMon.ComponentValue.Telemetry_workingSet.SendTelemetryAsync(telemetryWorkingSet, token);
+                await client.Component_memMon.Telemetry_workingSet.SendTelemetryAsync(telemetryWorkingSet, token);
                 telemetryCounter++;
             }
-            await Task.Delay(client.Component_memMon.ComponentValue.Property_interval.PropertyValue.Value * 1000, token);
+            await Task.Delay(client.Component_memMon.Property_interval.PropertyValue.Value * 1000, token);
         }
     }
 
@@ -81,7 +81,7 @@ public class DeviceRunner : BackgroundService
             Version = req.Version,
             Value = req.Value
         };
-        client.Component_memMon.ComponentValue.Property_enabled.PropertyValue = ack;
+        client.Component_memMon.Property_enabled.PropertyValue = ack;
         return await Task.FromResult(ack);
     }
 
@@ -89,7 +89,7 @@ public class DeviceRunner : BackgroundService
     {
         ArgumentNullException.ThrowIfNull(client);
         twinRecCounter++;
-        bool enabled = client.Component_memMon.ComponentValue.Property_enabled.PropertyValue.Value;
+        bool enabled = client.Component_memMon.Property_enabled.PropertyValue.Value;
         var ack = new PropertyAck<int>("interval", "memMon")
         {
             Description = (enabled == true) ? "desired notification accepted" : "disabled, not accepted",
@@ -97,7 +97,7 @@ public class DeviceRunner : BackgroundService
             Version = req.Version,
             Value = req.Value
         };
-        client.Component_memMon.ComponentValue.Property_interval.PropertyValue = ack;
+        client.Component_memMon.Property_interval.PropertyValue = ack;
         return await Task.FromResult(ack);
     }
 
@@ -132,8 +132,8 @@ public class DeviceRunner : BackgroundService
         {
             void AppendLineWithPadRight(StringBuilder sb, string s) => sb.AppendLine(s?.PadRight(Console.BufferWidth - 1));
 
-            string enabled_value = client.Component_memMon.ComponentValue.Property_enabled.PropertyValue.Value.ToString();
-            string interval_value = client.Component_memMon.ComponentValue.Property_interval.PropertyValue.Value.ToString();
+            string enabled_value = client.Component_memMon.Property_enabled.PropertyValue.Value.ToString();
+            string interval_value = client.Component_memMon.Property_interval.PropertyValue.Value.ToString();
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
@@ -141,10 +141,10 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "Component", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "---------", "--------", "-----".PadRight(15, '-'), "------"));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Component_memMon.ComponentValue.Property_enabled?.PropertyValue.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Component_memMon.ComponentValue.Property_interval.PropertyValue.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Component_memMon.ComponentValue.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client.Component_memMon.ComponentValue.Property_started?.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "devInfo".PadRight(9), "model".PadRight(8), client?.Component_deviceInfo.ComponentValue.Property_model.PropertyValue.PadLeft(15), client.Component_deviceInfo.ComponentValue.Property_model.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Component_memMon.Property_enabled?.PropertyValue.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "interval".PadRight(8), interval_value?.PadLeft(15), client?.Component_memMon.Property_interval.PropertyValue.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "memMon".PadRight(9), "started".PadRight(8), client?.Component_memMon.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client.Component_memMon.Property_started?.Version));
+            //AppendLineWithPadRight(sb, String.Format("{0:9} | {1:8} | {2:15} | {3}", "devInfo".PadRight(9), "model".PadRight(8), client?.Component_deviceInfo.Property_model.PropertyValue.PadLeft(15), client.Component_deviceInfo.Property_model.Version));
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Reconnects: {reconnectCounter}");
             AppendLineWithPadRight(sb, $"Telemetry: {telemetryCounter}");

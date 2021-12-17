@@ -14,18 +14,18 @@ namespace dtmi_com_example
         internal Telemetry<double> Telemetry_workingSet;
         internal ReadOnlyProperty<string> Property_serialNumber;
         internal Command<Cmd_reboot_Req, EmptyCommandResponse> Command_reboot;
-        internal ThermostatComponent Component_thermostat1;
-        internal ThermostatComponent Component_thermostat2;
-        internal DeviceInformationComponent Component_deviceInfo;
+        internal Thermostat Component_thermostat1;
+        internal Thermostat Component_thermostat2;
+        internal DeviceInformation Component_deviceInfo;
 
         TemperatureController(IMqttClient c) : base(c)
         {
             Telemetry_workingSet = new Telemetry<double>(c, "workingSet");
             Property_serialNumber = new ReadOnlyProperty<string>(c, "serialNumber");
             Command_reboot = new Command<Cmd_reboot_Req, EmptyCommandResponse>(c, "reboot");
-            Component_thermostat1 = new ThermostatComponent(c, "thermostat1");
-            Component_thermostat2 = new ThermostatComponent(c, "thermostat2");
-            Component_deviceInfo = new DeviceInformationComponent(c, "deviceInformation");
+            Component_thermostat1 = new Thermostat(c, "thermostat1");
+            Component_thermostat2 = new Thermostat(c, "thermostat2");
+            Component_deviceInfo = new DeviceInformation(c, "deviceInformation");
         }
 
         public static async Task<TemperatureController> CreateAsync(string connectionString, CancellationToken cancellationToken = default)

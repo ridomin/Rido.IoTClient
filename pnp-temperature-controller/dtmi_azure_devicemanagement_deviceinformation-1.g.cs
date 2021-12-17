@@ -5,23 +5,21 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
 
 namespace dtmi_azure_devicemanagement
 {
-    public class DeviceInformationComponent : Component<DeviceInformation>
-    {
-        public DeviceInformationComponent(IMqttClient c, string name) : base(c, name)
-        {
-            ComponentValue.Property_manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
-            ComponentValue.Property_model = new ReadOnlyProperty<string>(c, "model");
-            ComponentValue.swVersion = new ReadOnlyProperty<string>(c, "swVersion");
-            ComponentValue.Property_osName = new ReadOnlyProperty<string>(c, "osName");
-            ComponentValue.Property_processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
-            ComponentValue.Property_processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
-            ComponentValue.Property_totalStorage = new ReadOnlyProperty<long>(c, "totalStorage");
-            ComponentValue.Property_totalMemory = new ReadOnlyProperty<long>(c, "totalMemory");
-        }
-    }
 
-    public class DeviceInformation : ITwinSerializable
+    public class DeviceInformation : Component
     {
+        public DeviceInformation(IMqttClient c, string name) : base(c, name)
+        {
+            Property_manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
+            Property_model = new ReadOnlyProperty<string>(c, "model");
+            swVersion = new ReadOnlyProperty<string>(c, "swVersion");
+            Property_osName = new ReadOnlyProperty<string>(c, "osName");
+            Property_processorArchitecture = new ReadOnlyProperty<string>(c, "processorArchitecture");
+            Property_processorManufacturer = new ReadOnlyProperty<string>(c, "processorManufacturer");
+            Property_totalStorage = new ReadOnlyProperty<long>(c, "totalStorage");
+            Property_totalMemory = new ReadOnlyProperty<long>(c, "totalMemory");
+        }
+
         public ReadOnlyProperty<string> Property_manufacturer { get; set; } 
         public ReadOnlyProperty<string> Property_model { get; set; }
         public ReadOnlyProperty<string> swVersion { get; set; }
@@ -31,7 +29,8 @@ namespace dtmi_azure_devicemanagement
         public ReadOnlyProperty<long> Property_totalMemory { get; set; }
         public ReadOnlyProperty<long> Property_totalStorage { get; set; }
 
-        public Dictionary<string, object> ToJsonDict()
+
+        public override Dictionary<string, object> ToJsonDict()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add(Property_manufacturer.Name, Property_manufacturer.PropertyValue);
