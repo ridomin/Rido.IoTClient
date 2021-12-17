@@ -24,7 +24,7 @@ namespace pnp_generic_client
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var client = await GenericPnPClient.CreateAsync(new ConnectionSettings(_configuration.GetConnectionString("cs")), stoppingToken);
-            await client.UpdateTwinAsync(new { started = DateTime.Now }, stoppingToken);
+            await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             var twin = await client.GetTwinAsync(stoppingToken);
             _logger.LogInformation(twin);
 

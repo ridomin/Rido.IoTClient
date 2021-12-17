@@ -71,7 +71,7 @@ namespace pnp_temperature_controller
             t1tt.Status = 202;
             t1tt.Description = "t1 updating to " + temperature1;
             t1tt.Version = prop.DesiredVersion;
-            await client.Component_thermostat1.Property_targetTemperature.UpdateTwinAsync();
+            await client.Component_thermostat1.Property_targetTemperature.ReportPropertyAsync();
 
             double step = (prop.Value - temperature1) / 5d;
             for (int i = 1; i <= 5; i++)
@@ -79,7 +79,7 @@ namespace pnp_temperature_controller
                 temperature1 = Math.Round(temperature1 + step, 1);
                 //client.Component_thermostat1.Property_targetTemperature.PropertyValue.Value = temperature1;
                 //client.Component_thermostat1.Property_targetTemperature.PropertyValue.Status = 202;
-                //await client.Component_thermostat1.Property_targetTemperature.UpdateTwinAsync();
+                //await client.Component_thermostat1.Property_targetTemperature.ReportPropertyAsync();
 
                 Console.WriteLine($"\r-> t: t1 - temperature {temperature1} \t");
                 readings1.Add(DateTimeOffset.Now, temperature1);
@@ -89,7 +89,7 @@ namespace pnp_temperature_controller
             t1tt.Status = 200;
             t1tt.Description = "Temp updated to " + temperature1;
             t1tt.Version = prop.DesiredVersion;
-            await client.Component_thermostat1.Property_targetTemperature.UpdateTwinAsync();
+            await client.Component_thermostat1.Property_targetTemperature.ReportPropertyAsync();
 
             Console.WriteLine("\n t1 temp adjusted to: " + prop.Value);
         }
@@ -105,7 +105,7 @@ namespace pnp_temperature_controller
             t2tt.Status = 202;
             t2tt.Description = "t2 updating to " + temperature1;
             t2tt.Version = prop.DesiredVersion;
-            await client.Component_thermostat2.Property_targetTemperature.UpdateTwinAsync();
+            await client.Component_thermostat2.Property_targetTemperature.ReportPropertyAsync();
 
             double step = (prop.Value - temperature2) / 5d;
             for (int i = 1; i <= 5; i++)
@@ -113,7 +113,7 @@ namespace pnp_temperature_controller
                 temperature2 = Math.Round(temperature2 + step, 1);
                 //client.Component_thermostat2.Property_targetTemperature.PropertyValue.Value = temperature2;
                 //client.Component_thermostat2.Property_targetTemperature.PropertyValue.Status = 202;
-                //await client.Component_thermostat2.Property_targetTemperature.UpdateTwinAsync();
+                //await client.Component_thermostat2.Property_targetTemperature.ReportPropertyAsync();
 
                 Console.WriteLine($"\r-> t: t2 - temperature {temperature2} \t");
                 readings2.Add(DateTimeOffset.Now, temperature2);
@@ -123,7 +123,7 @@ namespace pnp_temperature_controller
             t2tt.Status = 200;
             t2tt.Description = "Temp updated to " + temperature2;
             t2tt.Version = prop.DesiredVersion;
-            await client.Component_thermostat2.Property_targetTemperature.UpdateTwinAsync();
+            await client.Component_thermostat2.Property_targetTemperature.ReportPropertyAsync();
 
             Console.WriteLine("\n t2 temp adjusted to: " + prop.Value);
         }

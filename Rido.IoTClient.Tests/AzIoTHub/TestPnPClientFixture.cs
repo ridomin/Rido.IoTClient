@@ -9,9 +9,9 @@ using Xunit;
 
 namespace Rido.IoTClient.Tests.AzIoTHub
 {
-    class StubClient : IoTHubPnPClient 
+    class StubClient : IoTHubPnPClient
     {
-        public StubClient(IMqttClient c) : base(c){}
+        public StubClient(IMqttClient c) : base(c) { }
     }
 
     public class TestPnPClientFixture
@@ -82,6 +82,100 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.Equal(Environment.MachineName, client.Property_deviceInfo.PropertyValue.MachineName);
             Assert.StartsWith("mockUser", client.Property_deviceInfo.PropertyValue.UserName);
         }
+
+        [Fact]
+        public async void ReportWritableProperty()
+        {
+            var client = new TestPnPClient(connection);
+
+            client.Property_deviceDesiredState.PropertyValue.Version = 0;
+            client.Property_deviceDesiredState.PropertyValue.Status = 203;
+            client.Property_deviceDesiredState.PropertyValue.Description = "fake description";
+            client.Property_deviceDesiredState.PropertyValue.Value = new DesiredDeviceState()
+            {
+                commandsEnabled = true,
+                telemetryEnabled = false,
+                telemetryInterval = 123
+            };
+            var updateTask = client.Property_deviceDesiredState.ReportPropertyAsync();
+
+            connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
+            await Task.Delay(10);
+            Assert.True(updateTask.IsCompleted);
+            Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
+            Assert.Equal(Stringify(new
+            {
+                desiredState = new
+                {
+                    av = 0,
+                    ad = "fake description",
+                    ac = 203,
+                    value = new
+                    {
+                        telemetryInterval = 123,
+                        commandsEnabled = true,
+                        telemetryEnabled = false
+                    }
+                }
+
+            }), connection.payloadReceived);
+
+            Assert.True(client.Property_deviceDesiredState.PropertyValue.Value.commandsEnabled);
+            Assert.False(client.Property_deviceDesiredState.PropertyValue.Value.telemetryEnabled);
+            Assert.Equal(123, client.Property_deviceDesiredState.PropertyValue.Value.telemetryInterval);
+            Assert.Equal(0, client.Property_deviceDesiredState.PropertyValue.Version);
+            Assert.Equal(203, client.Property_deviceDesiredState.PropertyValue.Status);
+            Assert.Equal("fake description", client.Property_deviceDesiredState.PropertyValue.Description);
+        }
+
+        [Fact]
+        public async void ReportWritablePropertyInComponent()
+        {
+            var client = new TestPnPClient(connection);
+
+            client.Component_testInfo.Property_deviceInfo.PropertyValue.Version = 0;
+            client.Component_testInfo.Property_deviceInfo.PropertyValue.Status = 203;
+            client.Component_testInfo.Property_deviceInfo.PropertyValue.Description = "fake description";
+            client.Component_testInfo.Property_deviceInfo.PropertyValue.Value = new DeviceInfo()
+            {
+                MachineName = Environment.MachineName,
+                Started = DateTime.MinValue,
+                UserName = connection.Options.Credentials.Username
+            };
+            var updateTask = client.Component_testInfo.Property_deviceInfo.ReportPropertyAsync();
+
+            connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
+            await Task.Delay(20);
+            Assert.True(updateTask.IsCompleted);
+            Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
+            Assert.Equal(Stringify(new
+            {
+                testInfo = new
+                {
+                    __t = "c",
+                    deviceInfo = new
+                    {
+                        av = 0,
+                        ad = "fake description",
+                        ac = 203,
+                        value = new
+                        {
+                            UserName = "mockUser",
+                            Started = DateTime.MinValue,
+                            MachineName = Environment.MachineName
+                        }
+                    }
+                }
+            }), connection.payloadReceived);
+
+            Assert.Equal(Environment.MachineName, client.Component_testInfo.Property_deviceInfo.PropertyValue.Value.MachineName);
+            Assert.Equal(DateTime.MinValue, client.Component_testInfo.Property_deviceInfo.PropertyValue.Value.Started);
+            Assert.Equal("mockUser", client.Component_testInfo.Property_deviceInfo.PropertyValue.Value.UserName);
+            Assert.Equal(0, client.Component_testInfo.Property_deviceInfo.PropertyValue.Version);
+            Assert.Equal(203, client.Component_testInfo.Property_deviceInfo.PropertyValue.Status);
+            Assert.Equal("fake description", client.Component_testInfo.Property_deviceInfo.PropertyValue.Description);
+        }
+
 
         [Fact]
         public async void ReportOneReadOnlyPropertyInComponent()
@@ -182,7 +276,6 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                         MachineName = Environment.MachineName,
                         Started = DateTime.MinValue,
                         UserName = connection.Options.Credentials.Username
-
                     }
                 }
             });
@@ -215,7 +308,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             client.Command_run.OnCmdDelegate += async m =>
             {
                 receivedRun = true;
-                return await Task.FromResult(new EmptyCommandResponse() { Status = 200});
+                return await Task.FromResult(new EmptyCommandResponse() { Status = 200 });
             };
             connection.SimulateNewMessage("$iothub/methods/POST/run", string.Empty);
             Assert.True(receivedRun);

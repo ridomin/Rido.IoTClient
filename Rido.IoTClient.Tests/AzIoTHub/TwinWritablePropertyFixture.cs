@@ -198,6 +198,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.Null(wpWithComp.PropertyValue.Description);
             Assert.Equal(0, wpWithComp.PropertyValue.Status);
             Assert.Equal(2, wpWithComp.PropertyValue.DesiredVersion);
+            Assert.Equal(2, wpWithComp.PropertyValue.Version);
         }
 
 
