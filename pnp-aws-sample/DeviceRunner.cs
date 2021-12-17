@@ -49,7 +49,7 @@ namespace pnp_aws_sample
             await client.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, stoppingToken);
             await client.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, stoppingToken);
 
-            await client.Property_started.UpdateShadowPropertyAsync(DateTime.Now, false, stoppingToken);
+            await client.Property_started.ReportPropertyAsync(DateTime.Now, false, stoppingToken);
 
             RefreshScreen(this);
 

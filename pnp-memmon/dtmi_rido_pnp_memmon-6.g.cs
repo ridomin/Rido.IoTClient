@@ -4,9 +4,9 @@ using MQTTnet;
 using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.Aws;
-using Rido.IoTClient.Aws.TopicBindings;
+using Rido.IoTClient.PnPMqtt.TopicBindings;
 
-namespace dtmi_rido_pnp_AwsShadow
+namespace dtmi_rido_pnp_AwsBroker
 {
     public class memmon : AwsPnPClient
     {
@@ -38,7 +38,7 @@ namespace dtmi_rido_pnp_AwsShadow
             {
                 ConnectionSettings = cs
             };
-            client.InitialTwin = await client.GetShadowAsync(cancellationToken);
+            //client.InitialTwin = await client.GetTwinAsync(cancellationToken);
             return client;
         }
     }

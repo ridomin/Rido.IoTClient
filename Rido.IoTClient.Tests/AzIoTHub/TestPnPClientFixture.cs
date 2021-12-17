@@ -59,7 +59,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         {
             var client = new TestPnPClient(connection);
 
-            var updateTask = client.Property_deviceInfo.UpdateTwinPropertyAsync(
+            var updateTask = client.Property_deviceInfo.ReportPropertyAsync(
                 new DeviceInfo() { UserName = client.Connection.Options.Credentials.Username }
             );
 

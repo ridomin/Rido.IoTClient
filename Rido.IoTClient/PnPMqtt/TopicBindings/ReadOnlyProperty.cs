@@ -23,7 +23,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
             this.component = component;
         }
 
-        public async Task UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
+        public async Task ReportPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
             await updateBinder.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);

@@ -21,7 +21,7 @@ namespace Rido.IoTClient.IntegrationTests
         {
             var client = await TestPnPClient.CreateAsync(cs);
 
-            await client.Property_deviceInfo.UpdateTwinPropertyAsync(
+            await client.Property_deviceInfo.ReportPropertyAsync(
                 new DeviceInfo() { UserName = client.Connection.Options.Credentials.Username }
             );
 

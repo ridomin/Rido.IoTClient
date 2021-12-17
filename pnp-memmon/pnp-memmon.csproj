@@ -51,6 +51,11 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-6.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-6.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
 	  <None Update="memmon1.pfx">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

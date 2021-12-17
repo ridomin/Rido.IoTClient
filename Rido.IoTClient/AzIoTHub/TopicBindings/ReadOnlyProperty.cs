@@ -21,7 +21,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             this.component = component;
         }
 
-        public async Task<int> UpdateTwinPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
+        public async Task<int> ReportPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
         {
             PropertyValue = newValue;
             Version = await updateTwin.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);

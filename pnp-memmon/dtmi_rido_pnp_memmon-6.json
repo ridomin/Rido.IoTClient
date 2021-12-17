@@ -1,6 +1,6 @@
 {
   "@context": "dtmi:dtdl:context;2",
-  "@id": "dtmi:rido:pnp:memmon;5",
+  "@id": "dtmi:rido:pnp:memmon;6",
   "@type": "Interface",
   "contents": [
     {
