@@ -40,7 +40,7 @@ namespace Rido.IoTClient.IntegrationTests
             var connection = await IoTHubConnectionFactory.CreateAsync(cs);
             var client = new TestPnPClient(connection) { ConnectionSettings = cs };
             var twin = await client.GetTwinAsync();
-            client.InitialTwin = twin;
+            client.InitialState = twin;
             return client; 
         }
     }

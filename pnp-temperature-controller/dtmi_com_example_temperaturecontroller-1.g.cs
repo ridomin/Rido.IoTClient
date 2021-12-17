@@ -35,7 +35,7 @@ namespace dtmi_com_example
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
             var connection = await IoTHubConnectionFactory.CreateAsync(cs, cancellationToken);
             var client = new TemperatureController(connection) { ConnectionSettings = cs };
-            client.InitialTwin = await client.GetTwinAsync();
+            client.InitialState = await client.GetTwinAsync();
             return client;
         }
     }

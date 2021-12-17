@@ -32,7 +32,7 @@ namespace dtmi_rido_pnp
                 //ModelId = modelId
             };
             var client = new memmon_1(await AwsConnectionFactory.CreateAsync(cs)) { ConnectionSettings = cs};
-            client.InitialTwin = await client.GetShadowAsync(cancellationToken);
+            client.InitialState = await client.GetShadowAsync(cancellationToken);
             return client;
         }
     }

@@ -38,7 +38,7 @@ namespace dtmi_rido_pnp_AwsShadow
             {
                 ConnectionSettings = cs
             };
-            client.InitialTwin = await client.GetShadowAsync(cancellationToken);
+            client.InitialState = await client.GetShadowAsync(cancellationToken);
             return client;
         }
     }

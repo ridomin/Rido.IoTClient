@@ -2,12 +2,12 @@
 
 using MQTTnet.Client;
 using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
+using Rido.IoTClient.Aws;
+using Rido.IoTClient.Aws.TopicBindings;
 
-namespace dtmi_rido_pnp
+namespace dtmi_rido_pnp_Aws
 {
-    public class sampleDevice : IoTHubPnPClient
+    public class sampleDevice : AwsPnPClient
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 
@@ -27,9 +27,9 @@ namespace dtmi_rido_pnp
         public static async Task<sampleDevice> CreateDeviceClientAsync(string connectionString, CancellationToken cancellationToken)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var connection = await IoTHubConnectionFactory.CreateAsync(cs, cancellationToken);
+            var connection = await AwsConnectionFactory.CreateAsync(cs, cancellationToken);
             var client = new sampleDevice(connection) { ConnectionSettings = cs };
-            client.InitialState = await client.GetTwinAsync();
+            client.InitialState = await client.GetShadowAsync();
             return client;
         }
     }

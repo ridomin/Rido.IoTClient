@@ -40,7 +40,7 @@ namespace dtmi_rido_pnp_HiveBroker
                 ConnectionSettings = cs
             };
 
-            //client.InitialTwin = await client(cancellationToken);
+            //client.InitialState = await client(cancellationToken);
             return client;
         }
     }

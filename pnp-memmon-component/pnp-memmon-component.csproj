@@ -30,6 +30,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-2.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sampledevice-2.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_azure_devicemanagement_deviceinformation-2.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sampledevice-2.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_rido_pnp_sampledevice-2.g.cs">
+			<DependentUpon>dtmi_rido_pnp_sampledevice-2.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="memmon1.pfx">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

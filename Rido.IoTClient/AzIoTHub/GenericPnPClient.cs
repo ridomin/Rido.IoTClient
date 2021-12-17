@@ -23,7 +23,7 @@ namespace Rido.IoTClient.AzIoTHub
         {
             var connection = await IoTHubConnectionFactory.CreateAsync(cs, token);
             var client = new GenericPnPClient(connection) { ConnectionSettings = cs };
-            client.InitialTwin = await client.GetTwinAsync(token);
+            client.InitialState = await client.GetTwinAsync(token);
             return client;
         }
 

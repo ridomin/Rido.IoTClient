@@ -12,7 +12,7 @@ namespace Rido.IoTClient.AzBroker
     public class IoTHubBrokerPnPClient
     {
         public IMqttClient Connection;
-        public string InitialTwin = string.Empty;
+        public string InitialState = string.Empty;
 
         public ConnectionSettings ConnectionSettings;
         readonly GetTwinBinder GetTwinBinder;

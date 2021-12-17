@@ -1,8 +1,9 @@
-using dtmi_rido_pnp;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
+
+using dtmi_rido_pnp_Aws;
 
 namespace pnp_memmon_component;
 
@@ -19,7 +20,7 @@ public class DeviceRunner : BackgroundService
     int twinRecCounter = 0;
     int reconnectCounter = 0;
 
-    dtmi_rido_pnp.sampleDevice client;
+    sampleDevice client;
 
     const bool default_enabled = true;
     const int default_interval = 8;
@@ -33,7 +34,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken token)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.sampleDevice.CreateDeviceClientAsync(_configuration.GetConnectionString("cs"), token);
+        client = await sampleDevice.CreateDeviceClientAsync(_configuration.GetConnectionString("cs"), token);
         _logger.LogInformation("Connected");
 
         client.Connection.DisconnectedAsync += async e => await Task.FromResult(reconnectCounter++);
@@ -47,8 +48,8 @@ public class DeviceRunner : BackgroundService
             return await Task.FromResult(new EmptyCommandResponse() { Status = 200 });
         };
 
-        await client.Component_memMon.Property_enabled.InitPropertyAsync(client.InitialTwin, default_enabled, token);
-        await client.Component_memMon.Property_interval.InitPropertyAsync(client.InitialTwin, default_interval, token);
+        await client.Component_memMon.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, token);
+        await client.Component_memMon.Property_interval.InitPropertyAsync(client.InitialState, default_interval, token);
 
         await client.Component_memMon.Property_started.ReportPropertyAsync(DateTime.Now, true, token);
         await client.Property_serialNumber.ReportPropertyAsync("S/N 123", false, token);
@@ -165,7 +166,7 @@ public class DeviceRunner : BackgroundService
         var screenRefresher = new Timer(RefreshScreen, this, 1000, 0);
     }
 
-    static void SetThisDeviceInfo(dtmi_rido_pnp.DeviceInformation di)
+    static void SetThisDeviceInfo(DeviceInformation di)
     {
         di.Property_manufacturer.PropertyValue = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
         di.Property_model.PropertyValue = Environment.OSVersion.Platform.ToString();

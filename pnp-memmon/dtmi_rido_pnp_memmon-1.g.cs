@@ -38,7 +38,7 @@ namespace dtmi_rido_pnp_IoTHubClassic
                 ConnectionSettings = cs
             };
 
-            client.InitialTwin = await client.GetTwinAsync(cancellationToken);
+            client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;
         }
     }

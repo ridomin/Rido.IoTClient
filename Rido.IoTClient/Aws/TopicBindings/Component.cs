@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.AzIoTHub.TopicBindings
+namespace Rido.IoTClient.Aws.TopicBindings
 {
     public abstract class Component 
     {
@@ -14,7 +14,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            update = UpdateTwinBinder.GetInstance(connection);
+            update = UpdateShadowBinder.GetInstance(connection);
         }
 
         public async Task<int> ReportPropertyAsync(CancellationToken token = default)

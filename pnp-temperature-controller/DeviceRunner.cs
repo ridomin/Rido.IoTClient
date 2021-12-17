@@ -40,8 +40,8 @@ namespace pnp_temperature_controller
             client.Component_thermostat2.Property_targetTemperature.OnProperty_Updated = OnProperty_t2_targetTemperatue_Handler;
             client.Component_thermostat2.Command_getMaxMinReport.OnCmdDelegate = Cmd_t2_getMaxMinReport_Handler;
 
-            await client.Component_thermostat1.Property_targetTemperature.InitPropertyAsync(client.InitialTwin, 22, stoppingToken);
-            await client.Component_thermostat2.Property_targetTemperature.InitPropertyAsync(client.InitialTwin, 25, stoppingToken);
+            await client.Component_thermostat1.Property_targetTemperature.InitPropertyAsync(client.InitialState, 22, stoppingToken);
+            await client.Component_thermostat2.Property_targetTemperature.InitPropertyAsync(client.InitialState, 25, stoppingToken);
             
             ThisDeviceInfo(client.Component_deviceInfo);
             await client.Component_deviceInfo.ReportPropertyAsync(stoppingToken);

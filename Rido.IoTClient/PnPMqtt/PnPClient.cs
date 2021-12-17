@@ -11,7 +11,7 @@ namespace Rido.IoTClient.PnPMqtt
     public class PnPClient
     {
         public IMqttClient Connection;
-        public string InitialTwin = string.Empty;
+        public string InitialState = string.Empty;
 
         public ConnectionSettings ConnectionSettings;
 

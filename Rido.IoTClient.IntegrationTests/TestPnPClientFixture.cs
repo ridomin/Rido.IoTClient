@@ -50,7 +50,7 @@ namespace Rido.IoTClient.IntegrationTests
                 return p;
             };
             Assert.Null(client.Property_deviceInfo.PropertyValue);
-            await client.Property_deviceDesiredState.InitPropertyAsync(client.InitialTwin, new DesiredDeviceState());
+            await client.Property_deviceDesiredState.InitPropertyAsync(client.InitialState, new DesiredDeviceState());
             await Task.Delay(100);
             Assert.True(received);
             Assert.Equal(3, client.Property_deviceDesiredState.PropertyValue.Value.telemetryInterval);

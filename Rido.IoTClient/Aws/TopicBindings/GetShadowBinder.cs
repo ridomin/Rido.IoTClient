@@ -38,7 +38,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         {
             pendingGetShadowRequest = new TaskCompletionSource<string>();
             await connection.PublishAsync(topicBase + "/get", string.Empty, cancellationToken);
-            return await pendingGetShadowRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(50));
+            return await pendingGetShadowRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
         }
     }
 }
