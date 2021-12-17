@@ -13,14 +13,14 @@ namespace dtmi_rido_pnp
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 
-        public deviceInformationComponent Component_deviceInfo;
+        public DeviceInformationComponent Component_deviceInfo;
         public memMonComponent Component_memMon;
         public ReadOnlyProperty<string> Property_serialNumber;
         public Command<EmptyCommandRequest, EmptyCommandResponse> Command_reboot;
 
         private sampleDevice(IMqttClient c)  : base(c)
         {
-            Component_deviceInfo = new deviceInformationComponent(c, "deviceInfo");
+            Component_deviceInfo = new DeviceInformationComponent(c, "deviceInfo");
             Component_memMon = new memMonComponent(c, "memMon");
             Property_serialNumber = new ReadOnlyProperty<string>(c, "serialNumber");
             Command_reboot = new Command<EmptyCommandRequest, EmptyCommandResponse>(c, "reboot");
