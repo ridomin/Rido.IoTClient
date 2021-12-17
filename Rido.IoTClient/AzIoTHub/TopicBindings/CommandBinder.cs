@@ -12,7 +12,6 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         where TResponse : BaseCommandResponse
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
-
         public Command(IMqttClient connection, string commandName, string componentName = "")
         {
             var fullCommandName = string.IsNullOrEmpty(componentName) ? commandName : $"{componentName}*{commandName}";

@@ -36,6 +36,5 @@ namespace Rido.IoTClient
             }
             return pubAck;
         }
-
     }
 }

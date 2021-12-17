@@ -26,8 +26,8 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         {
             propertyName = name;
             componentName = component;
-            updateTwin = UpdateTwinBinder.GetInstance(connection);
             PropertyValue = new PropertyAck<T>(name, componentName);
+            updateTwin = UpdateTwinBinder.GetInstance(connection);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 

@@ -12,13 +12,12 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public void ReceiveDesired()
         {
             var mqttClient = new MockMqttClient();
-            var desiredBinder = new DesiredUpdatePropertyBinder<int>(mqttClient, "myProp")
+            var desiredBinder = new DesiredUpdatePropertyBinder<int>(mqttClient, "myProp");
+
+            desiredBinder.OnProperty_Updated = async p =>
             {
-                OnProperty_Updated = async p =>
-                {
-                    p.Status = 222;
-                    return await Task.FromResult(p);
-                }
+                p.Status = 222;
+                return await Task.FromResult(p);
             };
 
             var desiredMsg = new Dictionary<string, object>

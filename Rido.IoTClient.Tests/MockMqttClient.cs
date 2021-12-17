@@ -1,6 +1,7 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -65,11 +66,15 @@ namespace Rido.IoTClient.Tests
             throw new NotImplementedException();
         }
 
+        internal int numSubscriptions = 0;
         public Task<MqttClientSubscribeResult> SubscribeAsync(MqttClientSubscribeOptions options, CancellationToken cancellationToken = default)
         {
+            numSubscriptions++;
+            options.TopicFilters.ForEach(t => Trace.TraceInformation(t.Topic));
             return Task.FromResult(new MqttClientSubscribeResult());
             //throw new NotImplementedException();
         }
+
 
         public Task<MqttClientUnsubscribeResult> UnsubscribeAsync(MqttClientUnsubscribeOptions options, CancellationToken cancellationToken = default)
         {
@@ -81,5 +86,7 @@ namespace Rido.IoTClient.Tests
             var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithPayload(payload).Build();
             this.ApplicationMessageReceivedAsync.Invoke(new MqttApplicationMessageReceivedEventArgs("mock", msg, null, null));
         }
+
+        public Delegate[] GetInvocationList() => ApplicationMessageReceivedAsync.GetInvocationList();
     }
 }
