@@ -3,7 +3,7 @@ using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
 
-using dtmi_rido_pnp_HiveBroker;
+using dtmi_rido_pnp_IoTHubClassic;
 
 namespace pnp_memmon;
 
@@ -36,14 +36,14 @@ public class DeviceRunner : BackgroundService
         _logger.LogInformation("Connecting..");
         client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
         _logger.LogInformation("Connected");
-
+        
         client.Connection.DisconnectedAsync += async e =>
         {
             await Task.Delay(1);
             reconnectCounter++;
             Console.WriteLine(e.Exception.ToString());
         };
-
+        
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
