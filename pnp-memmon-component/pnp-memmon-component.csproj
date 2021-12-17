@@ -28,4 +28,10 @@
 			<DependentUpon>dtmi_rido_pnp_sampledevice-1.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="memmon1.pfx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 </Project>
