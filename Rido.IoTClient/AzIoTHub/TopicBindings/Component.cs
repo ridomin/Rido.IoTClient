@@ -23,7 +23,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public async Task<int> UpdateTwinAsync(T instance, CancellationToken token)
         {
             ComponentValue = instance;
-            Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
+                Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>
                 {
                     { name, new Dictionary<string, object>() }
                 };

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-pnp_temperature_controller-3A0176EC-982B-4E2C-BA05-24A5A307735C</UserSecretsId>
+		<RootNamespace>pnp_temperature_controller</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="dtmi_com_example_temperaturecontroller-1.g.cs">
+			<DependentUpon>dtmi_com_example_temperaturecontroller-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_azure_devicemanagement_deviceinformation-1.g.cs">
+			<DependentUpon>dtmi_com_example_temperaturecontroller-1.json</DependentUpon>
+		</Compile>
+		<Compile Update="dtmi_com_example_thermostat-1.g.cs">
+			<DependentUpon>dtmi_com_example_temperaturecontroller-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
