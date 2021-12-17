@@ -162,7 +162,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
                         {
                             UserName = "mockUser",
                             Started = DateTime.MinValue,
-                            MachineName = Environment.MachineName
+                            Environment.MachineName
                         }
                     }
                 }

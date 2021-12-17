@@ -4,8 +4,6 @@ using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
-//using Rido.IoTClient.Hive;
-//using Rido.IoTClient.Hive.TopicBindings;
 
 namespace dtmi_rido_pnp
 {

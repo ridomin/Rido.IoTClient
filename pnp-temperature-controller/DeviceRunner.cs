@@ -13,7 +13,8 @@ namespace pnp_temperature_controller
 
         static readonly Random random = new();
         static double RndDouble(double scaleFactor = 1.1) => random.NextDouble() * scaleFactor;
-        double maxTemp = 0d;
+        double maxTemp1 = 0d;
+        double maxTemp2 = 0d;
         readonly FixedSizeDictonary<DateTimeOffset, double> readings1 = new(1000) { { DateTimeOffset.Now, Math.Round(RndDouble(18), 1) } };
         readonly FixedSizeDictonary<DateTimeOffset, double> readings2 = new(1000) { { DateTimeOffset.Now, Math.Round(RndDouble(18), 1) } };
         double temperature1 = Math.Round(RndDouble(18), 1);
@@ -30,14 +31,18 @@ namespace pnp_temperature_controller
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             client = await TemperatureController.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            _logger.LogInformation("Connected" + client.ConnectionSettings);
 
+            client.Command_reboot.OnCmdDelegate = Cmd_reboot_Handler;            
             client.Component_thermostat1.Property_targetTemperature.OnProperty_Updated = OnProperty_t1_targetTemperatue_Handler;
-            client.Component_thermostat2.Property_targetTemperature.OnProperty_Updated = OnProperty_t2_targetTemperatue_Handler;
             client.Component_thermostat1.Command_getMaxMinReport.OnCmdDelegate = Cmd_t1_getMaxMinReport_Handler;
+            
+            client.Component_thermostat2.Property_targetTemperature.OnProperty_Updated = OnProperty_t2_targetTemperatue_Handler;
             client.Component_thermostat2.Command_getMaxMinReport.OnCmdDelegate = Cmd_t2_getMaxMinReport_Handler;
 
             await client.Component_thermostat1.Property_targetTemperature.InitPropertyAsync(client.InitialTwin, 22, stoppingToken);
             await client.Component_thermostat2.Property_targetTemperature.InitPropertyAsync(client.InitialTwin, 25, stoppingToken);
+            
             ThisDeviceInfo(client.Component_deviceInfo);
             await client.Component_deviceInfo.ReportPropertyAsync(stoppingToken);
 
@@ -58,6 +63,12 @@ namespace pnp_temperature_controller
                 Console.WriteLine($"-> t: t1 {temperature1} , t2 {temperature2}");
                 await Task.Delay(15000, stoppingToken);
             }
+        }
+
+        private async Task<EmptyCommandResponse> Cmd_reboot_Handler(Cmd_reboot_Req req)
+        {
+            _logger.LogInformation("Processing reboot: " + req.delay);
+            return await Task.FromResult(new EmptyCommandResponse() { Status = 200 });
         }
 
         async Task AdjustTempInStepsAsync_1(PropertyAck<double> prop)
@@ -134,13 +145,13 @@ namespace pnp_temperature_controller
             ArgumentNullException.ThrowIfNull(client);
             Console.WriteLine("\n<- c: t1-getMaxMinReport " + req.since);
 
-            //if (readings1.Values.Max<double>() > maxTemp)
-            //{
-            //    maxTemp = readings1.Values.Max<double>();
-            //    await client.Component_thermostat1.Property_maxTempSinceLastReboot.ReportPropertyAsync(maxTemp);
+            if (readings1.Values.Max<double>() > maxTemp1)
+            {
+                maxTemp1 = readings1.Values.Max<double>();
+                await client.Component_thermostat1.Property_maxTempSinceLastReboot.ReportPropertyAsync(maxTemp1);
 
-            //    Console.WriteLine($"\n-> r: maxTempSinceLastReboot {maxTemp}");
-            //}
+                Console.WriteLine($"\n-> r: maxTempSinceLastReboot {maxTemp1}");
+            }
 
             await Task.Delay(100);
             Dictionary<DateTimeOffset, double> filteredReadings = readings1
@@ -161,13 +172,13 @@ namespace pnp_temperature_controller
             ArgumentNullException.ThrowIfNull(client);
             Console.WriteLine("\n<- c: t2-getMaxMinReport " + req.since);
 
-            //if (readings2.Values.Max<double>() > maxTemp)
-            //{
-            //    maxTemp = readings2.Values.Max<double>();
-            //    await client.Component_thermostat2.Property_maxTempSinceLastReboot.ReportPropertyAsync(maxTemp);
+            if (readings2.Values.Max<double>() > maxTemp2)
+            {
+                maxTemp2 = readings2.Values.Max<double>();
+                await client.Component_thermostat2.Property_maxTempSinceLastReboot.ReportPropertyAsync(maxTemp2);
 
-            //    Console.WriteLine($"\n-> r: maxTempSinceLastReboot {maxTemp}");
-            //}
+                Console.WriteLine($"\n-> r: maxTempSinceLastReboot {maxTemp2}");
+            }
 
             await Task.Delay(100);
             Dictionary<DateTimeOffset, double> filteredReadings = readings2
