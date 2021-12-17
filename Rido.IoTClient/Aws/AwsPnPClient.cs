@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws
 {
-    public class PnPClient
+    public class AwsPnPClient
     {
         public IMqttClient Connection;
         public string InitialTwin = string.Empty;
@@ -18,7 +18,7 @@ namespace Rido.IoTClient.Aws
         readonly IReportPropertyBinder updateShadowBinder;
         public readonly DesiredUpdatePropertyBinder<string> desiredUpdatePropertyBinder;
 
-        public PnPClient(IMqttClient c, ConnectionSettings cs)
+        public AwsPnPClient(IMqttClient c, ConnectionSettings cs)
         {
             this.Connection = c;
             this.ConnectionSettings = cs;
@@ -27,7 +27,7 @@ namespace Rido.IoTClient.Aws
             desiredUpdatePropertyBinder = new DesiredUpdatePropertyBinder<string>(c, cs.DeviceId, "name");
         }
 
-        public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public static async Task<AwsPnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connAck = await mqtt.ConnectAsync(
@@ -40,7 +40,7 @@ namespace Rido.IoTClient.Aws
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
 
-            return new PnPClient(mqtt, cs);
+            return new AwsPnPClient(mqtt, cs);
         }
 
         public Task<string> GetShadowAsync(CancellationToken cancellationToken = default) => getShadowBinder.GetShadow(cancellationToken);

@@ -24,7 +24,7 @@ namespace Rido.IoTClient.IntegrationTests
                 DeviceId = deviceId,
                 SharedAccessKey = defaultKey
             };
-            var hubClient = await PnPClient.CreateAsync(cs);
+            var hubClient = await IoTHubBrokerPnPClient.CreateAsync(cs);
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal(deviceId, hubClient.Connection.Options.ClientId);
             var v = await hubClient.UpdateTwinAsync(new { testProp = tick });
@@ -71,7 +71,7 @@ namespace Rido.IoTClient.IntegrationTests
                 Auth = "X509",
                 X509Key = "testdevice22.pfx|1234"
             };
-            var hubClient = await PnPClient.CreateAsync(csx);
+            var hubClient = await IoTHubBrokerPnPClient.CreateAsync(csx);
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal("testdevice22", hubClient.Connection.Options.ClientId);
             var v = await hubClient.UpdateTwinAsync(new { testProp = tick });

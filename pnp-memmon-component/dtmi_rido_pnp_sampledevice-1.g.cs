@@ -9,7 +9,7 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class sampleDevice : PnPClient
+    public class sampleDevice : IoTHubPnPClient
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 

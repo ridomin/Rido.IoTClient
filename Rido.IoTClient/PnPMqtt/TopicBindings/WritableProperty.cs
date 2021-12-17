@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
     public class WritableProperty<T>
     {
@@ -31,7 +31,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task UpdatePropertyAsync() => await updatePropertyBinder.ReportPropertyAsync(this.PropertyValue.ToAckDict());
+        public async Task UpdatePropertyAsync() => await updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict());
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {

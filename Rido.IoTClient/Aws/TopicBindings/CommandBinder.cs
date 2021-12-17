@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.Aws.TopicBindings
 {
 
     public class Command<T, TResponse>

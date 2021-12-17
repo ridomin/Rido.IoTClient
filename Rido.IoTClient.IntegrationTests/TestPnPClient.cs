@@ -23,7 +23,7 @@ namespace Rido.IoTClient.IntegrationTests
         public bool telemetryEnabled { get; set; }
     }
 
-    public class TestPnPClient : PnPClient
+    public class TestPnPClient : IoTHubPnPClient
     {
         public readonly ReadOnlyProperty<DeviceInfo> Property_deviceInfo;
         public readonly WritableProperty<DesiredDeviceState> Property_deviceDesiredState;

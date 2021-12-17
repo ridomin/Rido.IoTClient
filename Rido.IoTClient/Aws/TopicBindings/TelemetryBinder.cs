@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class Telemetry<T>
     {
@@ -18,7 +18,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
             this.connection = connection;
             this.name = name;
             this.component = component;
-            this.deviceId = connection.Options.ClientId;
+            deviceId = connection.Options.ClientId;
             this.moduleId = moduleId;
         }
         //public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default) =>

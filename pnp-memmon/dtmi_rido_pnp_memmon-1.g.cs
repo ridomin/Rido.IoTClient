@@ -7,7 +7,7 @@ using Rido.IoTClient.AzIoTHub.TopicBindings;
     
 namespace dtmi_rido_pnp
 {
-    public class memmon : PnPClient
+    public class memmon : IoTHubPnPClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 

@@ -4,18 +4,13 @@ using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.Aws;
 using Rido.IoTClient.Aws.TopicBindings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dtmi_rido_pnp
 {
-    public class memmon_1 : PnPClient
+    public class memmon_1 : AwsPnPClient
     {
-        public Rido.IoTClient.Hive.TopicBindings.Telemetry<double> Telemetry_workingSet;
-        public Rido.IoTClient.Hive.TopicBindings.Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
+        public Telemetry<double> Telemetry_workingSet;
+        public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
         public Rido.IoTClient.Aws.TopicBindings.ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;
@@ -26,8 +21,8 @@ namespace dtmi_rido_pnp
             Property_started = new Rido.IoTClient.Aws.TopicBindings.ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
-            Telemetry_workingSet = new Rido.IoTClient.Hive.TopicBindings.Telemetry<double>(c, "workingSet");
-            Command_getRuntimeStats = new Rido.IoTClient.Hive.TopicBindings.Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
+            Telemetry_workingSet = new Telemetry<double>(c, "workingSet");
+            Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
         public static async Task<memmon_1> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
@@ -36,7 +31,7 @@ namespace dtmi_rido_pnp
             {
                 //ModelId = modelId
             };
-            var mqtt = await PnPClient.CreateAsync(cs, cancellationToken);
+            var mqtt = await AwsPnPClient.CreateAsync(cs, cancellationToken);
             var client = new memmon_1(mqtt.Connection, cs);
             client.InitialTwin = await client.GetShadowAsync(cancellationToken);
             return client;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzBroker
 {
-    public class PnPClient
+    public class IoTHubBrokerPnPClient
     {
         public IMqttClient Connection;
         public string InitialTwin = string.Empty;
@@ -18,14 +18,20 @@ namespace Rido.IoTClient.AzBroker
         readonly GetTwinBinder GetTwinBinder;
         readonly UpdateTwinBinder UpdateTwinBinder;
 
-        public PnPClient(IMqttClient c)
+        public IoTHubBrokerPnPClient(IMqttClient c)
         {
             Connection = c;
             GetTwinBinder = new GetTwinBinder(c);
             UpdateTwinBinder = UpdateTwinBinder.GetInstance(c);
         }
 
-        public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) =>
+            GetTwinBinder.GetTwinAsync(cancellationToken);
+
+        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) =>
+            UpdateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
+
+        public static async Task<IoTHubBrokerPnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             await DpsClient.ProvisionIfNeededAsync(cs);
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
@@ -35,14 +41,8 @@ namespace Rido.IoTClient.AzBroker
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
-            return new PnPClient(mqtt);
+            return new IoTHubBrokerPnPClient(mqtt);
         }
-
-        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) =>
-            GetTwinBinder.GetTwinAsync(cancellationToken);
-
-        public Task<int> UpdateTwinAsync(object payload, CancellationToken cancellationToken = default) =>
-            UpdateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
 
     }
 }

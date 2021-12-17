@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive
+namespace Rido.IoTClient.PnPMqtt
 {
     public class PnPClient
     {
@@ -17,7 +17,7 @@ namespace Rido.IoTClient.Hive
 
         public PnPClient(IMqttClient c)
         {
-            this.Connection = c;
+            Connection = c;
         }
 
         public static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
@@ -35,8 +35,5 @@ namespace Rido.IoTClient.Hive
             };
         }
 
-#pragma warning disable IDE0060 // Remove unused parameter
-        public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => Task.FromResult("");
-#pragma warning restore IDE0060 // Remove unused parameter
     }
 }

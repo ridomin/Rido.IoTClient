@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rido.IoTClient.Hive
+namespace Rido.IoTClient.PnPMqtt
 {
     public static class MqttNetExtensions
     {

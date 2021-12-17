@@ -1,5 +1,5 @@
 ﻿using MQTTnet.Client;
-using Rido.IoTClient.Hive;
+using Rido.IoTClient.PnPMqtt;
 using System;
 using System.Linq;
 using System.Text;

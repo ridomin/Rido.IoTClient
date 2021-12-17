@@ -1,10 +1,11 @@
 ﻿using MQTTnet.Client;
+using Rido.IoTClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
     public class ReadOnlyProperty<T>
     {
@@ -18,7 +19,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
             updateBinder = UpdatePropertyBinder.GetInstance(connection);
-            this.Name = name;
+            Name = name;
             this.component = component;
         }
 

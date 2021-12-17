@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
     public class UpdatePropertyBinder : IReportPropertyBinder
-    {       
+    {
         readonly IMqttClient connection;
 
         private static UpdatePropertyBinder instance;
@@ -34,6 +34,6 @@ namespace Rido.IoTClient.Hive.TopicBindings
             return -1;
         }
 
-        
+
     }
 }

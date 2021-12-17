@@ -20,7 +20,7 @@ namespace Rido.IoTClient.IntegrationTests
         public async Task Connect()
         {
             
-            PnPClient client = await PnPClient.CreateAsync(cs);
+            AwsPnPClient client = await AwsPnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             await client.Connection.DisconnectAsync(new MQTTnet.Client.MqttClientDisconnectOptions() { Reason = MQTTnet.Client.MqttClientDisconnectReason.NormalDisconnection });
             Assert.False(client.Connection.IsConnected);
@@ -47,7 +47,7 @@ namespace Rido.IoTClient.IntegrationTests
         [Fact]
         public async Task GetShadow()
         {
-            PnPClient client = await PnPClient.CreateAsync(cs);
+            AwsPnPClient client = await AwsPnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             var shadow = await client.GetShadowAsync();
             Assert.NotNull(shadow);
@@ -56,7 +56,7 @@ namespace Rido.IoTClient.IntegrationTests
         [Fact]
         public async Task UpdateShadow()
         {
-            PnPClient client = await PnPClient.CreateAsync(cs);
+            AwsPnPClient client = await AwsPnPClient.CreateAsync(cs);
             Assert.True(client.Connection.IsConnected);
             var shadow = await client.GetShadowAsync();
             Assert.NotNull(shadow);

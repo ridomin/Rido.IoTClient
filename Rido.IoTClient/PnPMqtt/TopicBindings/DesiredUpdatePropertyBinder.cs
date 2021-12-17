@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
     public class DesiredUpdatePropertyBinder<T>
     {

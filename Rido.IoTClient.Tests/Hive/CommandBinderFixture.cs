@@ -1,4 +1,4 @@
-﻿using Rido.IoTClient.Hive.TopicBindings;
+﻿using Rido.IoTClient.PnPMqtt.TopicBindings;
 using System.Threading.Tasks;
 using Xunit;
 

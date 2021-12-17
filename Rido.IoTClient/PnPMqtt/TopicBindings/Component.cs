@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Hive.TopicBindings
+namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
     public class Component<T>
         where T : ITwinSerializable, new()
@@ -15,7 +15,7 @@ namespace Rido.IoTClient.Hive.TopicBindings
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            this.ComponentValue = new T();
+            ComponentValue = new T();
             update = UpdatePropertyBinder.GetInstance(connection);
         }
         public Task<int> UpdateTwinAsync(CancellationToken token = default) => UpdateTwinAsync(ComponentValue, token);

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Rido.IoTClient.Tests.AzIoTHub
 {
-    class StubClient : PnPClient 
+    class StubClient : IoTHubPnPClient 
     {
         public StubClient(IMqttClient c) : base(c){}
     }
