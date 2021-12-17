@@ -1,6 +1,7 @@
 ﻿using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -92,6 +93,27 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             Assert.Equal(203, wpComplexObj.PropertyValue.Status);
         }
 
+        [Fact]
+        public async Task InitTwinWithDesiredTriggersUpdate()
+        {
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "myDouble");
+            Assert.Equal(0,wp.PropertyValue.Value);
+            bool received = false;
+            wp.OnProperty_Updated = async p =>
+            {
+                received = true;
+                p.Status = 200;
+                return await Task.FromResult(p);
+            };
+            string twin = Stringify(new
+            {
+                reported = new Dictionary<string, object>() { { "$version", 1 } },
+                desired = new Dictionary<string, object>() { { "$version", 2 }, { "myDouble", 2.3} }
+            });
+            await wp.InitPropertyAsync(twin, 1);
+            Assert.True(received);
+            Assert.Equal(2.3, wp.PropertyValue.Value);
+        }
 
         [Fact]
         public async Task InitTwinComplexWithDesiredTriggersUpdate()

@@ -21,7 +21,7 @@ namespace Rido.IoTClient.Tests
 
         public IMqttClientOptions Options
         {
-            get => new MqttClientOptions() { ClientId = "mock" };
+            get => new MqttClientOptions() { ClientId = "mock", Credentials = new MqttClientCredentials() { Username = "mockUser"} };
         }
 
         public IMqttClientConnectedHandler ConnectedHandler { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
