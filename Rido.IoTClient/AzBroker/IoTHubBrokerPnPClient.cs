@@ -15,21 +15,21 @@ namespace Rido.IoTClient.AzBroker
         public string InitialState = string.Empty;
 
         public ConnectionSettings ConnectionSettings;
-        readonly GetTwinBinder GetTwinBinder;
-        readonly UpdateTwinBinder UpdateTwinBinder;
+        readonly IPropertyStoreReader getTwinBinder;
+        readonly IPropertyStoreWriter updateTwinBinder;
 
         public IoTHubBrokerPnPClient(IMqttClient c)
         {
-            Connection = c;
-            GetTwinBinder = new GetTwinBinder(c);
-            UpdateTwinBinder = UpdateTwinBinder.GetInstance(c);
+            Connection = c; 
+            getTwinBinder = new GetTwinBinder(c);
+            updateTwinBinder = UpdateTwinBinder.GetInstance(c);
         }
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) =>
-            GetTwinBinder.GetTwinAsync(cancellationToken);
+            getTwinBinder.ReadPropertiesDocAsync(cancellationToken);
 
         public Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default) =>
-            UpdateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
+            updateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
 
     }
 }

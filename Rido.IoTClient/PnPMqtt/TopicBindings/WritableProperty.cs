@@ -12,7 +12,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
         readonly string propertyName;
         readonly string componentName;
         //readonly UpdateTwinBinder updateTwin;
-        readonly UpdatePropertyBinder updatePropertyBinder;
+        readonly IReportPropertyBinder updatePropertyBinder;
         readonly DesiredUpdatePropertyBinder<T> desiredBinder;
 
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated

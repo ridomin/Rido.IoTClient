@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzBroker.TopicBindings
 {
-    public class GetTwinBinder
+    public class GetTwinBinder : IPropertyStoreReader
     {
         readonly static ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
         readonly IMqttClient connection;
@@ -35,7 +35,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             };
         }
 
-        public async Task<string> GetTwinAsync(CancellationToken cancellationToken = default)
+        public async Task<string> ReadPropertiesDocAsync(CancellationToken cancellationToken = default)
         {
             var rid = RidCounter.NextValue();
             var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -54,6 +54,5 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             }
             return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
         }
-
     }
 }

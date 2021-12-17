@@ -12,7 +12,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
         public PropertyAck<T> PropertyValue;
         readonly string propertyName;
         readonly string componentName;
-        readonly UpdateTwinBinder updateTwin;
+        readonly IPropertyStoreWriter updateTwin;
         readonly DesiredUpdatePropertyBinder<T> desiredBinder;
 
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated

@@ -12,8 +12,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         public PropertyAck<T> PropertyValue;
         readonly string propertyName;
         readonly string componentName;
-        //readonly UpdateTwinBinder updateTwin;
-        readonly UpdateShadowBinder updatePropertyBinder;
+        readonly IPropertyStoreWriter updatePropertyBinder;
         readonly DesiredUpdatePropertyBinder<T> desiredBinder;
 
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated

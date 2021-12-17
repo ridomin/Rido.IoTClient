@@ -8,6 +8,6 @@ namespace Rido.IoTClient
 {
     internal interface IPropertyStoreWriter
     {
-        Task<int> ReportPropertyAsync(object payload, CancellationToken token);
+        Task<int> ReportPropertyAsync(object payload, CancellationToken token = default);
     }
 }
