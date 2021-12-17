@@ -21,9 +21,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
             deviceId = connection.Options.ClientId;
             this.moduleId = moduleId;
         }
-        //public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default) =>
-        //    await SendTelemetryAsync(payload, name, string.Empty, cancellationToken);
-
+        
         public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default)
         {
             string topic = $"pnp/{deviceId}";

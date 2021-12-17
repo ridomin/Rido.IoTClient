@@ -18,7 +18,7 @@ namespace dtmi_com_example
         internal ThermostatComponent Component_thermostat2;
         internal DeviceInformationComponent Component_deviceInfo;
 
-        public TemperatureController(IMqttClient c) : base(c)
+        TemperatureController(IMqttClient c) : base(c)
         {
             Telemetry_workingSet = new Telemetry<double>(c, "workingSet");
             Property_serialNumber = new ReadOnlyProperty<string>(c, "serialNumber");

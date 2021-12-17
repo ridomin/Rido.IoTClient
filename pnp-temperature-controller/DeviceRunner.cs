@@ -39,11 +39,11 @@ namespace pnp_temperature_controller
             await client.Component_thermostat1.ComponentValue.Property_targetTemperature.InitPropertyAsync(client.InitialTwin, 22, stoppingToken);
             await client.Component_thermostat2.ComponentValue.Property_targetTemperature.InitPropertyAsync(client.InitialTwin, 25, stoppingToken);
             ThisDeviceInfo(client.Component_deviceInfo.ComponentValue);
-            await client.Component_deviceInfo.UpdateTwinAsync(stoppingToken);
+            await client.Component_deviceInfo.ReportPropertyAsync(stoppingToken);
 
             Console.WriteLine(client.Component_thermostat1.ComponentValue.Property_targetTemperature.PropertyValue.Value.ToString());
             Console.WriteLine(client.Component_thermostat2.ComponentValue.Property_targetTemperature.PropertyValue.Value.ToString());
-
+                
             while (!stoppingToken.IsCancellationRequested)
             {
                 temperature1 = Math.Round((temperature1 % 2) == 0 ? temperature1 + RndDouble(0.3) : temperature1 - RndDouble(0.2), 2);

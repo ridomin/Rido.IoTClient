@@ -54,7 +54,7 @@ public class DeviceRunner : BackgroundService
         await client.Property_serialNumber.ReportPropertyAsync("S/N 123", false, token);
 
         SetThisDeviceInfo(client.Component_deviceInfo.ComponentValue);
-        await client.Component_deviceInfo.UpdateTwinAsync(token);
+        await client.Component_deviceInfo.ReportPropertyAsync(token);
 
         RefreshScreen(this);
 
