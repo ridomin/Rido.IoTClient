@@ -1,6 +1,7 @@
 ﻿using MQTTnet.Client;
 using System;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -41,7 +42,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
                          {
                              var property = new PropertyAck<T>(propertyName, componentName)
                              {
-                                 Value = desiredProperty.GetValue<T>(),
+                                 Value = desiredProperty.Deserialize<T>(),
                                  Version = desired?["$version"]?.GetValue<int>() ?? 0
                              };
                              var ack = await OnProperty_Updated(property);

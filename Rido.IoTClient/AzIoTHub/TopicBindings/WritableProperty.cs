@@ -95,7 +95,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
                     reported[componentName]["__t"]?.GetValue<string>() == "c" &&
                     reported[componentName][propName] != null)
                 {
-                    reported_Prop = reported[componentName][propName]["value"].GetValue<T>();
+                    reported_Prop = reported[componentName][propName]["value"].Deserialize<T>();
                     reported_Prop_version = reported[componentName][propName]["av"]?.GetValue<int>() ?? -1;
                     reported_Prop_status = reported[componentName][propName]["ac"].GetValue<int>();
                     reported_Prop_description = reported[componentName][propName]["ad"]?.GetValue<string>();

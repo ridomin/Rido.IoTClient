@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using System;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
                     desired[componentName]["__t"]?.GetValue<string>() == "c" &&
                     desired[componentName][propName] != null)
                 {
-                    desired_Prop = desired[componentName][propName].GetValue<T>();
+                    desired_Prop = desired[componentName][propName].Deserialize<T>();
                     desiredFound = true;
                 }
             }
@@ -72,7 +73,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             {
                 if (desired[propName] != null)
                 {
-                    desired_Prop = desired[propName].GetValue<T>();
+                    desired_Prop = desired[propName].Deserialize<T>();
                     desiredFound = true;
                 }
             }
@@ -89,7 +90,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
                     reported[componentName]["__t"]?.GetValue<string>() == "c" &&
                     reported[componentName][propName] != null)
                 {
-                    reported_Prop = reported[componentName][propName]["value"].GetValue<T>();
+                    reported_Prop = reported[componentName][propName]["value"].Deserialize<T>();
                     reported_Prop_version = reported[componentName][propName]["av"]?.GetValue<int>() ?? -1;
                     reported_Prop_status = reported[componentName][propName]["ac"].GetValue<int>();
                     reported_Prop_description = reported[componentName][propName]["ad"]?.GetValue<string>();
@@ -100,7 +101,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             {
                 if (reported[propName] != null)
                 {
-                    reported_Prop = reported[propName]["value"].GetValue<T>();
+                    reported_Prop = reported[propName]["value"].Deserialize<T>();
                     reported_Prop_version = reported[propName]["av"]?.GetValue<int>() ?? -1;
                     reported_Prop_status = reported[propName]["ac"].GetValue<int>();
                     reported_Prop_description = reported[propName]["ad"]?.GetValue<string>();

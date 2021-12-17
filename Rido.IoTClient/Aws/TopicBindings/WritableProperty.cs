@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using System;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             bool desiredFound = false;
             if (desired?[propName] != null)
             {
-                desired_Prop = desired[propName].GetValue<T>();
+                desired_Prop = desired[propName].Deserialize<T>();
                 desiredFound = true;
             }
 
@@ -75,7 +76,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             string reported_Prop_description = String.Empty;
             if (reported?[propName] != null)
             {
-                reported_Prop = reported[propName]["value"].GetValue<T>();
+                reported_Prop = reported[propName]["value"].Deserialize<T>();
                 reported_Prop_version = reported[propName]["av"]?.GetValue<int>() ?? -1;
                 reported_Prop_status = reported[propName]["ac"].GetValue<int>();
                 reported_Prop_description = reported[propName]["ad"]?.GetValue<string>();
