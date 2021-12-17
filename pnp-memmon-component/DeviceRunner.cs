@@ -3,7 +3,7 @@ using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
 
-using dtmi_rido_pnp_Aws;
+using dtmi_rido_pnp;
 
 namespace pnp_memmon_component;
 
