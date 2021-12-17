@@ -24,9 +24,25 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
 	</ItemGroup>
+	
 	<ItemGroup>
 		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
 			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-2.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-2.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-3.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-3.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-4.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-4.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 </Project>

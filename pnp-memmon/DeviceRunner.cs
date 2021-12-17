@@ -1,8 +1,9 @@
-using dtmi_rido_pnp;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
+
+using dtmi_rido_pnp;
 
 namespace pnp_memmon;
 
@@ -22,7 +23,7 @@ public class DeviceRunner : BackgroundService
     const bool default_enabled = true;
     const int default_interval = 8;
 
-    dtmi_rido_pnp.memmon client;
+    memmon client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -33,7 +34,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await dtmi_rido_pnp.memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
         _logger.LogInformation("Connected");
 
         client.Connection.DisconnectedAsync += async e =>
