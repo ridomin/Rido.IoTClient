@@ -100,8 +100,9 @@ namespace Rido.IoTClient.Tests.AzIoTHub
             var updateTask = client.Property_deviceDesiredState.ReportPropertyAsync();
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
-            await Task.Delay(10);
-            Assert.True(updateTask.IsCompleted);
+            //await Task.Delay(20);
+            await updateTask.WaitAsync(TimeSpan.FromMilliseconds(100));
+            Assert.True(updateTask.IsCompletedSuccessfully, "status " + updateTask.Status.ToString());
             Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
             Assert.Equal(Stringify(new
             {
