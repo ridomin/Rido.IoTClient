@@ -9,18 +9,14 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzBroker
 {
-    public class IoTHubBrokerPnPClient
+    public class IoTHubBrokerPnPClient : PnPClient
     {
-        public IMqttClient Connection;
         public string InitialState = string.Empty;
-
-        public ConnectionSettings ConnectionSettings;
         readonly IPropertyStoreReader getTwinBinder;
         readonly IPropertyStoreWriter updateTwinBinder;
 
-        public IoTHubBrokerPnPClient(IMqttClient c)
+        public IoTHubBrokerPnPClient(IMqttClient c) : base(c)
         {
-            Connection = c; 
             getTwinBinder = new GetTwinBinder(c);
             updateTwinBinder = UpdateTwinBinder.GetInstance(c);
         }

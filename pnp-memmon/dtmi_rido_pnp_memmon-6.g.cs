@@ -8,22 +8,18 @@ using Rido.IoTClient.PnPMqtt.TopicBindings;
 
 namespace dtmi_rido_pnp_AwsBroker
 {
-    public class memmon //: AwsPnPClient
+    public class memmon : PnPClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
-        public ConnectionSettings ConnectionSettings;
-        public IMqttClient Connection;
-        public string InitialState = string.Empty;
-
+        
         public ReadOnlyProperty<DateTime> Property_started;
         public WritableProperty<bool> Property_enabled;
         public WritableProperty<int> Property_interval;
         public Telemetry<double> Telemetry_workingSet;
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
 
-        private memmon(IMqttClient c) //: base(c)
+        private memmon(IMqttClient c) : base(c)
         {
-            Connection = c;
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");

@@ -3,7 +3,7 @@ using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
 
-using dtmi_rido_pnp_AwsBroker;
+using dtmi_rido_pnp_AwsShadow;
 
 namespace pnp_memmon;
 
@@ -11,6 +11,7 @@ public class DeviceRunner : BackgroundService
 {
     private readonly ILogger<DeviceRunner> _logger;
     private readonly IConfiguration _configuration;
+   
     readonly Stopwatch clock = Stopwatch.StartNew();
 
     double telemetryWorkingSet = 0;

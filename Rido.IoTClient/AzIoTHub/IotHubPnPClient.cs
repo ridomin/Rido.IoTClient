@@ -5,19 +5,14 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub
 {
-    public class IoTHubPnPClient //: IDisposable
+    public class IoTHubPnPClient : PnPClient 
     {
-        public readonly IMqttClient Connection;
-
-        public ConnectionSettings ConnectionSettings;
         public string InitialState = string.Empty;
-
         readonly IPropertyStoreReader getTwinBinder;
         readonly IReportPropertyBinder updateTwinBinder;
 
-        public IoTHubPnPClient(IMqttClient connection)
+        public IoTHubPnPClient(IMqttClient connection) : base(connection)
         {
-            this.Connection = connection;
             getTwinBinder = GetTwinBinder.GetInstance(connection);
             updateTwinBinder = UpdateTwinBinder.GetInstance(connection);
         }

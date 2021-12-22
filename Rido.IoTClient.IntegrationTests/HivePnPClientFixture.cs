@@ -1,8 +1,11 @@
-﻿using MQTTnet.Client;
+﻿using MQTTnet;
+using MQTTnet.Client;
 using Rido.IoTClient.PnPMqtt;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,7 +26,22 @@ namespace Rido.IoTClient.IntegrationTests
                 DeviceId = deviceId,
                 SharedAccessKey = defaultKey
             };
-            return await PnPClient.CreateAsync(cs);
+            return await CreateAsync(cs);
+        }
+
+        static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        {
+            IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithBasicAuth(cs).Build(), cancellationToken);
+            if (connAck.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                Trace.TraceError(connAck.ReasonString);
+                throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
+            }
+            return new PnPClient(mqtt)
+            {
+                ConnectionSettings = cs
+            };
         }
 
         [Fact]

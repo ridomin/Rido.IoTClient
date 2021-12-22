@@ -8,19 +8,15 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws
 {
-    public class AwsPnPClient
+    public class AwsPnPClient : PnPClient
     {
-        public IMqttClient Connection;
         public string InitialState = string.Empty;
-        public ConnectionSettings ConnectionSettings;
-
         readonly IPropertyStoreReader getShadowBinder;
         readonly IPropertyStoreWriter updateShadowBinder;
         public readonly DesiredUpdatePropertyBinder<string> desiredUpdatePropertyBinder;
 
-        public AwsPnPClient(IMqttClient c)
+        public AwsPnPClient(IMqttClient c) : base(c)
         {
-            this.Connection = c;
             getShadowBinder = new GetShadowBinder(c);
             updateShadowBinder = UpdateShadowBinder.GetInstance(c);
             desiredUpdatePropertyBinder = new DesiredUpdatePropertyBinder<string>(c, c.Options.ClientId, "name");
