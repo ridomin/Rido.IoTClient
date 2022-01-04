@@ -25,11 +25,11 @@ namespace pnp_generic_client
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var mqtt = new MqttFactory().CreateMqttClient(MqttNetTraceLogger.CreateTraceLogger());
-            var cs = new ConnectionSettings(_configuration.GetConnectionString("cs")) { SasMinutes = 2, RetryInterval = 10 };
-
-            await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(cs).Build(), stoppingToken);
+            
+            var cs = new ConnectionSettings(_configuration.GetConnectionString("cs")) { ModelId = "dtmi:tartabit:AssetTracker;1" };
+            var mqtt= await IoTHubConnectionFactory.CreateAsync(cs, stoppingToken);
             var client = new GenericPnPClient(mqtt) { ConnectionSettings = cs };
+
             _logger.LogInformation($"Connected to {client.ConnectionSettings}");
 
             await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
@@ -58,7 +58,16 @@ namespace pnp_generic_client
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await client.SendTelemetryAsync(new { temp = 32.3 }, stoppingToken);
+                await client.SendTelemetryAsync(new
+                {
+                    location = new
+                    {
+                        lat = -114.0298,
+                        lon = 34.5574,
+                        alt = 657.8799
+                    },
+                    temperature = 23
+                });
                 _logger.LogInformation("sending telemetry");
                 await Task.Delay(5000, stoppingToken);
             }

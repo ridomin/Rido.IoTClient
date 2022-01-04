@@ -63,7 +63,8 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 Trace.TraceError("Error publishing message: " + puback.ReasonString);
                 throw new ApplicationException(puback.ReasonString);
             }
-            return await pendingRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
+            //return await pendingRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(30));
+            return await Task.FromResult(0);
         }
     }
 }
