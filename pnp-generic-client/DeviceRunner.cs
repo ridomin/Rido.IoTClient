@@ -1,8 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MQTTnet;
-using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
 using System;
@@ -45,7 +43,7 @@ namespace pnp_generic_client
                 });
             };
 
-            client.genericDesiredUpdatePropertyBinder.OnProperty_Updated = async m =>
+            client.genericDesiredUpdateProperty.OnProperty_Updated = async m =>
             {
                 _logger.LogInformation("Processing desired: " + m.ToJsonString());
                 return await Task.FromResult(new GenericPropertyAck
@@ -67,7 +65,8 @@ namespace pnp_generic_client
                         alt = 657.8799
                     },
                     temperature = 23
-                });
+                },
+                stoppingToken);
                 _logger.LogInformation("sending telemetry");
                 await Task.Delay(5000, stoppingToken);
             }
