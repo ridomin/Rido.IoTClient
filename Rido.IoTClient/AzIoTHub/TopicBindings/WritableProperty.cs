@@ -27,11 +27,11 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
             propertyName = name;
             componentName = component;
             PropertyValue = new PropertyAck<T>(name, componentName);
-            updateTwin = UpdateTwinBinder.GetInstance(connection);
+            updateTwin = new UpdateTwinBinder(connection);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task ReportPropertyAsync(CancellationToken token = default) => await updateTwin.ReportPropertyAsync(this.PropertyValue.ToAckDict(), token);
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updateTwin.ReportPropertyAsync(this.PropertyValue.ToAckDict(), token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {

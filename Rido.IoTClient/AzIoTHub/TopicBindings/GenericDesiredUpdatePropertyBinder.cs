@@ -12,7 +12,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public GenericDesiredUpdatePropertyBinder(IMqttClient connection)
         {
             _ = connection.SubscribeAsync("$iothub/twin/PATCH/properties/desired/#");
-            IPropertyStoreWriter updateTwin = UpdateTwinBinder.GetInstance(connection);
+            IPropertyStoreWriter updateTwin = new UpdateTwinBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>
              {
                  var topic = m.ApplicationMessage.Topic;

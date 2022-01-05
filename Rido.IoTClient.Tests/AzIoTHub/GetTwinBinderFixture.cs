@@ -12,7 +12,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public GetTwinBinderFixture()
         {
             mockClient = new MockMqttClient();
-            binder = GetTwinBinder.GetInstance(mockClient);
+            binder = new GetTwinBinder(mockClient);
         }
 
         [Fact]

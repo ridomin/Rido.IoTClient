@@ -11,18 +11,8 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
     {
         readonly static ConcurrentDictionary<int, TaskCompletionSource<int>> pendingRequests = new ConcurrentDictionary<int, TaskCompletionSource<int>>();
         readonly IMqttClient connection;
-
-        private static UpdateTwinBinder instance;
-
-        public static UpdateTwinBinder GetInstance(IMqttClient c)
-        {
-            if (instance == null || instance.connection != c)
-            {
-                instance = new UpdateTwinBinder(c);
-            }
-            return instance;
-        }
-        UpdateTwinBinder(IMqttClient connection)
+        
+        public UpdateTwinBinder(IMqttClient connection)
         {
             this.connection = connection;
             _ = connection.SubscribeAsync("$iothub/twin/res/#");

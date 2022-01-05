@@ -14,7 +14,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            update = UpdateTwinBinder.GetInstance(connection);
+            update = new UpdateTwinBinder(connection);
         }
 
         public async Task<int> ReportPropertyAsync(CancellationToken token = default)

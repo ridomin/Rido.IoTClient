@@ -42,17 +42,27 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         {
             var client = new TestPnPClient(connection);
             Assert.NotNull(client);
-            Assert.Equal(8, connection.numSubscriptions);
+            Assert.Equal(18, connection.numSubscriptions);
             var list = connection.GetInvocationList();
-            Assert.Equal(8, list.Length);
+            Assert.Equal(18, list.Length);
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.GetTwinBinder", list[0].Method.DeclaringType?.FullName?.ToString());
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[1].Method.DeclaringType?.FullName?.ToString());
-            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.DesiredUpdatePropertyBinder", list[2].Method.DeclaringType?.FullName?.ToString());
-            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.DesiredUpdatePropertyBinder", list[3].Method.DeclaringType?.FullName?.ToString());
-            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.Command", list[4].Method.DeclaringType?.FullName?.ToString());
-            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.Command", list[5].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[2].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[3].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[4].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[5].Method.DeclaringType?.FullName?.ToString());
             Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.DesiredUpdatePropertyBinder", list[6].Method.DeclaringType?.FullName?.ToString());
-            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.Command", list[7].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[7].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[8].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.DesiredUpdatePropertyBinder", list[9].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.Command", list[10].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.Command", list[11].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[12].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[13].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[14].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.UpdateTwinBinder", list[15].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.DesiredUpdatePropertyBinder", list[16].Method.DeclaringType?.FullName?.ToString());
+            Assert.StartsWith("Rido.IoTClient.AzIoTHub.TopicBindings.Command", list[17].Method.DeclaringType?.FullName?.ToString());
         }
 
 

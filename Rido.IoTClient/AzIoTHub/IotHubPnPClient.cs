@@ -13,8 +13,8 @@ namespace Rido.IoTClient.AzIoTHub
 
         public IoTHubPnPClient(IMqttClient connection) : base(connection)
         {
-            getTwinBinder = GetTwinBinder.GetInstance(connection);
-            updateTwinBinder = UpdateTwinBinder.GetInstance(connection);
+            getTwinBinder = new GetTwinBinder(connection);
+            updateTwinBinder = new UpdateTwinBinder(connection);
         }
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => getTwinBinder.ReadPropertiesDocAsync(cancellationToken);
