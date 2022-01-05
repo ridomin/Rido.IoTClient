@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class UpdateShadowBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
-        TaskCompletionSource<int> pendingRequest;
+        ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
         readonly IMqttClient connection;
 
         private static UpdateShadowBinder instance;
@@ -27,6 +28,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         UpdateShadowBinder(IMqttClient connection)
         {
             this.connection = connection;
+            pendingRequests = new ConcurrentQueue<TaskCompletionSource<int>>();
             _ = connection.SubscribeAsync($"$aws/things/{connection.Options.ClientId}/shadow/update/accepted");
             connection.ApplicationMessageReceivedAsync += async m =>
             {
@@ -37,7 +39,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
                     JsonNode node = JsonNode.Parse(msg);
                     int version = node["version"].GetValue<int>();
-                    if (pendingRequest != null && !pendingRequest.Task.IsCompleted)
+                    if (pendingRequests.TryDequeue(out var pendingRequest))
                     {
                         pendingRequest.SetResult(version);
                     }
@@ -47,7 +49,8 @@ namespace Rido.IoTClient.Aws.TopicBindings
 
         public async Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default)
         {
-            pendingRequest = new TaskCompletionSource<int>();
+            var tcs = new TaskCompletionSource<int>();
+            pendingRequests.Enqueue(tcs);
             Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>
             {
                 {
@@ -63,8 +66,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 Trace.TraceError("Error publishing message: " + puback.ReasonString);
                 throw new ApplicationException(puback.ReasonString);
             }
-            //return await pendingRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(30));
-            return await Task.FromResult(0);
+            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
         }
     }
 }

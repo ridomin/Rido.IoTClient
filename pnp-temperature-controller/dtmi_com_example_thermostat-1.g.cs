@@ -5,7 +5,7 @@ using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
 using System.Text.Json;
 
-namespace pnp_temperature_controller
+namespace dtmi_com_example
 {
     internal class Thermostat : Component
     {

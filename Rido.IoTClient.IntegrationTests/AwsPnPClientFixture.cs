@@ -66,6 +66,20 @@ namespace Rido.IoTClient.IntegrationTests
             Assert.True(updRes > 0);
         }
 
+        [Fact]
+        public async Task UpdateShadowConcurrent()
+        {
+            var client = new AwsPnPClient(await AwsConnectionFactory.CreateAsync(cs));
+            Assert.True(client.Connection.IsConnected);
+            var shadow = await client.GetShadowAsync();
+            Assert.NotNull(shadow);
+            var updRes = await client.UpdateShadowAsync(new {name = "rido"});
+            var updRes2 = await client.UpdateShadowAsync(new{name = "rido2"});
+            Assert.True(updRes > 0);
+            Assert.True(updRes2 > updRes);
+        }
+
+
         //[Fact]
         //public async Task ReceiveShadowUpdate()
         //{
