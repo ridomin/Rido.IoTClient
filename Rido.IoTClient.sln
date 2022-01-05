@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-generic-client", "pnp-g
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-aws-sample", "pnp-aws-sample\pnp-aws-sample.csproj", "{A6347AC3-0139-4207-9211-DB28726B43D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pnp-temperature-controller", "pnp-temperature-controller\pnp-temperature-controller.csproj", "{617D150A-79DB-499F-A345-6DEE6E3D58EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-temperature-controller", "pnp-temperature-controller\pnp-temperature-controller.csproj", "{617D150A-79DB-499F-A345-6DEE6E3D58EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{6ED72D5F-FD41-460E-A68E-62BDF005B1D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{44F4764C-D964-488F-8360-DEE8921AC3A4} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
+		{CE98A769-0744-411D-B07F-B83FB2405842} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
+		{A593C79F-EB11-463A-B27B-E5BFD497BB87} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
+		{C2D91963-1EA1-4D23-BA7C-AC881E498EB3} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
+		{A6347AC3-0139-4207-9211-DB28726B43D5} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
+		{617D150A-79DB-499F-A345-6DEE6E3D58EC} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}
