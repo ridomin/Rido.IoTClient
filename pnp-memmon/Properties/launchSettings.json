@@ -3,7 +3,7 @@
     "HubClassic": {
       "commandName": "Project",
       "environmentVariables": {
-        "ConnectionStrings__cs": "HostName=ridox.azure-devices.net;DeviceId=memmon32;SharedAccessKey=hFbDDUytbR3cfO5bF0K05FnhdQ513yPwZuIpfP9x25w=;SasMinutes=3",
+        "ConnectionStrings__cs": "HostName=ridox.azure-devices.net;DeviceId=memmon23;SharedAccessKey=Vk/B/R4mdWbEsvcIO1wRJcL8T1GFvkDM22utDdK7jPU=",
         "DOTNET_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true

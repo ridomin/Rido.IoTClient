@@ -1,9 +1,8 @@
+using dtmi_rido_pnp_HiveBroker;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
-
-using dtmi_rido_pnp_AwsShadow;
 
 namespace pnp_memmon;
 
@@ -11,20 +10,18 @@ public class DeviceRunner : BackgroundService
 {
     private readonly ILogger<DeviceRunner> _logger;
     private readonly IConfiguration _configuration;
-   
-    readonly Stopwatch clock = Stopwatch.StartNew();
+    
+    private readonly Stopwatch clock = Stopwatch.StartNew();
+    private int telemetryCounter = 0;
+    private int commandCounter = 0;
+    private int twinRecCounter = 0;
+    private int reconnectCounter = 0;
 
-    double telemetryWorkingSet = 0;
+    private double telemetryWorkingSet = 0;
+    private const bool default_enabled = true;
+    private const int default_interval = 8;
 
-    int telemetryCounter = 0;
-    int commandCounter = 0;
-    int twinRecCounter = 0;
-    int reconnectCounter = 0;
-
-    const bool default_enabled = true;
-    const int default_interval = 8;
-
-    memmon client;
+    private memmon client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -37,14 +34,14 @@ public class DeviceRunner : BackgroundService
         _logger.LogInformation("Connecting..");
         client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
         _logger.LogInformation("Connected");
-        
+
         client.Connection.DisconnectedAsync += async e =>
         {
             await Task.Delay(1);
             reconnectCounter++;
             Console.WriteLine(e.Exception.ToString());
         };
-        
+
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
@@ -69,7 +66,7 @@ public class DeviceRunner : BackgroundService
         }
     }
 
-    async Task<PropertyAck<bool>> Property_enabled_UpdateHandler(PropertyAck<bool> p)
+    private async Task<PropertyAck<bool>> Property_enabled_UpdateHandler(PropertyAck<bool> p)
     {
         twinRecCounter++;
         var ack = new PropertyAck<bool>(p.Name)
@@ -83,7 +80,7 @@ public class DeviceRunner : BackgroundService
         return await Task.FromResult(ack);
     }
 
-    async Task<PropertyAck<int>> Property_interval_UpdateHandler(PropertyAck<int> p)
+    private async Task<PropertyAck<int>> Property_interval_UpdateHandler(PropertyAck<int> p)
     {
         ArgumentNullException.ThrowIfNull(client);
         twinRecCounter++;
@@ -98,8 +95,7 @@ public class DeviceRunner : BackgroundService
         return await Task.FromResult(ack);
     }
 
-
-    async Task<Cmd_getRuntimeStats_Response> Command_getRuntimeStats_Handler(Cmd_getRuntimeStats_Request req)
+    private async Task<Cmd_getRuntimeStats_Response> Command_getRuntimeStats_Handler(Cmd_getRuntimeStats_Request req)
     {
         commandCounter++;
         var result = new Cmd_getRuntimeStats_Response()

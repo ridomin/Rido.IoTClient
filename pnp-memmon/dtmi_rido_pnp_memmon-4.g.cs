@@ -29,15 +29,9 @@ namespace dtmi_rido_pnp_AzBroker
 
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
-            var cs = new ConnectionSettings(connectionString)
-            {
-                ModelId = modelId
-            };
+            var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
             var connection = await IoTHubBrokerConnectionFactory.CreateAsync(cs, cancellationToken);
-            var client = new memmon(connection)
-            {
-                ConnectionSettings = cs
-            };
+            var client = new memmon(connection) { ConnectionSettings = cs };
             //client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;
         }

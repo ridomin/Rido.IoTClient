@@ -13,7 +13,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            update = UpdatePropertyBinder.GetInstance(connection);
+            update = new UpdatePropertyBinder(connection);
         }
 
         public async Task<int> ReportPropertyAsync(CancellationToken token)

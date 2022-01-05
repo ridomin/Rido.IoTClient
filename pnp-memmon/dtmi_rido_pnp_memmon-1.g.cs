@@ -4,7 +4,7 @@ using MQTTnet.Client;
 using Rido.IoTClient;
 using Rido.IoTClient.AzIoTHub;
 using Rido.IoTClient.AzIoTHub.TopicBindings;
-    
+
 namespace dtmi_rido_pnp_IoTHubClassic
 {
     public class memmon : IoTHubPnPClient
@@ -28,16 +28,8 @@ namespace dtmi_rido_pnp_IoTHubClassic
 
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
-            var cs = new ConnectionSettings(connectionString)
-            {
-                ModelId = modelId
-            };
-
-            var client = new memmon(await IoTHubConnectionFactory.CreateAsync(cs, cancellationToken))
-            {
-                ConnectionSettings = cs
-            };
-
+            var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
+            var client = new memmon(await IoTHubConnectionFactory.CreateAsync(cs, cancellationToken)) { ConnectionSettings = cs };
             client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;
         }

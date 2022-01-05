@@ -18,7 +18,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
-            updateBinder = UpdatePropertyBinder.GetInstance(connection);
+            updateBinder = new UpdatePropertyBinder(connection);
             Name = name;
             this.component = component;
         }

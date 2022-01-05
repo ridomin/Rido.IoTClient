@@ -8,18 +8,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
     {
         readonly IMqttClient connection;
 
-        private static UpdatePropertyBinder instance;
-
-        public static UpdatePropertyBinder GetInstance(IMqttClient connection)
-        {
-            if (instance == null || instance.connection != connection)
-            {
-                instance = new UpdatePropertyBinder(connection);
-            }
-            return instance;
-
-        }
-        private UpdatePropertyBinder(IMqttClient connection)
+        public UpdatePropertyBinder(IMqttClient connection)
         {
             this.connection = connection;
         }

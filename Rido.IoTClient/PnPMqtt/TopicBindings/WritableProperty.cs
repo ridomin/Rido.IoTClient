@@ -26,7 +26,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
             propertyName = name;
             componentName = component;
             //updateTwin = new UpdateTwinBinder(connection);
-            updatePropertyBinder = UpdatePropertyBinder.GetInstance(connection);
+            updatePropertyBinder = new UpdatePropertyBinder(connection);
             PropertyValue = new PropertyAck<T>(name, componentName);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }

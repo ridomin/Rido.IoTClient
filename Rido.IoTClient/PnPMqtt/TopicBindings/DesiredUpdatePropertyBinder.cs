@@ -13,7 +13,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
         public DesiredUpdatePropertyBinder(IMqttClient connection, string propertyName, string componentName = "")
         {
             _ = connection.SubscribeAsync($"pnp/{connection.Options.ClientId}/props/set/#");
-            IReportPropertyBinder propertyBinder = UpdatePropertyBinder.GetInstance(connection);
+            IReportPropertyBinder propertyBinder = new UpdatePropertyBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>
             {
                 var topic = m.ApplicationMessage.Topic;
