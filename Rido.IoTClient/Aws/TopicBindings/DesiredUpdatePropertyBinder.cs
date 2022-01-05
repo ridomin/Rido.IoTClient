@@ -14,7 +14,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         {
             string deviceId = connection.Options.ClientId;
             _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/accepted");
-            IPropertyStoreWriter updateShadow = UpdateShadowBinder.GetInstance(connection);
+            IPropertyStoreWriter updateShadow = new UpdateShadowBinder(connection);
             connection.ApplicationMessageReceivedAsync += async m =>
              {
                  var topic = m.ApplicationMessage.Topic;

@@ -14,7 +14,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         public Component(IMqttClient connection, string name)
         {
             this.name = name;
-            update = UpdateShadowBinder.GetInstance(connection);
+            update = new UpdateShadowBinder(connection);
         }
 
         public async Task<int> ReportPropertyAsync(CancellationToken token = default)

@@ -17,7 +17,7 @@ namespace Rido.IoTClient.Aws
         public AwsPnPClient(IMqttClient c) : base(c)
         {
             getShadowBinder = new GetShadowBinder(c);
-            updateShadowBinder = UpdateShadowBinder.GetInstance(c);
+            updateShadowBinder = new UpdateShadowBinder(c);
         }
 
         public Task<string> GetShadowAsync(CancellationToken cancellationToken = default) => getShadowBinder.ReadPropertiesDocAsync(cancellationToken);

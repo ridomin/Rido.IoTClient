@@ -18,7 +18,7 @@ namespace Rido.IoTClient.AzBroker
         public IoTHubBrokerPnPClient(IMqttClient c) : base(c)
         {
             getTwinBinder = new GetTwinBinder(c);
-            updateTwinBinder = UpdateTwinBinder.GetInstance(c);
+            updateTwinBinder = new UpdateTwinBinder(c);
         }
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) =>

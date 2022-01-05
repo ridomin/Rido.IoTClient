@@ -18,7 +18,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
-            updateBinder = UpdateShadowBinder.GetInstance(connection);
+            updateBinder = new UpdateShadowBinder(connection);
             this.Name = name;
             this.component = component;
         }

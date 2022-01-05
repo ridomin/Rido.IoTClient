@@ -17,7 +17,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
-            updateTwin = UpdateTwinBinder.GetInstance(connection);
+            updateTwin = new UpdateTwinBinder(connection);
             this.name = name;
             this.component = component;
         }

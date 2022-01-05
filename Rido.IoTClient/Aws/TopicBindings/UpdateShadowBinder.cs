@@ -12,20 +12,10 @@ namespace Rido.IoTClient.Aws.TopicBindings
 {
     public class UpdateShadowBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
-        ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
+        readonly ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
         readonly IMqttClient connection;
 
-        private static UpdateShadowBinder instance;
-
-        public static UpdateShadowBinder GetInstance(IMqttClient c)
-        {
-            if (instance == null || instance.connection != c)
-            {
-                instance = new UpdateShadowBinder(c);
-            }
-            return instance;
-        }
-        UpdateShadowBinder(IMqttClient connection)
+        public UpdateShadowBinder(IMqttClient connection)
         {
             this.connection = connection;
             pendingRequests = new ConcurrentQueue<TaskCompletionSource<int>>();
