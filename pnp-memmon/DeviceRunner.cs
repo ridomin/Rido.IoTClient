@@ -1,8 +1,9 @@
-using dtmi_rido_pnp_HiveBroker;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
+
+using dtmi_rido_pnp_IoTHubClassic;
 
 namespace pnp_memmon;
 
