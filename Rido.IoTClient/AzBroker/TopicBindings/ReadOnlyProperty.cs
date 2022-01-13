@@ -22,9 +22,9 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             this.component = component;
         }
 
-        public async Task ReportPropertyAsync(T newValue, bool asComponent = false, CancellationToken cancellationToken = default)
+        public async Task ReportPropertyAsync(CancellationToken cancellationToken = default)
         {
-            PropertyValue = newValue;
+            bool asComponent = !string.IsNullOrEmpty(component);
             Version = await updateTwin.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 

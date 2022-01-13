@@ -49,7 +49,8 @@ namespace pnp_aws_sample
             await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
             await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
 
-            await client.Property_started.ReportPropertyAsync(DateTime.Now, false, stoppingToken);
+            client.Property_started.PropertyValue = DateTime.Now;
+            await client.Property_started.ReportPropertyAsync(stoppingToken);
 
             RefreshScreen(this);
 

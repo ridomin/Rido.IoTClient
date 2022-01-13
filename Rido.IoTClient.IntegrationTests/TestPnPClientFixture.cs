@@ -20,10 +20,8 @@ namespace Rido.IoTClient.IntegrationTests
         public async Task ValidateReadOnlyProperty()
         {
             var client = await TestPnPClient.CreateAsync(cs);
-
-            await client.Property_deviceInfo.ReportPropertyAsync(
-                new DeviceInfo() { UserName = client.Connection.Options.Credentials.Username }
-            );
+            client.Property_deviceInfo.PropertyValue = new DeviceInfo() { UserName = client.Connection.Options.Credentials.Username };
+            await client.Property_deviceInfo.ReportPropertyAsync();
 
             var twinJson = await client.GetTwinAsync();
 

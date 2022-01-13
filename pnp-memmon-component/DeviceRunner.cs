@@ -51,8 +51,10 @@ public class DeviceRunner : BackgroundService
         await client.Component_memMon.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, token);
         await client.Component_memMon.Property_interval.InitPropertyAsync(client.InitialState, default_interval, token);
 
-        await client.Component_memMon.Property_started.ReportPropertyAsync(DateTime.Now, true, token);
-        await client.Property_serialNumber.ReportPropertyAsync("S/N 123", false, token);
+        client.Component_memMon.Property_started.PropertyValue = DateTime.Now;
+        await client.Component_memMon.Property_started.ReportPropertyAsync(token);
+        client.Property_serialNumber.PropertyValue = "S/N 123";
+        await client.Property_serialNumber.ReportPropertyAsync(token);
 
         SetThisDeviceInfo(client.Component_deviceInfo);
         await client.Component_deviceInfo.ReportPropertyAsync(token);

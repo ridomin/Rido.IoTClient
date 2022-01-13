@@ -151,7 +151,8 @@ namespace pnp_temperature_controller
             if (readings1.Values.Max<double>() > maxTemp1)
             {
                 maxTemp1 = readings1.Values.Max<double>();
-                _ = client.Component_thermostat1.Property_maxTempSinceLastReboot.ReportPropertyAsync(maxTemp1);
+                client.Component_thermostat1.Property_maxTempSinceLastReboot.PropertyValue = maxTemp1;
+                _ = client.Component_thermostat1.Property_maxTempSinceLastReboot.ReportPropertyAsync();
 
                 Console.WriteLine($"\n-> r: maxTempSinceLastReboot {maxTemp1}");
             }
@@ -178,7 +179,8 @@ namespace pnp_temperature_controller
             if (readings2.Values.Max<double>() > maxTemp2)
             {
                 maxTemp2 = readings2.Values.Max<double>();
-                _ = client.Component_thermostat2.Property_maxTempSinceLastReboot.ReportPropertyAsync(maxTemp2);
+                client.Component_thermostat2.Property_maxTempSinceLastReboot.PropertyValue = maxTemp2;
+                _ = client.Component_thermostat2.Property_maxTempSinceLastReboot.ReportPropertyAsync();
 
                 Console.WriteLine($"\n-> r: maxTempSinceLastReboot {maxTemp2}");
             }

@@ -70,10 +70,8 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public async void ReportReadOnlyProperty()
         {
             var client = new TestPnPClient(connection);
-
-            var updateTask = client.Property_deviceInfo.ReportPropertyAsync(
-                new DeviceInfo() { UserName = client.Connection.Options.Credentials.Username }
-            );
+            client.Property_deviceInfo.PropertyValue = new DeviceInfo() { UserName = client.Connection.Options.Credentials.Username };
+            var updateTask = client.Property_deviceInfo.ReportPropertyAsync();
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
             await Task.Delay(20);
@@ -193,7 +191,8 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         {
             var client = new TestPnPClient(connection);
 
-            var updateTask = client.Component_testInfo.Property_name.ReportPropertyAsync("testName", true);
+            client.Component_testInfo.Property_name.PropertyValue = "testName";
+            var updateTask = client.Component_testInfo.Property_name.ReportPropertyAsync();
             Assert.Equal("testName", client.Component_testInfo.Property_name.PropertyValue);
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
