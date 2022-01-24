@@ -1,3 +1,4 @@
+using dtmi_rido_pnp_HiveBroker;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
