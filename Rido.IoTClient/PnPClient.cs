@@ -5,6 +5,7 @@ namespace Rido.IoTClient
 {
     public class PnPClient
     {
+        public string InitialState = "";
         public IMqttClient Connection;
 
         public ConnectionSettings ConnectionSettings;

@@ -1,10 +1,8 @@
-using dtmi_rido_pnp_HiveBroker;
+using dtmi_rido_pnp_IoTHubClassic;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
 using System.Text;
-
-using dtmi_rido_pnp_HiveBroker;
 
 namespace pnp_memmon;
 
@@ -47,7 +45,7 @@ public class DeviceRunner : BackgroundService
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
-
+        
         await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
         await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
 

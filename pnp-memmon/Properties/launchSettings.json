@@ -24,6 +24,14 @@
       },
       "dotnetRunMessages": true
     },
+    "Verne": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__cs": "HostName=verne.westus3.cloudapp.azure.com;DeviceId=client1;SharedAccessKey=Myclientpwd.000;Auth=Basic",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
     "Central": {
       "commandName": "Project",
       "environmentVariables": {

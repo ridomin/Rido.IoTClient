@@ -11,7 +11,11 @@ namespace Rido.IoTClient.PnPMqtt
         {
             builder
              .WithTcpServer(cs.HostName, 8883)
-                .WithTls()
+                .WithTls(new MqttClientOptionsBuilderTlsParameters()
+                {
+                    UseTls = true,
+                    IgnoreCertificateRevocationErrors = true
+                })
                 .WithClientId(cs.DeviceId)
                 .WithCredentials(cs.DeviceId, cs.SharedAccessKey);
             return builder;

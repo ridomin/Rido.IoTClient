@@ -34,6 +34,10 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(twin))
+            {
+                return;
+            }
             PropertyValue = InitFromTwin(twin, propertyName, componentName, defaultValue);
             if (desiredBinder.OnProperty_Updated != null && (PropertyValue.DesiredVersion > 1))
             {
@@ -50,7 +54,7 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
         PropertyAck<T> InitFromTwin(string twinJson, string propName, string componentName, T defaultValue)
         {
 
-            var root = JsonNode.Parse(twinJson);
+            var root = JsonNode.Parse(twinJson ?? "{}");
             var desired = root?["desired"];
             var reported = root?["reported"];
             T desired_Prop = default;
