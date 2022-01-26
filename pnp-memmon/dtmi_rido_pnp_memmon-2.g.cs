@@ -6,7 +6,7 @@ using Rido.IoTClient;
 using Rido.IoTClient.PnPMqtt;
 using Rido.IoTClient.PnPMqtt.TopicBindings;
 
-namespace dtmi_rido_pnp_HiveBroker
+namespace dtmi_rido_pnp_PnPBroker
 {
     public class memmon : PnPClient
     {
@@ -17,8 +17,6 @@ namespace dtmi_rido_pnp_HiveBroker
         public WritableProperty<int> Property_interval;
         public Telemetry<double> Telemetry_workingSet;
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;
-
-        public string InitialState { get; set; }
 
         private memmon(IMqttClient c) : base(c)
         {
