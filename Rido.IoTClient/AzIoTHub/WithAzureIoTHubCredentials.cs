@@ -88,7 +88,7 @@ namespace Rido.IoTClient.AzIoTHub
             if (subject.Contains(','))
             {
                 var posComma = result.IndexOf(',');
-                result = result.Substring(0, posComma);
+                result = result[..posComma];
             }
             return result.Replace(" ", "");
         }
