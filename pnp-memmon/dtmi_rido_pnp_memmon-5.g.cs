@@ -8,7 +8,7 @@ using Rido.IoTClient.Aws.TopicBindings;
 
 namespace dtmi_rido_pnp_AwsShadow
 {
-    public class memmon : AwsPnPClient
+    public class memmon : AwsClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 

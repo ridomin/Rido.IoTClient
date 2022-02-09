@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws
 {
-    public class AwsPnPClient : PnPClient
+    public class AwsClient : BaseClient
     {
-        public string InitialState = string.Empty;
+        
         readonly IPropertyStoreReader getShadowBinder;
         readonly IPropertyStoreWriter updateShadowBinder;
 
-        public AwsPnPClient(IMqttClient c) : base(c)
+        public AwsClient(IMqttClient c) : base(c)
         {
             getShadowBinder = new GetShadowBinder(c);
             updateShadowBinder = new UpdateShadowBinder(c);

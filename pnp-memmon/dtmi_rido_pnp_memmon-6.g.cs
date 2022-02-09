@@ -7,7 +7,7 @@ using Rido.IoTClient.PnPMqtt.TopicBindings;
 
 namespace dtmi_rido_pnp_AwsBroker
 {
-    public class memmon : PnPClient
+    public class memmon : BaseClient
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
         

@@ -7,7 +7,7 @@ using Rido.IoTClient.Aws.TopicBindings;
 
 namespace dtmi_rido_pnp_Aws
 {
-    public class sampleDevice : AwsPnPClient
+    public class sampleDevice : AwsClient
     {
         const string modelId = "dtmi:rido:pnp:sampleDevice;1";
 

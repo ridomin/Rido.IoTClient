@@ -23,7 +23,7 @@ namespace Rido.IoTClient.IntegrationTests
                 DeviceId = deviceId,
                 SharedAccessKey = defaultKey
             };
-            var hubClient = new IoTHubPnPClient(await IoTHubConnectionFactory.CreateAsync(cs));
+            var hubClient = new IoTHubClient(await IoTHubConnectionFactory.CreateAsync(cs));
             Assert.Equal(deviceId, hubClient.Connection.Options.ClientId);
             Assert.True(hubClient.Connection.IsConnected);
             var v = await hubClient.ReportPropertyAsync(new { testProp = tick });
@@ -48,7 +48,7 @@ namespace Rido.IoTClient.IntegrationTests
                 ModuleId = moduleId,
                 SharedAccessKey = defaultKey
             };
-            var hubClient = new IoTHubPnPClient(await IoTHubConnectionFactory.CreateAsync(cs));
+            var hubClient = new IoTHubClient(await IoTHubConnectionFactory.CreateAsync(cs));
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal($"{deviceId}/{moduleId}", hubClient.Connection.Options.ClientId);
             var v = await hubClient.ReportPropertyAsync(new { testProp = tick });
@@ -72,7 +72,7 @@ namespace Rido.IoTClient.IntegrationTests
                 Auth = "X509",
                 X509Key = "testdevice22.pfx|1234"
             };
-            var hubClient = new IoTHubPnPClient(await IoTHubConnectionFactory.CreateAsync(csx));
+            var hubClient = new IoTHubClient(await IoTHubConnectionFactory.CreateAsync(csx));
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal("testdevice22", hubClient.Connection.Options.ClientId);
             var v = await hubClient.ReportPropertyAsync(new { testProp = tick });
@@ -97,7 +97,7 @@ namespace Rido.IoTClient.IntegrationTests
                 Auth = "X509",
                 X509Key = "xd01_xmod01.pfx|1234"
             };
-            var hubClient = new IoTHubPnPClient(await IoTHubConnectionFactory.CreateAsync(csx));
+            var hubClient = new IoTHubClient(await IoTHubConnectionFactory.CreateAsync(csx));
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal("xd01/xmod01", hubClient.Connection.Options.ClientId);
             var v = await hubClient.ReportPropertyAsync(new { testProp = tick });

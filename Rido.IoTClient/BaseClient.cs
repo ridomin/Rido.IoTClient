@@ -3,14 +3,14 @@ using System.Threading;
 
 namespace Rido.IoTClient
 {
-    public class PnPClient
+    public class BaseClient
     {
         public string InitialState = "";
         public IMqttClient Connection;
 
         public ConnectionSettings ConnectionSettings;
 
-        public PnPClient(IMqttClient c)
+        public BaseClient(IMqttClient c)
         {
             Connection = c;
         }

@@ -18,7 +18,7 @@ namespace Rido.IoTClient.IntegrationTests
         readonly string deviceId = "client1";
         readonly string defaultKey = "Myclientpwd.000";
 
-        async Task<PnPClient> CreateHiveClient()
+        async Task<BaseClient> CreateHiveClient()
         {
             var cs = new ConnectionSettings()
             {
@@ -29,7 +29,7 @@ namespace Rido.IoTClient.IntegrationTests
             return await CreateAsync(cs);
         }
 
-        static async Task<PnPClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        static async Task<BaseClient> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithBasicAuth(cs).Build(), cancellationToken);
@@ -38,7 +38,7 @@ namespace Rido.IoTClient.IntegrationTests
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
-            return new PnPClient(mqtt)
+            return new BaseClient(mqtt)
             {
                 ConnectionSettings = cs
             };

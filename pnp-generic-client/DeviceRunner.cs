@@ -21,57 +21,55 @@ namespace pnp_generic_client
             _configuration = config;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
             
-            var cs = new ConnectionSettings(_configuration.GetConnectionString("cs")) { ModelId = "dtmi:tartabit:AssetTracker;1" };
-            var mqtt= await IoTHubConnectionFactory.CreateAsync(cs, stoppingToken);
-            var client = new GenericPnPClient(mqtt) { ConnectionSettings = cs };
+        var cs = new ConnectionSettings(_configuration.GetConnectionString("cs"));
+        var mqtt= await IoTHubConnectionFactory.CreateAsync(cs, stoppingToken);
+        var client = new GenericHubClient(mqtt) { ConnectionSettings = cs };
 
-            _logger.LogInformation($"Connected to {client.ConnectionSettings}");
+        _logger.LogInformation($"Connected to {client.ConnectionSettings}");
 
-            await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
-            var twin = await client.GetTwinAsync(stoppingToken);
+        await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
+        var twin = await client.GetTwinAsync(stoppingToken);
 
-            client.Command.OnCmdDelegate = async m =>
+        client.Command.OnCmdDelegate = async m =>
+        {
+            _logger.LogInformation("Processing command: " + m.CommandName);
+            return await Task.FromResult(new GenericCommandResponse()
             {
-                _logger.LogInformation("Processing command: " + m.CommandName);
-                return await Task.FromResult(new GenericCommandResponse()
-                {
-                    Status = 200,
-                    ReponsePayload = JsonSerializer.Serialize(new { myResponse = "whatever" })
-                });
-            };
+                Status = 200,
+                ReponsePayload = JsonSerializer.Serialize(new { myResponse = "whatever" })
+            });
+        };
 
-            client.genericDesiredUpdateProperty.OnProperty_Updated = async m =>
+        client.genericDesiredUpdateProperty.OnProperty_Updated = async m =>
+        {
+            _logger.LogInformation("Processing desired: " + m.ToJsonString());
+            return await Task.FromResult(new GenericPropertyAck
             {
-                _logger.LogInformation("Processing desired: " + m.ToJsonString());
-                return await Task.FromResult(new GenericPropertyAck
-                {
-                    Value = m.ToJsonString(),
-                    Status = 200,
-                    Version = m["$version"].GetValue<int>()
-                });
-            };
+                Value = m.ToJsonString(),
+                Status = 200,
+                Version = m["$version"].GetValue<int>()
+            });
+        };
 
-            while (!stoppingToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await client.SendTelemetryAsync(new
             {
-                await client.SendTelemetryAsync(new
+                location = new
                 {
-                    location = new
-                    {
-                        lat = -114.0298,
-                        lon = 34.5574,
-                        alt = 657.8799
-                    },
-                    temperature = 23
+                    lat = -114.0298,
+                    lon = 34.5574,
+                    alt = 657.8799
                 },
-                stoppingToken);
-                _logger.LogInformation("sending telemetry");
-                await Task.Delay(5000, stoppingToken);
-            }
+                temperature = 23
+            },
+            stoppingToken);
+            _logger.LogInformation("sending telemetry");
+            await Task.Delay(5000, stoppingToken);
         }
-
-        
+    }
     }
 }

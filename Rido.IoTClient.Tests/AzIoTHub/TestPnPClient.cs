@@ -43,7 +43,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public bool telemetryEnabled { get; set; }
     }
 
-    public class TestPnPClient : IoTHubPnPClient
+    public class TestPnPClient : IoTHubClient
     {
         public readonly ReadOnlyProperty<int> Property_counter;
         public readonly WritableProperty<string> Property_message;

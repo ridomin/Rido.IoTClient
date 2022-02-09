@@ -7,7 +7,7 @@ using Rido.IoTClient.Aws.TopicBindings;
 
 namespace dtmi_rido_pnp
 {
-    public class memmon_1 : AwsPnPClient
+    public class memmon_1 : AwsClient
     {
         public Telemetry<double> Telemetry_workingSet;
         public Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats;

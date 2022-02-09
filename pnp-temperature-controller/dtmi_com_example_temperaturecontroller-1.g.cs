@@ -10,7 +10,7 @@ using System.Text.Json;
 
 namespace dtmi_com_example
 {
-    internal class TemperatureController : IoTHubPnPClient
+    internal class TemperatureController : IoTHubClient
     {
         const string modelId = "dtmi:com:example:TemperatureController;1";
         internal Telemetry<double> Telemetry_workingSet;

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub
 {
-    public class GenericPnPClient : IoTHubPnPClient
+    public class GenericHubClient : IoTHubClient
     {
         public GenericCommand Command;
         public GenericDesiredUpdatePropertyBinder genericDesiredUpdateProperty;
         
-        public GenericPnPClient(IMqttClient c) : base(c)
+        public GenericHubClient(IMqttClient c) : base(c)
         {   
             Command = new GenericCommand(c);
             genericDesiredUpdateProperty = new GenericDesiredUpdatePropertyBinder(c);
