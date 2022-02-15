@@ -1,3 +1,4 @@
+using Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework;
 using MQTTnet.Client;
 using Rido.IoTClient.AzIoTHub;
 using System;
@@ -14,6 +15,7 @@ namespace Rido.IoTClient.IntegrationTests
         readonly string deviceId = "d5";
         readonly string moduleId = "m1";
         readonly string defaultKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.Empty.ToString("N")));
+
         [Fact]
         public async Task ConnectDeviceWithSas()
         {
@@ -23,9 +25,10 @@ namespace Rido.IoTClient.IntegrationTests
                 DeviceId = deviceId,
                 SharedAccessKey = defaultKey
             };
-            var hubClient = new IoTHubClient(await IoTHubConnectionFactory.CreateAsync(cs));
+            var hubClient = new IoTHubClient(await IoTHubConnectionFactory.CreateAsync(cs)) { ConnectionSettings = cs};
             Assert.Equal(deviceId, hubClient.Connection.Options.ClientId);
             Assert.True(hubClient.Connection.IsConnected);
+            Assert.NotNull(hubClient.ConnectionSettings);
             var v = await hubClient.ReportPropertyAsync(new { testProp = tick });
             var twin = await hubClient.GetTwinAsync();
             Assert.True(twin.Length > 0);
