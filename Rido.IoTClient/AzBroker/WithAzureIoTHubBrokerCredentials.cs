@@ -19,7 +19,7 @@ namespace Rido.IoTClient.AzBroker
                 string pfxpath = segments[0];
                 string pfxpwd = segments[1];
                 var cert = new X509Certificate2(pfxpath, pfxpwd);
-                var clientId = cert.Subject[3..];
+                var clientId = X509CommonNameParser.GetCNFromCertSubject(cert.Subject);
                 if (clientId.Contains('/')) //is a module
                 {
                     var segmentsId = clientId.Split('/');
@@ -28,6 +28,7 @@ namespace Rido.IoTClient.AzBroker
                 }
                 else
                 {
+                    cs.ClientId = clientId;
                     cs.DeviceId = clientId;
                 }
 

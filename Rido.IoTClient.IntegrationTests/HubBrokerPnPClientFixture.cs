@@ -71,9 +71,10 @@ namespace Rido.IoTClient.IntegrationTests
                 Auth = "X509",
                 X509Key = "testdevice22.pfx|1234"
             };
-            var hubClient = new IoTHubBrokerClient(await IoTHubBrokerConnectionFactory.CreateAsync(csx));
+            var hubClient = new IoTHubBrokerClient(await IoTHubBrokerConnectionFactory.CreateAsync(csx)) { ConnectionSettings = csx};
             Assert.True(hubClient.Connection.IsConnected);
             Assert.Equal("testdevice22", hubClient.Connection.Options.ClientId);
+            Assert.Equal("testdevice22", hubClient.ConnectionSettings.ClientId);
             var v = await hubClient.ReportPropertyAsync(new { testProp = tick });
             var twin = await hubClient.GetTwinAsync();
             Assert.True(twin.Length > 0);

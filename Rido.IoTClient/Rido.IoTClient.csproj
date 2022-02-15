@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<Version>0.0.3-pre</Version>
+		<Version>0.0.4-pre</Version>
 		<Authors>ridomin</Authors>
 		<Description>Minimalistic IoT clients to implement IoT PnP for different brokers using MqttNet</Description>
 		<RepositoryUrl>https://github.com/ridomin/Rido.IoTClient</RepositoryUrl>
@@ -18,6 +18,7 @@
 		<Deterministic>true</Deterministic>
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<PackageReleaseNotes>
+			0.0.4 - Az Broker X509 fixes
 			0.0.3 - AWS. Rename WP ReportProperty
 			0.0.2 - Rename Clients, parse full Certs CN
 			0.0.1 - First release
