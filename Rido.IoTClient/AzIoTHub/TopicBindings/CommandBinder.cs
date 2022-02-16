@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-    public class Command<T, TResponse>
-        where T : IBaseCommandRequest<T>, new()
+    public class Command<T, TResponse> : ICommand<T, TResponse> where T : IBaseCommandRequest<T>, new()
         where TResponse : BaseCommandResponse
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }

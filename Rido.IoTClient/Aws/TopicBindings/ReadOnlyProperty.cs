@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class ReadOnlyProperty<T>
+    public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
         readonly IReportPropertyBinder updateBinder;
         public string Name;
         readonly string component;
 
-        public T PropertyValue;
+        public T PropertyValue { get; set; }
         public int Version;
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
@@ -23,10 +23,10 @@ namespace Rido.IoTClient.Aws.TopicBindings
             this.component = component;
         }
 
-        public async Task ReportPropertyAsync(CancellationToken cancellationToken = default)
+        public async Task<int> ReportPropertyAsync(CancellationToken cancellationToken = default)
         {
             bool asComponent = !string.IsNullOrEmpty(component);
-            await updateBinder.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
+            return await updateBinder.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
         Dictionary<string, object> ToJsonDict(bool asComponent = false)

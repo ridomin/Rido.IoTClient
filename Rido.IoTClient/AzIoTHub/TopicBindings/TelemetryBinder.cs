@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-    public class Telemetry<T>
+    public class Telemetry<T> : ITelemetry<T>
     {
         readonly IMqttClient connection;
         readonly string deviceId;

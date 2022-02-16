@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-    public class ReadOnlyProperty<T>
+    public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
         readonly IPropertyStoreWriter updateTwin;
         public readonly string Name;
         readonly string component;
-        public T PropertyValue;
+        public T PropertyValue { get; set; }
         public int Version;
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")

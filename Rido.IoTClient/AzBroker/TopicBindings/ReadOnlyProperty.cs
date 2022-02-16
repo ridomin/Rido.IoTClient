@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzBroker.TopicBindings
 {
-    public class ReadOnlyProperty<T>
+    public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
         readonly IPropertyStoreWriter updateTwin;
         readonly string name;
         readonly string component;
 
-        public T PropertyValue;
+        public T PropertyValue { get; set; }
         public int Version;
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
@@ -22,10 +22,10 @@ namespace Rido.IoTClient.AzBroker.TopicBindings
             this.component = component;
         }
 
-        public async Task ReportPropertyAsync(CancellationToken cancellationToken = default)
+        public async Task<int> ReportPropertyAsync(CancellationToken cancellationToken = default)
         {
             bool asComponent = !string.IsNullOrEmpty(component);
-            Version = await updateTwin.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
+            return await updateTwin.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
         Dictionary<string, object> ToJsonDict(bool asComponent = false)
