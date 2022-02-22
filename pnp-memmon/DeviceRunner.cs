@@ -1,4 +1,4 @@
-using dtmi_rido_pnp_IoTHubPreview;
+using dtmi_rido_pnp_IoTHubClassic;
 using Humanizer;
 using Rido.IoTClient;
 using System.Diagnostics;
@@ -21,7 +21,7 @@ public class DeviceRunner : BackgroundService
     private const bool default_enabled = true;
     private const int default_interval = 8;
 
-    private memmon client;
+    private Imemmon client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -56,7 +56,7 @@ public class DeviceRunner : BackgroundService
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (client?.Property_enabled?.PropertyValue.Value == true)
+            if (client?.Property_enabled.PropertyValue.Value == true)
             {
                 telemetryWorkingSet = Environment.WorkingSet;
                 await client.Telemetry_workingSet.SendTelemetryAsync(telemetryWorkingSet, stoppingToken);
@@ -132,13 +132,13 @@ public class DeviceRunner : BackgroundService
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
-            AppendLineWithPadRight(sb, $"{client?.Connection.Options.ClientId} ({client.ConnectionSettings.Auth})");
+            AppendLineWithPadRight(sb, $"{client?.ConnectionSettings.ClientId} ({client.ConnectionSettings.Auth})");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Property_enabled?.PropertyValue.Version));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "interval".PadRight(8), interval_value?.PadLeft(15), client?.Property_interval.PropertyValue?.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "started".PadRight(8), client.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Property_started.Version));
+            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "started".PadRight(8), client.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Property_started?.Version));
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Reconnects: {reconnectCounter}");
             AppendLineWithPadRight(sb, $"Telemetry: {telemetryCounter}");

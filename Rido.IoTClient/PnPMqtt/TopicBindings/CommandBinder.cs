@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
-    public class Command<T, TResponse>
+    public class Command<T, TResponse> : ICommand<T, TResponse>
         where T : IBaseCommandRequest<T>, new()
         where TResponse : BaseCommandResponse
     {

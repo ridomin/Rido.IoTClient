@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class Telemetry<T>
+    public class Telemetry<T> : ITelemetry<T>
     {
         readonly IMqttClient connection;
         readonly string deviceId;

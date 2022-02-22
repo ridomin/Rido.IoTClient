@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.Aws.TopicBindings
 {
-    public class WritableProperty<T>
+    public class WritableProperty<T> : IWritableProperty<T>
     {
-        public PropertyAck<T> PropertyValue;
+        public PropertyAck<T> PropertyValue { get; set; }
         readonly string propertyName;
         readonly string componentName;
         readonly IPropertyStoreWriter updatePropertyBinder;
@@ -30,7 +30,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task ReportPropertyAsync() => await updatePropertyBinder.ReportPropertyAsync(this.PropertyValue.ToAckDict());
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updatePropertyBinder.ReportPropertyAsync(this.PropertyValue.ToAckDict(), token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {

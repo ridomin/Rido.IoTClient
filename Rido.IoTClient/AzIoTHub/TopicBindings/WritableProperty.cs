@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.AzIoTHub.TopicBindings
 {
-    public class WritableProperty<T>
+    public class WritableProperty<T> : IWritableProperty<T>
     {
-        public PropertyAck<T> PropertyValue;
+        public PropertyAck<T> PropertyValue { get; set; }
         readonly string propertyName;
         readonly string componentName;
         readonly IPropertyStoreWriter updateTwin;

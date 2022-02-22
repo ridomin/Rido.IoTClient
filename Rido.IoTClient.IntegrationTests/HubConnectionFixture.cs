@@ -10,7 +10,7 @@ namespace Rido.IoTClient.IntegrationTests
 {
     public class HubConnectionFixture
     {
-        [Fact]
+        [Fact(Skip="expired cert")]
         public async Task ConnectWithDpsCert()
         {
             var hub = await IoTHubConnectionFactory.CreateAsync(new ConnectionSettings

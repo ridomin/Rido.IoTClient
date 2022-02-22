@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Rido.IoTClient.PnPMqtt.TopicBindings
 {
-    public class WritableProperty<T>
+    public class WritableProperty<T> : IWritableProperty<T>
     {
-        public PropertyAck<T> PropertyValue;
+        public PropertyAck<T> PropertyValue { get; set; }
         readonly string propertyName;
         readonly string componentName;
         //readonly UpdateTwinBinder updateTwin;
@@ -31,7 +31,7 @@ namespace Rido.IoTClient.PnPMqtt.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task ReportPropertyAsync() => await updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict());
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict(), token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
