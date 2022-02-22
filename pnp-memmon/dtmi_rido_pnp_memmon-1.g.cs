@@ -12,6 +12,7 @@ namespace dtmi_rido_pnp_IoTHubClassic
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
+
         public IReadOnlyProperty<DateTime> Property_started { get; set; }
         public IWritableProperty<bool> Property_enabled { get; set; }
         public IWritableProperty<int> Property_interval { get; set; }
@@ -35,6 +36,4 @@ namespace dtmi_rido_pnp_IoTHubClassic
             return client;
         }
     }
-
-   
 }

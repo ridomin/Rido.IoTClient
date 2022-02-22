@@ -4,11 +4,8 @@ using Rido.IoTClient;
 
 namespace pnp_memmon
 {
-    internal interface Imemmon
+    public interface Imemmon :IBaseClient
     {
-        public ConnectionSettings ConnectionSettings { get; }
-        public string InitialState { get; set; }
-
         public IReadOnlyProperty<DateTime> Property_started { get; set; }
         public IWritableProperty<bool> Property_enabled { get; set; }
         public IWritableProperty<int> Property_interval { get; set; }

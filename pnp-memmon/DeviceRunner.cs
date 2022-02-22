@@ -35,12 +35,12 @@ public class DeviceRunner : BackgroundService
         client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
         _logger.LogInformation("Connected");
 
-        //client.Connection.DisconnectedAsync += async e =>
-        //{
-        //    await Task.Delay(1);
-        //    reconnectCounter++;
-        //    Console.WriteLine(e.Exception.ToString());
-        //};
+        client.Connection.DisconnectedAsync += async e =>
+        {
+            await Task.Delay(1);
+            reconnectCounter++;
+            Console.WriteLine(e.Exception.ToString());
+        };
 
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
