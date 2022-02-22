@@ -11,6 +11,7 @@ namespace Rido.IoTClient.AzIoTHub
         {
             if (cs.Auth == "SAS")
             {
+                cs.ClientId = cs.DeviceId;
                 return WithAzureIoTHubCredentialsSas(builder, cs.HostName, cs.DeviceId, cs.ModuleId, cs.SharedAccessKey, cs.ModelId, cs.SasMinutes);
             }
             else if (cs.Auth == "X509")

@@ -5,10 +5,10 @@ namespace Rido.IoTClient
 {
     public class BaseClient
     {
-        public string InitialState = "";
+        public string InitialState { get; set; } = "";
         public IMqttClient Connection;
 
-        public ConnectionSettings ConnectionSettings;
+        public ConnectionSettings ConnectionSettings { get; set; }
 
         public BaseClient(IMqttClient c)
         {

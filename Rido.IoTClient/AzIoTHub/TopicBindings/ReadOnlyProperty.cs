@@ -12,7 +12,7 @@ namespace Rido.IoTClient.AzIoTHub.TopicBindings
         public readonly string Name;
         readonly string component;
         public T PropertyValue { get; set; }
-        public int Version;
+        public int Version { get; set; }
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {

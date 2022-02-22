@@ -12,9 +12,10 @@ namespace Rido.IoTClient.Aws.TopicBindings
         readonly IReportPropertyBinder updateBinder;
         public string Name;
         readonly string component;
+        
 
         public T PropertyValue { get; set; }
-        public int Version;
+        public int Version { get; set; }
 
         public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
         {
