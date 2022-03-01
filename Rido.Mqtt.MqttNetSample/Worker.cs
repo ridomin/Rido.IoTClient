@@ -24,11 +24,21 @@ namespace Rido.Mqtt.MqttNetSample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var adapter = await MqttNetClient.CreateAsync(_configuration.GetConnectionString("cs"),stoppingToken);
-            //var adapter = await M2MClient.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            //var adapter = await MqttNetClient.CreateAsync(_configuration.GetConnectionString("cs"),stoppingToken);
+            var adapter = await M2MClient.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             
             var client = new HubMqttClient(adapter);
             Console.WriteLine("Connected: " + client.ConnectionSettings.ToString());
+
+            client.Command.OnCmdDelegate = async m =>
+            {
+                _logger.LogInformation("Processing command: " + m.CommandName);
+                return await Task.FromResult(new GenericCommandResponse()
+                {
+                    Status = 200,
+                    ReponsePayload = JsonSerializer.Serialize(new { myResponse = "whatever" })
+                });
+            };
 
             client.genericDesiredUpdateProperty.OnProperty_Updated = async m =>
             {

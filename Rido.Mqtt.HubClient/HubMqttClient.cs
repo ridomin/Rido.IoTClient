@@ -16,12 +16,13 @@ namespace Rido.Mqtt.HubClient
         readonly IPropertyStoreReader getTwinBinder;
         readonly IReportPropertyBinder updateTwinBinder;
         public GenericDesiredUpdatePropertyBinder genericDesiredUpdateProperty;
-
+        public GenericCommand Command;
         public HubMqttClient(IMqttBaseClient c)
         {
             Connection = c;
             getTwinBinder = new GetTwinBinder(c);
             updateTwinBinder = new UpdateTwinBinder(c);
+            Command = new GenericCommand(c);
             genericDesiredUpdateProperty = new GenericDesiredUpdatePropertyBinder(c);
         }
 
