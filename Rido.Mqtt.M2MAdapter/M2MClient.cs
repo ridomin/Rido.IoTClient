@@ -12,6 +12,7 @@ namespace Rido.Mqtt.M2MAdapter
     public class M2MClient : IMqttBaseClient
     {
         private readonly MqttClient client;
+        private static ConnectionSettings connectionSettings;
 
         public M2MClient(MqttClient c)
         {
@@ -25,13 +26,16 @@ namespace Rido.Mqtt.M2MAdapter
 
         public string ClientId => client.ClientId;
 
+        public ConnectionSettings ConnectionSettings { get => connectionSettings; }
+
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
         public async Task<int> PublishAsync(string topic, string payload, int qos = 0, CancellationToken token = default)
         {
             var res = client.Publish(topic, Encoding.UTF8.GetBytes(payload));
-            return await Task.FromResult(Convert.ToInt32(res==2 ? 0 : res));
+            //return await Task.FromResult(Convert.ToInt32(res==2 ? 0 : res));
+            return await Task.FromResult(0);
         }
 
         public async Task<int> SubscribeAsync(string topic, CancellationToken token = default)
@@ -42,10 +46,10 @@ namespace Rido.Mqtt.M2MAdapter
 
         public static async Task<IMqttBaseClient> CreateAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
-            var cs = new ConnectionSettings(connectionSettingsString);
-            var mqtt = new MqttClient(cs.HostName, 8883, true, MqttSslProtocols.TLSv1_2, null, null);
-            (string u, string p) = SasAuth.GenerateHubSasCredentials(cs.HostName, cs.DeviceId, cs.SharedAccessKey, cs.ModelId, cs.SasMinutes);
-            int res = mqtt.Connect(cs.DeviceId, u, p);
+            connectionSettings = new ConnectionSettings(connectionSettingsString); ;
+            var mqtt = new MqttClient(connectionSettings.HostName, 8883, true, MqttSslProtocols.TLSv1_2, null, null);
+            (string u, string p) = SasAuth.GenerateHubSasCredentials(connectionSettings.HostName, connectionSettings.DeviceId, connectionSettings.SharedAccessKey, connectionSettings.ModelId, connectionSettings.SasMinutes);
+            int res = mqtt.Connect(connectionSettings.DeviceId, u, p);
             Console.WriteLine(res);
             return await Task.FromResult(new M2MClient(mqtt));
         }

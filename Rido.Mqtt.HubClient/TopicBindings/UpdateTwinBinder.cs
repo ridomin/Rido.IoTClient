@@ -36,7 +36,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             var rid = RidCounter.NextValue();
             var puback = await connection.PublishAsync($"$iothub/twin/PATCH/properties/reported/?$rid={rid}", payload, 0, cancellationToken);
             var tcs = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
-            if (puback == 2)
+            if (puback == 0)
             {
                 pendingRequests.TryAdd(rid, tcs);
             }
@@ -44,7 +44,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             {
                 Trace.TraceError($"Error '{puback}' publishing twin GET");
             }
-            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
+            return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
         }
     }
 }

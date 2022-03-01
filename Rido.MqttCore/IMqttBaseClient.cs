@@ -17,6 +17,7 @@ namespace Rido.MqttCore
 
     public interface IMqttBaseClient
     {
+        ConnectionSettings ConnectionSettings { get; }
         //static Task<IMqttBaseClient> ConnectAsync(ConnectionSettings cs, CancellationToken cancellationToken = default);
         bool IsConnected { get; }
         string ClientId { get; }

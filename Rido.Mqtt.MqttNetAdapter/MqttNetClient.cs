@@ -14,9 +14,12 @@ namespace Rido.Mqtt.MqttNetAdapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
+        private static ConnectionSettings connectionSettings;
         public bool IsConnected => client.IsConnected;
 
         public string ClientId => client.Options.ClientId;
+
+        public ConnectionSettings ConnectionSettings => connectionSettings;
 
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
@@ -31,7 +34,7 @@ namespace Rido.Mqtt.MqttNetAdapter
                     new MqttMessage()
                     {
                         Topic = m.ApplicationMessage.Topic,
-                        Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload)
+                        Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>())  
                     });
             };
 
@@ -44,9 +47,10 @@ namespace Rido.Mqtt.MqttNetAdapter
 
         public static async Task<IMqttBaseClient> CreateAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
-            var cs = new ConnectionSettings(connectionSettingsString);
+
+            connectionSettings = new ConnectionSettings(connectionSettingsString);
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
-            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(cs).Build(), cancellationToken);
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(connectionSettings).Build(), cancellationToken);
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
             {
                 Trace.TraceError(connAck.ReasonString);
