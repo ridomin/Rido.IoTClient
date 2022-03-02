@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-aws-sample", "pnp-aws-s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-temperature-controller", "pnp-temperature-controller\pnp-temperature-controller.csproj", "{617D150A-79DB-499F-A345-6DEE6E3D58EC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{6ED72D5F-FD41-460E-A68E-62BDF005B1D1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samplesIoTClient", "samplesIoTClient", "{6ED72D5F-FD41-460E-A68E-62BDF005B1D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.MqttCore", "Rido.MqttCore\Rido.MqttCore.csproj", "{51ACE62B-A3F7-41BD-9CBC-0230CA42E3A6}"
 EndProject
@@ -40,6 +40,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.Mqtt.MqttNetSample", "Rido.Mqtt.MqttNetSample\Rido.Mqtt.MqttNetSample.csproj", "{4A8283AB-F859-4FAC-9ABF-7EE44C1EF5DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.Mqtt.M2MAdapter", "Rido.Mqtt.M2MAdapter\Rido.Mqtt.M2MAdapter.csproj", "{3BF1E244-5805-4510-9116-EBA11862801F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{651B20FF-32E0-461D-8A43-B06C74CE9596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pnp-device-sample", "pnp-device-sample\pnp-device-sample.csproj", "{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +107,10 @@ Global
 		{3BF1E244-5805-4510-9116-EBA11862801F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF1E244-5805-4510-9116-EBA11862801F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BF1E244-5805-4510-9116-EBA11862801F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +124,7 @@ Global
 		{C2D91963-1EA1-4D23-BA7C-AC881E498EB3} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
 		{A6347AC3-0139-4207-9211-DB28726B43D5} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
 		{617D150A-79DB-499F-A345-6DEE6E3D58EC} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
+		{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}

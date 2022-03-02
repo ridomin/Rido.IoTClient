@@ -26,7 +26,7 @@ namespace Rido.Mqtt.MqttNetSample
         {
             //var adapter = await MqttNetClient.CreateAsync(_configuration.GetConnectionString("cs"),stoppingToken);
             var adapter = await M2MClient.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            
+
             var client = new HubMqttClient(adapter);
             Console.WriteLine("Connected: " + client.ConnectionSettings.ToString());
 
