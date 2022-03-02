@@ -17,8 +17,9 @@ namespace Rido.Mqtt.HubClient
                     desired[componentName][propertyName] != null &&
                     desired[componentName]["__t"] != null &&
                     desired[componentName]["__t"].GetValue<string>() == "c")
-
+                {
                     result = desired?[componentName][propertyName];
+                }
             }
 
             return result;

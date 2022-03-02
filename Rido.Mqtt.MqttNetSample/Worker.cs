@@ -3,7 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.M2MAdapter;
-using Rido.Mqtt.MqttNetAdapter;
 using System;
 using System.Text.Json;
 using System.Threading;
@@ -51,7 +50,7 @@ namespace Rido.Mqtt.MqttNetSample
                 });
             };
 
-            var v = await client.ReportPropertyAsync(JsonSerializer.Serialize(new { started = DateTime.Now }), stoppingToken);
+            var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             var twin = await client.GetTwinAsync();
 
             Console.WriteLine();
@@ -59,7 +58,7 @@ namespace Rido.Mqtt.MqttNetSample
             Console.WriteLine();
             while (!stoppingToken.IsCancellationRequested)
             {
-                int puback = await client.SendTelemetryAsync(JsonSerializer.Serialize(new { temperature = 23 }));
+                int puback = await client.SendTelemetryAsync(new { temperature = 23 });
                 _logger.LogInformation($"Telemetry pubAck {puback}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }

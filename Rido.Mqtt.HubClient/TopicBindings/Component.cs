@@ -1,5 +1,4 @@
 ﻿using Rido.MqttCore;
-using System;
 using System.Collections.Generic;
 
 using System.Threading;
@@ -9,8 +8,8 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 {
     public abstract class Component
     {
-        readonly string name;
-        readonly IPropertyStoreWriter update;
+        private readonly string name;
+        private readonly IPropertyStoreWriter update;
 
         public Component(IMqttBaseClient connection, string name)
         {

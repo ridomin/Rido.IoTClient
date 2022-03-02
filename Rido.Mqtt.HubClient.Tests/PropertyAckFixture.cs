@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Rido.Mqtt.HubClient.Tests
 {
-    class AComplexObj
+    internal class AComplexObj
     {
         public string AStringProp { get; set; } = string.Empty;
         public int AIntProp { get; set; }
@@ -11,7 +11,7 @@ namespace Rido.Mqtt.HubClient.Tests
 
     public class PropertyAckFixture
     {
-        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+        private static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
         [Fact]
         public void AckDouble()

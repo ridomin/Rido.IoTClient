@@ -1,16 +1,13 @@
 ﻿
 using Rido.MqttCore;
 using System;
-using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.Mqtt.HubClient.Tests
 {
-
-    class MockMqttClient : IMqttBaseClient
+    internal class MockMqttClient : IMqttBaseClient
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public MockMqttClient()
@@ -25,7 +22,7 @@ namespace Rido.Mqtt.HubClient.Tests
 
         public string ClientId => "mock";
 
-        
+
 
         public string payloadReceived;
         public string topicRecceived;
@@ -53,7 +50,7 @@ namespace Rido.Mqtt.HubClient.Tests
             else
             {
                 jsonPayload = JsonSerializer.Serialize(payload);
-            }    
+            }
 
             topicRecceived = topic;
             payloadReceived = jsonPayload;// != null ? Encoding.UTF8.GetString(payload) : string.Empty;

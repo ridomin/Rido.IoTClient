@@ -1,24 +1,21 @@
 ﻿using Rido.IoTClient.Tests.AzIoTHub;
 using Rido.MqttCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
-    class StubClient : HubMqttClient
+    internal class StubClient : HubMqttClient
     {
         public StubClient(IMqttBaseClient c) : base(c) { }
     }
 
     public class TestPnPClientFixture
     {
-        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+        private static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
-        readonly MockMqttClient connection;
+        private readonly MockMqttClient connection;
 
         public TestPnPClientFixture()
         {

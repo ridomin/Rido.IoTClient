@@ -1,6 +1,5 @@
 ﻿using Rido.MqttCore;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Json;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,18 +8,18 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 {
     public class Telemetry<T> : ITelemetry<T>
     {
-        readonly IMqttBaseClient connection;
-        readonly string deviceId;
-        readonly string moduleId;
-        readonly string name;
-        readonly string componentName;
+        private readonly IMqttBaseClient connection;
+        private readonly string deviceId;
+        private readonly string moduleId;
+        private readonly string name;
+        private readonly string componentName;
 
         public Telemetry(IMqttBaseClient connection, string name, string componentName = "", string moduleId = "")
         {
             this.connection = connection;
             this.name = name;
             this.componentName = componentName;
-            this.deviceId = connection.ClientId;
+            deviceId = connection.ClientId;
             this.moduleId = moduleId;
         }
 

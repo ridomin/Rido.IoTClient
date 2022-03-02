@@ -6,8 +6,8 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
     public class GetTwinBinderFixture
     {
-        readonly MockMqttClient mockClient;
-        readonly GetTwinBinder binder;
+        private readonly MockMqttClient mockClient;
+        private readonly GetTwinBinder binder;
 
         public GetTwinBinderFixture()
         {
@@ -26,8 +26,9 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
             Assert.Equal(twin, SampleTwin);
         }
 
-        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
-        static string SampleTwin
+        private static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+
+        private static string SampleTwin
         {
             get => Stringify(new
             {

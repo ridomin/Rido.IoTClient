@@ -2,10 +2,8 @@
 using MQTTnet.Client;
 using Rido.MqttCore;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -25,7 +23,7 @@ namespace Rido.Mqtt.MqttNetAdapter
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
-        MqttClient client;
+        private readonly MqttClient client;
         public MqttNetClient(MqttClient client)
         {
             this.client = client;
@@ -35,7 +33,7 @@ namespace Rido.Mqtt.MqttNetAdapter
                     new MqttMessage()
                     {
                         Topic = m.ApplicationMessage.Topic,
-                        Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>())  
+                        Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>())
                     });
             };
 
@@ -52,7 +50,7 @@ namespace Rido.Mqtt.MqttNetAdapter
             var connAck = await mqtt.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
-                    .Build(), 
+                    .Build(),
                 cancellationToken);
 
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
@@ -85,11 +83,11 @@ namespace Rido.Mqtt.MqttNetAdapter
             }
 
             var res = await client.PublishAsync(
-                new MqttApplicationMessage() 
-                { 
-                    Topic = topic, 
-                    Payload = Encoding.UTF8.GetBytes(jsonPayload) 
-                }, 
+                new MqttApplicationMessage()
+                {
+                    Topic = topic,
+                    Payload = Encoding.UTF8.GetBytes(jsonPayload)
+                },
                 token);
 
             if (res.ReasonCode != MqttClientPublishReasonCode.Success)

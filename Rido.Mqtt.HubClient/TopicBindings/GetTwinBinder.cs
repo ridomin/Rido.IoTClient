@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,8 +9,8 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 {
     public class GetTwinBinder : IPropertyStoreReader
     {
-        readonly static ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
-        readonly IMqttBaseClient connection;
+        private static readonly ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
+        private readonly IMqttBaseClient connection;
 
         public GetTwinBinder(IMqttBaseClient conn)
         {

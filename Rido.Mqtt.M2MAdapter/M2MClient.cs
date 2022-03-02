@@ -1,7 +1,5 @@
 ﻿using Rido.MqttCore;
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -17,10 +15,10 @@ namespace Rido.Mqtt.M2MAdapter
 
         public M2MClient(MqttClient c)
         {
-            this.client = c;
+            client = c;
 
-            this.client.MqttMsgPublishReceived += (sender, e) => OnMessage?.Invoke(new MqttMessage() { Topic = e.Topic, Payload = Encoding.UTF8.GetString(e.Message) });
-            this.client.ConnectionClosed += (sender, e) => OnMqttClientDisconnected?.Invoke(sender, new DisconnectEventArgs() { ReasonInfo = "m2m does not provide disconnect info" });
+            client.MqttMsgPublishReceived += (sender, e) => OnMessage?.Invoke(new MqttMessage() { Topic = e.Topic, Payload = Encoding.UTF8.GetString(e.Message) });
+            client.ConnectionClosed += (sender, e) => OnMqttClientDisconnected?.Invoke(sender, new DisconnectEventArgs() { ReasonInfo = "m2m does not provide disconnect info" });
         }
 
         public bool IsConnected => client.IsConnected;

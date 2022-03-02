@@ -7,7 +7,7 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
     public class DesiredUpdatePropertyBinderFixture
     {
-        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+        private static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
         [Fact]
         public void ReceiveDesired()
         {

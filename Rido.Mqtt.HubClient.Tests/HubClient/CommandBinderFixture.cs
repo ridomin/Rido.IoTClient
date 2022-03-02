@@ -6,13 +6,12 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
     public class CommandBinderFixture
     {
-
-        class CmdRequest : IBaseCommandRequest<CmdRequest>
+        private class CmdRequest : IBaseCommandRequest<CmdRequest>
         {
             public CmdRequest DeserializeBody(string payload) => new();
         }
 
-        class CmdResponse : BaseCommandResponse
+        private class CmdResponse : BaseCommandResponse
         {
             public static string Result => "result";
         }

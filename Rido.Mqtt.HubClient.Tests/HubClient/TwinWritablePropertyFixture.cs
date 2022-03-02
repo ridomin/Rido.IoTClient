@@ -1,24 +1,21 @@
 ﻿using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
-
-    class AComplexObj
+    internal class AComplexObj
     {
         public string MyProperty { get; set; } = "initial value";
     }
 
     public class TwinWritablePropertyFixture
     {
-        static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
+        private static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
-
-        readonly IMqttBaseClient connection;
+        private readonly IMqttBaseClient connection;
 
         public TwinWritablePropertyFixture()
         {

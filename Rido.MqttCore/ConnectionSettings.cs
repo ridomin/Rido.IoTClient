@@ -34,7 +34,7 @@ namespace Rido.MqttCore
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
         public ConnectionSettings(string cs) => ParseConnectionString(cs);
 
-        static string GetStringValue(IDictionary<string, string> dict, string propertyName, string defaultValue = "")
+        private static string GetStringValue(IDictionary<string, string> dict, string propertyName, string defaultValue = "")
         {
             string result = defaultValue;
             if (dict.TryGetValue(propertyName, out string value))
@@ -44,7 +44,7 @@ namespace Rido.MqttCore
             return result;
         }
 
-        static int GetPositiveIntValueOrDefault(IDictionary<string, string> dict, string propertyName, int defaultValue)
+        private static int GetPositiveIntValueOrDefault(IDictionary<string, string> dict, string propertyName, int defaultValue)
         {
             int result = defaultValue;
             if (dict.TryGetValue(propertyName, out string stringValue))
@@ -59,7 +59,7 @@ namespace Rido.MqttCore
 
         private void ParseConnectionString(string cs)
         {
-           
+
 
             IDictionary<string, string> map = cs.ToDictionary(';', '=');
             IdScope = GetStringValue(map, nameof(IdScope));
@@ -76,7 +76,7 @@ namespace Rido.MqttCore
             MaxRetries = GetPositiveIntValueOrDefault(map, nameof(MaxRetries), Default_MaxRetries);
         }
 
-        static void AppendIfNotEmpty(StringBuilder sb, string name, string val)
+        private static void AppendIfNotEmpty(StringBuilder sb, string name, string val)
         {
             if (!string.IsNullOrEmpty(val))
             {
@@ -93,7 +93,7 @@ namespace Rido.MqttCore
 
         public override string ToString()
         {
-            
+
 
             var result = new StringBuilder();
             AppendIfNotEmpty(result, nameof(HostName), HostName);

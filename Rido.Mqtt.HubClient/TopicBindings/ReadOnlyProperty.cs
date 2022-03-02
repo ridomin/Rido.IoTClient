@@ -9,9 +9,9 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 {
     public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
-        readonly IPropertyStoreWriter updateTwin;
+        private readonly IPropertyStoreWriter updateTwin;
         public readonly string Name;
-        readonly string component;
+        private readonly string component;
         public T PropertyValue { get; set; }
         public int Version { get; set; }
 
@@ -29,7 +29,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             return Version;
         }
 
-        Dictionary<string, object> ToJsonDict(bool asComponent = false)
+        private Dictionary<string, object> ToJsonDict(bool asComponent = false)
         {
             Dictionary<string, object> result;
             if (asComponent == false)
