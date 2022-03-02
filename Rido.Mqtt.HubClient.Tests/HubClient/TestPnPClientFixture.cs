@@ -1,5 +1,4 @@
-﻿
-using Rido.IoTClient.Tests.AzIoTHub;
+﻿using Rido.IoTClient.Tests.AzIoTHub;
 using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests.AzIoTHub
+namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
     class StubClient : HubMqttClient
     {
@@ -116,7 +115,7 @@ namespace Rido.Mqtt.HubClient.Tests.AzIoTHub
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
             //await Task.Delay(20);
-            await updateTask.WaitAsync(TimeSpan.FromMilliseconds(100));
+            await updateTask.WaitAsync(TimeSpan.FromMilliseconds(200));
             Assert.True(updateTask.IsCompletedSuccessfully, "status " + updateTask.Status.ToString());
             Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
             Assert.Equal(Stringify(new

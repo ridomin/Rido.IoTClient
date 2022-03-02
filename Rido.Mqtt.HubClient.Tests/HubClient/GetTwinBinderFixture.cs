@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests.AzIoTHub
+namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
     public class GetTwinBinderFixture
     {

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests.AzIoTHub
+namespace Rido.Mqtt.HubClient.Tests.HubClient
 {
 
     class AComplexObj
