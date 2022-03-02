@@ -1,7 +1,7 @@
 ﻿using Rido.MqttCore;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
-using System.Text.Json;
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,7 +44,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                 { name, payload }
             };
 
-            return await connection.PublishAsync(topic, JsonSerializer.Serialize(typedPayload), 0, cancellationToken);
+            return await connection.PublishAsync(topic, typedPayload, 0, cancellationToken);
         }
     }
 }

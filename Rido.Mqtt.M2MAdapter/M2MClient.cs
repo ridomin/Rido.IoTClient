@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
@@ -31,9 +32,20 @@ namespace Rido.Mqtt.M2MAdapter
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
-        public async Task<int> PublishAsync(string topic, string payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {
-            var res = client.Publish(topic, Encoding.UTF8.GetBytes(payload));
+            string jsonPayload;
+
+            if (payload is string)
+            {
+                jsonPayload = payload as string;
+            }
+            else
+            {
+                jsonPayload = JsonSerializer.Serialize(payload);
+            }
+
+            var res = client.Publish(topic, Encoding.UTF8.GetBytes(jsonPayload));
             //return await Task.FromResult(Convert.ToInt32(res==2 ? 0 : res));
             return await Task.FromResult(0);
         }

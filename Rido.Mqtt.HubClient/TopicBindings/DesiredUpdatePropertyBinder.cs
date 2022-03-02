@@ -35,7 +35,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                              var ack = await OnProperty_Updated(property);
                              if (ack != null)
                              {
-                                 _ = updateTwin.ReportPropertyAsync(JsonSerializer.Serialize(ack.ToAckDict()));
+                                 _ = updateTwin.ReportPropertyAsync(ack.ToAckDict());
                              }
                          }
                      }

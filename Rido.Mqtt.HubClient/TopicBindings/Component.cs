@@ -1,7 +1,7 @@
 ﻿using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,7 +26,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                 };
             dict[name] = ToJsonDict();
             dict[name].Add("__t", "c");
-            var v = await update.ReportPropertyAsync(JsonSerializer.Serialize(dict), token);
+            var v = await update.ReportPropertyAsync(dict, token);
             return v;
         }
 

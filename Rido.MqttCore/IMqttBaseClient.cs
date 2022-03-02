@@ -21,7 +21,7 @@ namespace Rido.MqttCore
         //static Task<IMqttBaseClient> ConnectAsync(ConnectionSettings cs, CancellationToken cancellationToken = default);
         bool IsConnected { get; }
         string ClientId { get; }
-        Task<int> PublishAsync(string topic, string payload, int qos = 0, CancellationToken token = default);
+        Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default);
         Task<int> SubscribeAsync(string topic, CancellationToken token = default);
         event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         event Func<MqttMessage, Task> OnMessage;

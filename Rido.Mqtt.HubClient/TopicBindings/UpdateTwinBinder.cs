@@ -31,7 +31,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             };
         }
 
-        public async Task<int> ReportPropertyAsync(string payload, CancellationToken cancellationToken = default)
+        public async Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default)
         {
             var rid = RidCounter.NextValue();
             var puback = await connection.PublishAsync($"$iothub/twin/PATCH/properties/reported/?$rid={rid}", payload, 0, cancellationToken);

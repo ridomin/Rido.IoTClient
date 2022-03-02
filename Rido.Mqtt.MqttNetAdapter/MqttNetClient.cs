@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -48,38 +49,46 @@ namespace Rido.Mqtt.MqttNetAdapter
         public static async Task<IMqttBaseClient> CreateAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
-            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(connectionSettings).Build(), cancellationToken);
+            var connAck = await mqtt.ConnectAsync(
+                new MqttClientOptionsBuilder()
+                    .WithAzureIoTHubCredentials(connectionSettings)
+                    .Build(), 
+                cancellationToken);
+
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
             {
                 Trace.TraceError(connAck.ReasonString);
                 throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
             }
+
             return new MqttNetClient(mqtt);
         }
 
         public static async Task<IMqttBaseClient> CreateAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
-
             connectionSettings = new ConnectionSettings(connectionSettingsString);
-            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
-            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(connectionSettings).Build(), cancellationToken);
-            if (connAck.ResultCode != MqttClientConnectResultCode.Success)
-            {
-                Trace.TraceError(connAck.ReasonString);
-                throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
-            }
-            return new MqttNetClient(mqtt);
+            return await CreateAsync(connectionSettings, cancellationToken);
         }
 
-        public async Task<int> PublishAsync(string topic, string payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {
 
+            string jsonPayload;
+
+            if (payload is string)
+            {
+                jsonPayload = payload as string;
+            }
+            else
+            {
+                jsonPayload = JsonSerializer.Serialize(payload);
+            }
 
             var res = await client.PublishAsync(
                 new MqttApplicationMessage() 
                 { 
                     Topic = topic, 
-                    Payload = Encoding.UTF8.GetBytes(payload) 
+                    Payload = Encoding.UTF8.GetBytes(jsonPayload) 
                 }, 
                 token);
 

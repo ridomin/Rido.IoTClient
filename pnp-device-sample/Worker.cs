@@ -19,6 +19,7 @@ namespace pnp_device_sample
 
             client.Property_interval.OnProperty_Updated += async p =>
             {
+                await Task.Yield();
                 _logger.LogInformation("Received property interval");
                 client.Property_interval.PropertyValue.Value = p.Value;
 

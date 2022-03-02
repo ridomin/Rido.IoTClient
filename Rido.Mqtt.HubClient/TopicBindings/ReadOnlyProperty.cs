@@ -1,7 +1,7 @@
 ﻿using Rido.MqttCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +25,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         public async Task<int> ReportPropertyAsync(CancellationToken cancellationToken = default)
         {
             bool asComponent = !string.IsNullOrEmpty(component);
-            Version = await updateTwin.ReportPropertyAsync(JsonSerializer.Serialize(ToJsonDict(asComponent)), cancellationToken);
+            Version = await updateTwin.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
             return Version;
         }
 

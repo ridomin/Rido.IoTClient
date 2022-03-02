@@ -2,7 +2,7 @@
 using Rido.MqttCore;
 using System;
 using System.Text;
-using System.Text.Json;
+
 using System.Threading.Tasks;
 
 namespace Rido.Mqtt.HubClient.TopicBindings
@@ -26,7 +26,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                     {
                         (int rid, _) = TopicParser.ParseTopic(topic);
                         TResponse response = await OnCmdDelegate.Invoke(req);
-                        _ = connection.PublishAsync($"$iothub/methods/res/{response.Status}/?$rid={rid}", JsonSerializer.Serialize(response));
+                        _ = connection.PublishAsync($"$iothub/methods/res/{response.Status}/?$rid={rid}", response);
                     }
                 }
             };

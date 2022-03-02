@@ -5,6 +5,6 @@ namespace Rido.Mqtt.HubClient
 {
     public interface IReportPropertyBinder
     {
-        Task<int> ReportPropertyAsync(string payload, CancellationToken cancellationToken = default);
+        Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default);
     }
 }

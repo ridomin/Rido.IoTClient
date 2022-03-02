@@ -8,6 +8,6 @@ namespace Rido.Mqtt.HubClient
 {
     public interface IPropertyStoreWriter
     {
-        Task<int> ReportPropertyAsync(string payload, CancellationToken token = default);
+        Task<int> ReportPropertyAsync(object payload, CancellationToken token = default);
     }
 }
