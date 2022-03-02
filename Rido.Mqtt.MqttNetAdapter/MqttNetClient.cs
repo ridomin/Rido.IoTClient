@@ -45,6 +45,18 @@ namespace Rido.Mqtt.MqttNetAdapter
             };
         }
 
+        public static async Task<IMqttBaseClient> CreateAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
+        {
+            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAzureIoTHubCredentials(connectionSettings).Build(), cancellationToken);
+            if (connAck.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                Trace.TraceError(connAck.ReasonString);
+                throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
+            }
+            return new MqttNetClient(mqtt);
+        }
+
         public static async Task<IMqttBaseClient> CreateAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
 

@@ -15,10 +15,7 @@ namespace pnp_device_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var mqtt = await Rido.Mqtt.MqttNetAdapter.MqttNetClient.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            _logger.LogInformation($"Connected: {mqtt.ConnectionSettings}");
-
-            dtmi_samples_pnpdevice client = new dtmi_samples_pnpdevice(mqtt);
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
 
             client.Property_interval.OnProperty_Updated += async p =>
             {

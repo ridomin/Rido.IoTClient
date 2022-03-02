@@ -1,15 +1,11 @@
 ﻿using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
+using Rido.Mqtt.MqttNetAdapter;
 using Rido.MqttCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pnp_device_sample
 {
-    internal class dtmi_samples_pnpdevice : HubMqttClient
+    internal class dtmi_rido_pnp_memmon : HubMqttClient, Imemmon
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -19,7 +15,7 @@ namespace pnp_device_sample
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-        public dtmi_samples_pnpdevice(IMqttBaseClient c) : base(c)
+        private dtmi_rido_pnp_memmon(IMqttBaseClient c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
@@ -27,30 +23,14 @@ namespace pnp_device_sample
             Telemetry_workingSet = new Telemetry<double>(c, "workingSet");
             Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
-    }
 
-    public enum DiagnosticsMode
-    {
-        minimal = 0,
-        complete = 1,
-        full = 2
-    }
-
-    public class Cmd_getRuntimeStats_Request : IBaseCommandRequest<Cmd_getRuntimeStats_Request>
-    {
-        public DiagnosticsMode DiagnosticsMode { get; set; }
-
-        public Cmd_getRuntimeStats_Request DeserializeBody(string payload)
+        internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(string connectionString, CancellationToken cancellationToken = default)
         {
-            return new Cmd_getRuntimeStats_Request()
-            {
-                DiagnosticsMode = System.Text.Json.JsonSerializer.Deserialize<DiagnosticsMode>(payload)
-            };
+            ConnectionSettings cs = new ConnectionSettings(connectionString) { ModelId = modelId };
+            var mqtt = await MqttNetClient.CreateAsync(cs, cancellationToken);
+            var client = new dtmi_rido_pnp_memmon(mqtt);
+            return client;
         }
     }
-
-    public class Cmd_getRuntimeStats_Response : BaseCommandResponse
-    {
-        public Dictionary<string, string> diagnosticResults { get; set; } = new Dictionary<string, string>();
-    }
+   
 }
