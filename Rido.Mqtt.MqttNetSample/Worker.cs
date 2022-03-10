@@ -25,13 +25,14 @@ namespace Rido.Mqtt.MqttNetSample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
-            //var adapter = await new M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            //IMqttBaseClient adapter = await new M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
+            
+            _logger.LogInformation("Connected: " + adapter.ConnectionSettings.ToString());
             
             var client = new HubMqttClient(adapter);
-            Console.WriteLine("Connected: " + client.ConnectionSettings.ToString());
 
-            client.Command.OnCmdDelegate = async m =>
+            client.OnCommandReceived = async m =>
             {
                 _logger.LogInformation("Processing command: " + m.CommandName);
                 return await Task.FromResult(new GenericCommandResponse()
@@ -41,7 +42,7 @@ namespace Rido.Mqtt.MqttNetSample
                 });
             };
 
-            client.genericDesiredUpdateProperty.OnProperty_Updated = async m =>
+            client.OnPropertyUpdateReceived = async m =>
             {
                 _logger.LogInformation("Processing desired: " + m.ToJsonString());
                 return await Task.FromResult(new GenericPropertyAck
@@ -53,11 +54,12 @@ namespace Rido.Mqtt.MqttNetSample
             };
 
             var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
+            _logger.LogInformation($"Property updated with version {v}");
+
             var twin = await client.GetTwinAsync();
 
-            Console.WriteLine();
-            Console.WriteLine(twin);
-            Console.WriteLine();
+            _logger.LogInformation(twin);
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 int puback = await client.SendTelemetryAsync(new { temperature = 23 });

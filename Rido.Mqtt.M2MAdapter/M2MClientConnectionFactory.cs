@@ -39,7 +39,7 @@ namespace Rido.Mqtt.M2MAdapter
             return await Task.FromResult(new M2MClient(mqtt) { ConnectionSettings = connectionSettings });
         }
 
-        public async Task<IMqttBaseClient> CreateBrokerClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        public async Task<IMqttBaseClient> CreateBrokerClientAsync(string connectionSettingsString)
         {
             var connectionSettings = new ConnectionSettings(connectionSettingsString); ;
             var mqtt = new MqttClient(connectionSettings.HostName, 8883, true, MqttSslProtocols.TLSv1_2, null, null);
