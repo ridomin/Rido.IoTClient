@@ -13,12 +13,12 @@ namespace Rido.Mqtt.MqttNetAdapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
-        private static ConnectionSettings connectionSettings;
+        //private static ConnectionSettings connectionSettings;
         public bool IsConnected => client.IsConnected;
 
         public string ClientId => client.Options.ClientId;
 
-        public ConnectionSettings ConnectionSettings => connectionSettings;
+        public ConnectionSettings ConnectionSettings { get; set; }
 
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
@@ -44,29 +44,7 @@ namespace Rido.Mqtt.MqttNetAdapter
             };
         }
 
-        public static async Task<IMqttBaseClient> CreateAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
-        {
-            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
-            var connAck = await mqtt.ConnectAsync(
-                new MqttClientOptionsBuilder()
-                    .WithAzureIoTHubCredentials(connectionSettings)
-                    .Build(),
-                cancellationToken);
-
-            if (connAck.ResultCode != MqttClientConnectResultCode.Success)
-            {
-                Trace.TraceError(connAck.ReasonString);
-                throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
-            }
-
-            return new MqttNetClient(mqtt);
-        }
-
-        public static async Task<IMqttBaseClient> CreateAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
-        {
-            connectionSettings = new ConnectionSettings(connectionSettingsString);
-            return await CreateAsync(connectionSettings, cancellationToken);
-        }
+       
 
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {

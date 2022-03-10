@@ -3,6 +3,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.M2MAdapter;
+using Rido.Mqtt.MqttNetAdapter;
+using Rido.MqttCore;
 using System;
 using System.Text.Json;
 using System.Threading;
@@ -23,9 +25,9 @@ namespace Rido.Mqtt.MqttNetSample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //var adapter = await MqttNetClient.CreateAsync(_configuration.GetConnectionString("cs"),stoppingToken);
-            var adapter = await M2MClientConnectionFactory.CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-
+            var adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
+            //var adapter = await new M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            
             var client = new HubMqttClient(adapter);
             Console.WriteLine("Connected: " + client.ConnectionSettings.ToString());
 

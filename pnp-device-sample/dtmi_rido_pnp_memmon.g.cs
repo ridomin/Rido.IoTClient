@@ -26,8 +26,8 @@ namespace pnp_device_sample
 
         internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(string connectionString, CancellationToken cancellationToken = default)
         {
-            ConnectionSettings cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var mqtt = await MqttNetClient.CreateAsync(cs, cancellationToken);
+
+            var mqtt = await new MqttNetClientConnectionFactory().CreateHubClientAsync(connectionString, cancellationToken);
             var client = new dtmi_rido_pnp_memmon(mqtt);
             return client;
         }
