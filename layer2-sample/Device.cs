@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.MqttNetSample
 {
-    public class Worker : BackgroundService
+    public class Device : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<Device> _logger;
         private readonly IConfiguration _configuration;
 
-        public Worker(ILogger<Worker> logger, IConfiguration configuration)
+        public Device(ILogger<Device> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
@@ -27,15 +27,19 @@ namespace Rido.Mqtt.MqttNetSample
         {
             //IMqttBaseClient adapter = await new M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
-            
-            _logger.LogInformation("Connected: " + adapter.ConnectionSettings.ToString());
-            
+            _logger.LogInformation($"CONNECTED: DeviceId: {adapter.ConnectionSettings.DeviceId} - HostName: {adapter.ConnectionSettings.HostName} ");
             var client = new HubMqttClient(adapter);
+            
+            var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
+            _logger.LogInformation($"Property updated with version {v}");
+            
+            var twin = await client.GetTwinAsync();
+            _logger.LogInformation(twin);
 
             client.OnCommandReceived = async m =>
             {
                 _logger.LogInformation("Processing command: " + m.CommandName);
-                return await Task.FromResult(new GenericCommandResponse()
+                return await Task.FromResult(new CommandResponse()
                 {
                     Status = 200,
                     ReponsePayload = JsonSerializer.Serialize(new { myResponse = "whatever" })
@@ -53,18 +57,11 @@ namespace Rido.Mqtt.MqttNetSample
                 });
             };
 
-            var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
-            _logger.LogInformation($"Property updated with version {v}");
-
-            var twin = await client.GetTwinAsync();
-
-            _logger.LogInformation(twin);
-
             while (!stoppingToken.IsCancellationRequested)
             {
-                int puback = await client.SendTelemetryAsync(new { temperature = 23 });
+                var puback = await client.SendTelemetryAsync(new { temperature = 23 });
                 _logger.LogInformation($"Telemetry pubAck {puback}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(5000, stoppingToken);
             }
         }
     }

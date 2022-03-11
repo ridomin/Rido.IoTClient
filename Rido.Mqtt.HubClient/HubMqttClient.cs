@@ -25,7 +25,7 @@ namespace Rido.Mqtt.HubClient
             genericDesiredUpdateProperty = new GenericDesiredUpdatePropertyBinder(c);
         }
 
-        public Func<GenericCommandRequest, Task<GenericCommandResponse>> OnCommandReceived
+        public Func<GenericCommandRequest, Task<CommandResponse>> OnCommandReceived
         {
             get => command.OnCmdDelegate;
             set => command.OnCmdDelegate = value;
@@ -39,7 +39,6 @@ namespace Rido.Mqtt.HubClient
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => getTwinBinder.ReadPropertiesDocAsync(cancellationToken);
         public Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default) => updateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
-        public Task<int> SendTelemetryAsync(object payload, CancellationToken t = default) =>
-            Connection.PublishAsync($"devices/{Connection.ClientId}/messages/events/", payload, 0, t);
+        public Task<int> SendTelemetryAsync(object payload, CancellationToken t = default) => Connection.PublishAsync($"devices/{Connection.ClientId}/messages/events/", payload, 0, t);
     }
 }

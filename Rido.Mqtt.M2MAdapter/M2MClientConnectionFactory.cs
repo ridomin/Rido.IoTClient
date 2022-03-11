@@ -20,7 +20,8 @@ namespace Rido.Mqtt.M2MAdapter
                 (string u, string p) = SasAuth.GenerateHubSasCredentials(connectionSettings.HostName, connectionSettings.DeviceId, connectionSettings.SharedAccessKey, connectionSettings.ModelId, connectionSettings.SasMinutes);
                 int res = mqtt.Connect(connectionSettings.DeviceId, u, p);
                 Console.WriteLine(res);
-            } else if (connectionSettings.Auth == "X509")
+            } 
+            else if (connectionSettings.Auth == "X509")
             {
                 var segments = connectionSettings.X509Key.Split('|');
                 string pfxpath = segments[0];

@@ -9,7 +9,7 @@ namespace Rido.Mqtt.HubClient
     public interface IHubMqttClient
     {
         IMqttBaseClient Connection { get; set; }
-        Func<GenericCommandRequest, Task<GenericCommandResponse>> OnCommandReceived { get; set; }
+        Func<GenericCommandRequest, Task<CommandResponse>> OnCommandReceived { get; set; }
         Func<JsonNode, Task<GenericPropertyAck>> OnPropertyUpdateReceived { get; set; }
 
         Task<string> GetTwinAsync(CancellationToken cancellationToken = default);

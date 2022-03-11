@@ -1,6 +1,6 @@
 ﻿namespace Rido.Mqtt.HubClient
 {
-    public class GenericCommandResponse : BaseCommandResponse
+    public class CommandResponse : BaseCommandResponse
     {
         public string ReponsePayload { get; set; }
     }

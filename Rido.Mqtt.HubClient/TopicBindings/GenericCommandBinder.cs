@@ -8,7 +8,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 {
     public class GenericCommand
     {
-        public Func<GenericCommandRequest, Task<GenericCommandResponse>> OnCmdDelegate { get; set; }
+        public Func<GenericCommandRequest, Task<CommandResponse>> OnCmdDelegate { get; set; }
 
         public GenericCommand(IMqttBaseClient connection)
         {
@@ -29,7 +29,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                     if (OnCmdDelegate != null && req != null)
                     {
                         (int rid, _) = TopicParser.ParseTopic(topic);
-                        GenericCommandResponse response = await OnCmdDelegate.Invoke(req);
+                        CommandResponse response = await OnCmdDelegate.Invoke(req);
                         _ = connection.PublishAsync($"$iothub/methods/res/{response.Status}/?$rid={rid}", response);
                     }
                 }
