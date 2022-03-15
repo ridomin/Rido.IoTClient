@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.HubClient.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "layer2-sample", "layer2-sample\layer2-sample.csproj", "{BFB0A80D-5F29-49BC-B908-FC2C8E810D44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.Mqtt.HubClient.IntergationTests", "Rido.Mqtt.HubClient.IntergationTests\Rido.Mqtt.HubClient.IntergationTests.csproj", "{6CD98D28-78FD-4D54-B8F1-8D49BD5A94C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{BFB0A80D-5F29-49BC-B908-FC2C8E810D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFB0A80D-5F29-49BC-B908-FC2C8E810D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFB0A80D-5F29-49BC-B908-FC2C8E810D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD98D28-78FD-4D54-B8F1-8D49BD5A94C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD98D28-78FD-4D54-B8F1-8D49BD5A94C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD98D28-78FD-4D54-B8F1-8D49BD5A94C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD98D28-78FD-4D54-B8F1-8D49BD5A94C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +137,7 @@ Global
 		{A6347AC3-0139-4207-9211-DB28726B43D5} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
 		{617D150A-79DB-499F-A345-6DEE6E3D58EC} = {6ED72D5F-FD41-460E-A68E-62BDF005B1D1}
 		{97BF27C3-9B69-4E7A-A118-44CBF6F9AAD8} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
+		{BFB0A80D-5F29-49BC-B908-FC2C8E810D44} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}
