@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rido.Mqtt.MqttNetAdapter\Rido.Mqtt.MqttNetAdapter.csproj" />
     <ProjectReference Include="..\Rido.MqttCore\Rido.MqttCore.csproj" />
   </ItemGroup>
 

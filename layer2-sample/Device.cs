@@ -25,11 +25,13 @@ namespace Rido.Mqtt.MqttNetSample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            //IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
             //IMqttBaseClient adapter = await new M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
-            _logger.LogInformation($"CONNECTED: DeviceId: {adapter.ConnectionSettings.DeviceId} - HostName: {adapter.ConnectionSettings.HostName} ");
-            var client = new HubMqttClient(adapter);
-            
+            //var client = new HubMqttClient(adapter);
+
+            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("cs"));
+
+            _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
             var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             _logger.LogInformation($"Property updated with version {v}");
             
