@@ -2,7 +2,6 @@
 using MQTTnet.Client;
 using Rido.MqttCore;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -13,7 +12,6 @@ namespace Rido.Mqtt.MqttNetAdapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
-        //private static ConnectionSettings connectionSettings;
         public bool IsConnected => client.IsConnected;
 
         public string ClientId => client.Options.ClientId;
@@ -39,7 +37,7 @@ namespace Rido.Mqtt.MqttNetAdapter
 
             this.client.DisconnectedAsync += async d =>
             {
-                OnMqttClientDisconnected.Invoke(client, new DisconnectEventArgs() { ReasonInfo = d.Reason.ToString() });
+                OnMqttClientDisconnected?.Invoke(client, new DisconnectEventArgs() { ReasonInfo = d.Reason.ToString() });
                 await Task.Yield();
             };
         }
@@ -61,12 +59,13 @@ namespace Rido.Mqtt.MqttNetAdapter
             }
 
             var res = await client.PublishAsync(
-                new MqttApplicationMessage()
-                {
-                    Topic = topic,
-                    Payload = Encoding.UTF8.GetBytes(jsonPayload)
-                },
+                new MqttApplicationMessageBuilder()
+                    .WithTopic(topic)
+                    .WithPayload(jsonPayload)
+                    .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)
+                    .Build(), 
                 token);
+
 
             if (res.ReasonCode != MqttClientPublishReasonCode.Success)
             {
