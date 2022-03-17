@@ -9,9 +9,7 @@ namespace Rido.Mqtt.HubClient.Tests
 {
     internal class MockMqttClient : IMqttBaseClient
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public MockMqttClient()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
 
         }
@@ -22,7 +20,7 @@ namespace Rido.Mqtt.HubClient.Tests
 
         public string ClientId => "mock";
 
-
+        public string BaseClientLibraryInfo => "mock client";
 
         public string payloadReceived;
         public string topicRecceived;
@@ -42,7 +40,7 @@ namespace Rido.Mqtt.HubClient.Tests
 
         public Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {
-            string jsonPayload = string.Empty;
+            string jsonPayload;
             if (payload is string)
             {
                 jsonPayload = payload as string;

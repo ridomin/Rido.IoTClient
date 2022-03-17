@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-pnp_device_sample-AB9AB840-F73B-44FC-8667-0E5B06916CED</UserSecretsId>
-    <RootNamespace>pnp_device_sample</RootNamespace>
+    <UserSecretsId>dotnet-layer1_sample-7A8525C2-FA77-415C-8168-0EAE2FEF44A3</UserSecretsId>
+    <RootNamespace>layer1_sample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
-    <ProjectReference Include="..\Rido.Mqtt.MqttNet4Adapter\Rido.Mqtt.MqttNet4Adapter.csproj" />
+    <ProjectReference Include="..\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
   </ItemGroup>
 </Project>
