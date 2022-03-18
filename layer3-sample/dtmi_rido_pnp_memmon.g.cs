@@ -1,6 +1,6 @@
 ﻿using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
-using Rido.Mqtt.MqttNetAdapter;
+using Rido.Mqtt.MqttNet4Adapter;
 using Rido.MqttCore;
 
 namespace pnp_device_sample
