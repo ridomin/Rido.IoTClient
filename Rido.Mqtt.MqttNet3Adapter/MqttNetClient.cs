@@ -16,7 +16,6 @@ namespace Rido.Mqtt.MqttNet3Adapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
-        //private static ConnectionSettings connectionSettings;
         public bool IsConnected => client.IsConnected;
 
         public string ClientId => client.Options.ClientId;

@@ -29,7 +29,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             this.client = client;
             this.client.ApplicationMessageReceivedAsync += async m =>
             {
-                await OnMessage.Invoke(
+                await OnMessage?.Invoke(
                     new MqttMessage()
                     {
                         Topic = m.ApplicationMessage.Topic,
