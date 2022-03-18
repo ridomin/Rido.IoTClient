@@ -16,11 +16,11 @@ namespace Rido.Mqtt.HubClient
         private readonly GenericDesiredUpdatePropertyBinder genericDesiredUpdateProperty;
         private readonly GenericCommand command;
 
-        //public static async Task<HubMqttClient> CreateFromConnectionStringAsync(string cs)
-        //{
-        //    var mqtt = await new MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
-        //    return new HubMqttClient(mqtt);
-        //}
+        public static async Task<HubMqttClient> CreateFromConnectionStringAsync(string cs)
+        {
+            var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
+            return new HubMqttClient(mqtt);
+        }
 
         public HubMqttClient(IMqttBaseClient c)
         {

@@ -1,4 +1,3 @@
-using Rido.Mqtt.MqttNet3Adapter;
 using Rido.MqttCore;
 
 namespace layer1_sample
@@ -16,21 +15,22 @@ namespace layer1_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            IMqttBaseClient mqtt = await new MqttNetClientConnectionFactory()
+            IMqttBaseClient mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory()
                 .CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            _logger.LogInformation($"{mqtt.BaseClientLibraryInfo} {mqtt.ConnectionSettings}");
 
-            var twin = await GetTwin(mqtt, stoppingToken);
-            _logger.LogInformation(twin);
+            Console.WriteLine($"{mqtt.BaseClientLibraryInfo} {mqtt.ConnectionSettings}");
 
             while (!stoppingToken.IsCancellationRequested)
             {
+                var twin = await GetTwin(mqtt, stoppingToken);
+                Console.WriteLine(twin);
+
                 var pubAck = await mqtt.PublishAsync(
                     $"devices/{mqtt.ConnectionSettings.ClientId}/messages/events/",
                     new { worksingSet = Environment.WorkingSet },
                     1, stoppingToken);
 
-                _logger.LogInformation($"PubAck: {pubAck}");
+                _logger.LogInformation("PubAck: {pubAck}", pubAck);
                 await Task.Delay(1000, stoppingToken);
             }
         }
@@ -39,7 +39,7 @@ namespace layer1_sample
         async Task<string> GetTwin(IMqttBaseClient client, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
-            var subAck = await client.SubscribeAsync("$iothub/twin/res/#");
+            _ = await client.SubscribeAsync("$iothub/twin/res/#", cancellationToken);
             client.OnMessage += async m =>
             {
                 var topic = m.Topic;
@@ -47,6 +47,7 @@ namespace layer1_sample
                 if (topic.StartsWith("$iothub/twin/res/200"))
                 {
                     tcs.SetResult(m.Payload);
+                    _ = await client.UnsubscribeAsync("$iothub/twin/res/#", cancellationToken);
                 }
                 await Task.Yield();
             };

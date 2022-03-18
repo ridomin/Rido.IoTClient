@@ -17,13 +17,14 @@ namespace Rido.MqttCore
 
     public interface IMqttBaseClient
     {
-        string BaseClientLibraryInfo { get; }
-        ConnectionSettings ConnectionSettings { get; }
         bool IsConnected { get; }
         string ClientId { get; }
+        string BaseClientLibraryInfo { get; }
+        ConnectionSettings ConnectionSettings { get; }
         Task<int> PublishAsync(string topic, object payload, int qos = 1, CancellationToken token = default);
         Task<int> SubscribeAsync(string topic, CancellationToken token = default);
-        event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
+        Task<int> UnsubscribeAsync(string topic, CancellationToken token = default);
         event Func<MqttMessage, Task> OnMessage;
+        event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
     }
 }

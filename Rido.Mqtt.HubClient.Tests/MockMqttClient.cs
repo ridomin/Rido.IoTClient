@@ -61,5 +61,11 @@ namespace Rido.Mqtt.HubClient.Tests
             //options.TopicFilters.ForEach(t => Trace.TraceInformation(t.Topic));
             return Task.FromResult(0);
         }
+
+        public Task<int> UnsubscribeAsync(string topic, CancellationToken token = default)
+        {
+            numSubscriptions--;
+            return Task.FromResult(0);
+        }
     }
 }

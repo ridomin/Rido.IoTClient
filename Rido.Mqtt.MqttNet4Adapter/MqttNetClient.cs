@@ -86,5 +86,16 @@ namespace Rido.Mqtt.MqttNet4Adapter
             }
             return 0;
         }
+
+        public async Task<int> UnsubscribeAsync(string topic, CancellationToken token = default)
+        {
+            var res = await client.UnsubscribeAsync(new MqttClientUnsubscribeOptionsBuilder().WithTopicFilter(topic).Build(), token);
+            var errs = res.Items.ToList().Any(x => x.ResultCode > MqttClientUnsubscribeResultCode.Success);
+            if (errs)
+            {
+                throw new ApplicationException("Error unsubscribing to " + topic);
+            }
+            return 0;
+        }
     }
 }

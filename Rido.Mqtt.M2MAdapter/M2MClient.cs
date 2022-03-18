@@ -51,7 +51,14 @@ namespace Rido.Mqtt.M2MAdapter
 
         public async Task<int> SubscribeAsync(string topic, CancellationToken token = default)
         {
-            var res = client.Subscribe(new string[] { topic }, new byte[] { 0 });
+            var res = client.Subscribe(new string[] { topic }, new byte[] { 1 });
+            return await Task.FromResult(Convert.ToInt32(res));
+        }
+
+
+        public async Task<int> UnsubscribeAsync(string topic, CancellationToken token = default)
+        {
+            var res = client.Unsubscribe(new string[] { topic });
             return await Task.FromResult(Convert.ToInt32(res));
         }
     }

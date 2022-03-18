@@ -1,6 +1,5 @@
 ﻿using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
-using Rido.Mqtt.MqttNet4Adapter;
 using Rido.MqttCore;
 
 namespace pnp_device_sample
@@ -27,7 +26,7 @@ namespace pnp_device_sample
         internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(string connectionString, CancellationToken cancellationToken = default)
         {
 
-            var mqtt = await new MqttNetClientConnectionFactory().CreateHubClientAsync(connectionString, cancellationToken);
+            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(connectionString, cancellationToken);
             var client = new dtmi_rido_pnp_memmon(mqtt);
             return client;
         }

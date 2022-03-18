@@ -24,13 +24,13 @@ namespace Rido.Mqtt.MqttNetSample
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             //IMqttBaseClient adapter = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            //IMqttBaseClient adapter = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            IMqttBaseClient adapter = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
-            var client = new HubMqttClient(adapter);
+            //var client = new HubMqttClient(adapter);
 
-            //var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("cs"));
+            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("cs"));
             _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
-            _logger.LogInformation($"Using MQTT Library:" + adapter.BaseClientLibraryInfo);
+            _logger.LogInformation($"Using MQTT Library:" + client.Connection.BaseClientLibraryInfo);
 
             var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             _logger.LogInformation($"Property updated with version {v}");
