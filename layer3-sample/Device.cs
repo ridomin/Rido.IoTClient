@@ -17,6 +17,9 @@ namespace pnp_device_sample
         {
             var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("dps"), stoppingToken);
 
+            var twin = await client.GetTwinAsync(stoppingToken);
+            _logger.LogInformation(twin);
+
             client.Command_getRuntimeStats.OnCmdDelegate = async cmd =>
             {
                 _logger.LogInformation("CMD getRuntimeStats");
@@ -46,7 +49,7 @@ namespace pnp_device_sample
                 };
             }; 
 
-            var twin = await client.GetTwinAsync(stoppingToken);
+            
             await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
             await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
 

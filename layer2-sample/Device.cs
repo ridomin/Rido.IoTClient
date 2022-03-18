@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Rido.Mqtt.HubClient;
+using Rido.MqttCore;
 using System;
 using System.Text.Json;
 using System.Threading;
