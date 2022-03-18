@@ -3,7 +3,7 @@ using MQTTnet.Diagnostics.Logger;
 using System;
 using System.Diagnostics;
 
-namespace Rido.Mqtt.MqttNetAdapter
+namespace Rido.Mqtt.MqttNet3Adapter
 {
     public class MqttNetTraceLogger
     {

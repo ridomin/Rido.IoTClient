@@ -23,8 +23,9 @@ namespace Rido.Mqtt.MqttNetSample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            IMqttBaseClient adapter = await new MqttNetAdapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
+            //IMqttBaseClient adapter = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            IMqttBaseClient adapter = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
             var client = new HubMqttClient(adapter);
 
             //var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("cs"));
@@ -60,7 +61,7 @@ namespace Rido.Mqtt.MqttNetSample
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                var puback = await client.SendTelemetryAsync(new { temperature = 23 });
+                var puback = await client.SendTelemetryAsync(new { workingSet = Environment.WorkingSet });
                 _logger.LogInformation($"Telemetry pubAck {puback}", DateTimeOffset.Now);
                 await Task.Delay(5000, stoppingToken);
             }

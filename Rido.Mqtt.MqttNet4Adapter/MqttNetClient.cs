@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.Mqtt.MqttNetAdapter
+namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
@@ -44,7 +44,7 @@ namespace Rido.Mqtt.MqttNetAdapter
             };
         }
 
-       
+
 
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {
@@ -65,7 +65,7 @@ namespace Rido.Mqtt.MqttNetAdapter
                     .WithTopic(topic)
                     .WithPayload(jsonPayload)
                     .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)
-                    .Build(), 
+                    .Build(),
                 token);
 
 

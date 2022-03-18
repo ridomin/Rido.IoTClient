@@ -2,12 +2,12 @@ using Rido.Mqtt.HubClient;
 
 namespace pnp_device_sample
 {
-    public class Worker : BackgroundService
+    public class Device : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<Device> _logger;
         private readonly IConfiguration _configuration;
 
-        public Worker(ILogger<Worker> logger, IConfiguration configuration)
+        public Device(ILogger<Device> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
@@ -41,7 +41,7 @@ namespace pnp_device_sample
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await client.Telemetry_workingSet.SendTelemetryAsync(3.2, stoppingToken);
+                await client.Telemetry_workingSet.SendTelemetryAsync(Environment.WorkingSet, stoppingToken);
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 _logger.LogInformation($"enabled: {client.Property_enabled.PropertyValue.Value} {client.Property_enabled.PropertyValue.Version } ");
                 _logger.LogInformation($"interval: {client.Property_interval.PropertyValue.Value} {client.Property_interval.PropertyValue.Version } ");

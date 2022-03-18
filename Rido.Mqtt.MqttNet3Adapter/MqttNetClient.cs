@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.Mqtt.MqttNetAdapter
+namespace Rido.Mqtt.MqttNet3Adapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
@@ -30,35 +30,25 @@ namespace Rido.Mqtt.MqttNetAdapter
         private readonly MqttClient client;
         public MqttNetClient(MqttClient client)
         {
-           this.client = client;
-           this.client.UseApplicationMessageReceivedHandler(async m =>
-           {
-               await OnMessage?.Invoke(
-                    new MqttMessage()
-                    {
-                        Topic = m.ApplicationMessage.Topic,
-                        Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>())
-                    });
-           });
-                
-            //this.client.ApplicationMessageReceivedHandler += async m =>
-            //{
-            //    await OnMessage.Invoke(
-            //        new MqttMessage()
-            //        {
-            //            Topic = m.ApplicationMessage.Topic,
-            //            Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>())
-            //        });
-            //};
-
-            this.client.UseDisconnectedHandler( async d =>
+            this.client = client;
+            this.client.UseApplicationMessageReceivedHandler(async m =>
             {
-                OnMqttClientDisconnected.Invoke(client, new DisconnectEventArgs() { ReasonInfo = d.Reason.ToString() });
-                await Task.Yield();
+                await OnMessage?.Invoke(
+                     new MqttMessage()
+                     {
+                         Topic = m.ApplicationMessage.Topic,
+                         Payload = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>())
+                     });
             });
+
+           this.client.UseDisconnectedHandler(async d =>
+           {
+               OnMqttClientDisconnected?.Invoke(client, new DisconnectEventArgs() { ReasonInfo = d.Reason.ToString() });
+               await Task.Yield();
+           });
         }
 
-       
+
 
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {

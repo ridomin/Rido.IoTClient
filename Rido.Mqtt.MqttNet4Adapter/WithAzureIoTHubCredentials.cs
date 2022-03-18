@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Rido.Mqtt.MqttNetAdapter
+namespace Rido.Mqtt.MqttNet4Adapter
 {
     public static class MqttNetExtensions
     {
@@ -13,7 +13,7 @@ namespace Rido.Mqtt.MqttNetAdapter
             if (cs.Auth == "SAS")
             {
                 cs.ClientId = cs.DeviceId;
-                return WithAzureIoTHubCredentialsSas(builder, cs.HostName, cs.DeviceId, cs.ModuleId, cs.SharedAccessKey, cs.ModelId, cs.SasMinutes);
+                return builder.WithAzureIoTHubCredentialsSas(cs.HostName, cs.DeviceId, cs.ModuleId, cs.SharedAccessKey, cs.ModelId, cs.SasMinutes);
             }
             else if (cs.Auth == "X509")
             {
@@ -33,7 +33,7 @@ namespace Rido.Mqtt.MqttNetAdapter
                     cs.DeviceId = clientId;
                 }
 
-                return WithAzureIoTHubCredentialsX509(builder, cs.HostName, cert, cs.ModelId);
+                return builder.WithAzureIoTHubCredentialsX509(cs.HostName, cert, cs.ModelId);
             }
             else
             {

@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Rido.Mqtt.MqttNetAdapter
+namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetTraceLogger
     {
