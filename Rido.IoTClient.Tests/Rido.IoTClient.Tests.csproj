@@ -28,8 +28,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
-  </ItemGroup>
-
 </Project>
