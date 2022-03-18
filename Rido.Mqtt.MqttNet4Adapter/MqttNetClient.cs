@@ -18,6 +18,8 @@ namespace Rido.Mqtt.MqttNetAdapter
 
         public ConnectionSettings ConnectionSettings { get; set; }
 
+        public string BaseClientLibraryInfo => client.GetType().Assembly.FullName.ToLowerInvariant();
+
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
