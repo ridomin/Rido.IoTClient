@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="*.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

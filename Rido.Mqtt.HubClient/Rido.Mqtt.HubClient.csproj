@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj" />
+    <ProjectReference Include="..\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+    <ProjectReference Include="..\Rido.MqttCore\Rido.MqttCore.csproj" />
+  </ItemGroup>
+
+</Project>
