@@ -14,6 +14,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
-    <ProjectReference Include="..\Rido.Mqtt.MqttNet4Adapter\Rido.Mqtt.MqttNet4Adapter.csproj" />
   </ItemGroup>
 </Project>

@@ -6,5 +6,6 @@ namespace Rido.MqttCore
     public interface IHubClientConnectionFactory
     {
         Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default);
+        Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default);
     }
 }

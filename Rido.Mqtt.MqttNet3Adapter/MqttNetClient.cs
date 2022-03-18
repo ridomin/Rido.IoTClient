@@ -100,5 +100,10 @@ namespace Rido.Mqtt.MqttNet3Adapter
             }
             return 0;
         }
+
+        public async Task DisconnectAsync(CancellationToken token = default)
+        {
+            await client.DisconnectAsync(token);
+        }
     }
 }

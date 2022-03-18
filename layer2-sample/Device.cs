@@ -2,7 +2,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Rido.Mqtt.HubClient;
-using Rido.MqttCore;
 using System;
 using System.Text.Json;
 using System.Threading;
@@ -28,7 +27,7 @@ namespace Rido.Mqtt.MqttNetSample
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             //var client = new HubMqttClient(adapter);
 
-            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("cs"));
+            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("dps"));
             _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
             _logger.LogInformation($"Using MQTT Library:" + client.Connection.BaseClientLibraryInfo);
 

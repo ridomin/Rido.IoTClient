@@ -15,7 +15,22 @@ namespace pnp_device_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("dps"), stoppingToken);
+
+            client.Command_getRuntimeStats.OnCmdDelegate = async cmd =>
+            {
+                _logger.LogInformation("CMD getRuntimeStats");
+                await Task.Delay(500);
+                return new Cmd_getRuntimeStats_Response
+                {
+                    diagnosticResults = new Dictionary<string, string>()
+                    {
+                        { "machineName", Environment.MachineName },
+                        { "osVersion", Environment.OSVersion.ToString() }
+                    },
+                    Status = 200
+                };
+            };
 
             client.Property_interval.OnProperty_Updated += async p =>
             {
@@ -31,7 +46,7 @@ namespace pnp_device_sample
                 };
             }; 
 
-            var twin = await client.GetTwinAsync();
+            var twin = await client.GetTwinAsync(stoppingToken);
             await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
             await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
 

@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "layer3-sample", "layer3-sam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mqtt-adapters", "mqtt-adapters", "{C7BED8C3-1C8F-48E0-A9C8-99DDF733428B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.Mqtt.DpsClient", "Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj", "{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,10 @@ Global
 		{0E787493-1468-4D8E-8574-D74057E7C9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E787493-1468-4D8E-8574-D74057E7C9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E787493-1468-4D8E-8574-D74057E7C9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

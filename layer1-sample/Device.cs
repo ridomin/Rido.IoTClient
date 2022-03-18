@@ -53,8 +53,6 @@ namespace layer1_sample
             };
             var puback = await client.PublishAsync($"$iothub/twin/GET/?$rid={rid++}", string.Empty, 1, cancellationToken);
             return await tcs.Task;
-
         }
-            
     }
 }

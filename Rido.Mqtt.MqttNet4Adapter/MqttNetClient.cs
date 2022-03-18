@@ -97,5 +97,10 @@ namespace Rido.Mqtt.MqttNet4Adapter
             }
             return 0;
         }
+
+        public async Task DisconnectAsync(CancellationToken token = default)
+        {
+            await client.DisconnectAsync(new MqttClientDisconnectOptionsBuilder().WithReason(0).Build(), token);
+        }
     }
 }

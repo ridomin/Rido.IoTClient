@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Rido.Mqtt.HubClient
+namespace Rido.MqttCore
 {
     public static class TaskTimeoutExtension
     {

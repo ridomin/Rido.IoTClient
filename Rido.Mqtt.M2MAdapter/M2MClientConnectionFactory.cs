@@ -48,5 +48,10 @@ namespace Rido.Mqtt.M2MAdapter
             Console.WriteLine(res);
             return await Task.FromResult(new M2MClient(mqtt) { ConnectionSettings = connectionSettings });
         }
+
+        public Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

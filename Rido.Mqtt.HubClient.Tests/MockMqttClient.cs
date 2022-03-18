@@ -67,5 +67,10 @@ namespace Rido.Mqtt.HubClient.Tests
             numSubscriptions--;
             return Task.FromResult(0);
         }
+
+        public Task DisconnectAsync(CancellationToken token = default)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

@@ -31,6 +31,12 @@ namespace Rido.Mqtt.M2MAdapter
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
+        public Task DisconnectAsync(CancellationToken token = default)
+        {
+            client.Disconnect();
+            return Task.CompletedTask;
+        }
+
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
         {
             string jsonPayload;
