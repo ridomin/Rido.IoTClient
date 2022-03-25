@@ -1,8 +1,9 @@
 const gbid = id => document.getElementById(id)
 const js = o => JSON.stringify(o, null,2)
 
-const hivehost = 'f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud'
-const username = 'client1'
+//const hivehost = 'f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud'
+const host = 'f8826e3352314ca98102cfbde8aff20e.s2.eu.hivemq.cloud'
+const username = 'client2'
 const password = 'Myclientpwd.000'
 
 const clientId = 'webApp' + Date.now()
@@ -24,13 +25,13 @@ google.charts.setOnLoadCallback( () => {
 
 gbid('button_set_interval').onclick = () => {
     const interval = parseInt(gbid('input_interval').value, 10)
-    client.publish(`pnp/client1/props/set`, js({interval}))
+    client.publish(`pnp/${did}/props/set`, js({interval}))
 }
 
 gbid('button_set_enabled').onclick = () => {
     const enabled = String(gbid('input_enabled').value)=='true'
     console.log(enabled)
-    client.publish(`pnp/client1/props/set`, js({enabled}))
+    client.publish(`pnp/${did}/props/set`, js({enabled}))
 }
 
 gbid('button_cmd_getRuntimeStats').onclick = async () => {
@@ -40,7 +41,7 @@ gbid('button_cmd_getRuntimeStats').onclick = async () => {
 }
 
 const cmd_getRuntimeStats = diagMode => {
-    client.publish(`pnp/client1/commands/getRuntimeStats`, js(diagMode))
+    client.publish(`pnp/${did}/commands/getRuntimeStats`, js(diagMode))
     return new Promise((resolve,reject) => {
         onCommandResponse = resp => resolve(resp)
     })
@@ -68,41 +69,52 @@ const updateReported = twin => {
     }
 }
 
+
 ;(async () => {
     const options = {clientId, username, password}
-    client = mqtt.connect(`wss://${hivehost}:8884/mqtt`, options)
+    client = mqtt.connect(`wss://${host}:8884/mqtt`, options)
     client.on('connect', () => {
         console.log('connected')
         
-        client.subscribe('pnp/+/telemetry', (e) => {
+        client.subscribe('pnp/+/birth', e => {
+            if (e) throw e
+            console.log('subscribed to birth')
+        })
+
+        client.subscribe('pnp/+/telemetry', e => {
             if (e) throw e
             console.log('subscribed to telemetry')
         })
 
-        client.subscribe('pnp/+/props/reported/#', (e) => {
+        client.subscribe('pnp/+/props/reported/#', e => {
             if (e) throw e
             console.log('susbscribed to props reported')
         })
 
-        client.subscribe('pnp/+/commands/+/resp/#', (e) => {
+        client.subscribe('pnp/+/commands/+/resp/#', e => {
             if (e) throw e
             console.log('susbscribed to command reponses')
         })
+
         client.on('message', (t, m) => {
             const msg = m ? JSON.parse(m.toString()) : {};
             //console.log(t, msg)
-            did = t.split('/')[1]
-            if (t.startsWith(`pnp/client1/telemetry`)) {
+            if (t.indexOf(`birth`)>0) {
+                did = t.split('/')[1]
+                console.log('BIRTH:', did)
+            }
+
+            if (t.startsWith(`pnp/${did}/telemetry`)) {
                 data.addRow([new Date(),msg.workingSet])
                 chart.draw(data, chartOptions);
             }
 
-            if (t.startsWith(`pnp/client1/commands`)) {
+            if (t.startsWith(`pnp/${did}/commands`)) {
                 console.log('command accepted: ', t)
                 onCommandResponse(msg)
             }
 
-            if (t.startsWith('pnp/client1/props/reported'))
+            if (t.startsWith('pnp/${did}/props/reported'))
             {
                 console.log(msg)
                 updateReported(msg)

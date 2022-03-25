@@ -11,10 +11,10 @@ namespace Rido.Mqtt.MqttNet4Adapter
         public static MqttClientOptionsBuilder WithBasicAuth(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {
             builder
-             .WithTcpServer(cs.HostName, 1883)
+             .WithTcpServer(cs.HostName, 8883)
                 .WithTls(new MqttClientOptionsBuilderTlsParameters()
                 {
-                    UseTls = false,
+                    UseTls = true,
                     IgnoreCertificateRevocationErrors = true
                 })
                 .WithClientId(cs.ClientId)

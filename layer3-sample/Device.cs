@@ -16,7 +16,7 @@ namespace pnp_device_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("local"), stoppingToken);
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("hive"), stoppingToken);
 
             //var twin = await client.GetTwinAsync(stoppingToken);
             //_logger.LogInformation(twin);
@@ -50,20 +50,30 @@ namespace pnp_device_sample
                 };
             };
 
+            client.Property_started.PropertyValue = DateTime.Now;
+            
             client.Property_interval.PropertyValue = new PropertyAck<int>(client.Property_interval.PropertyName)
             {
                 Value = 5,
                 Status = 203,
                 Description = "default value"
             };
+
+            client.Property_enabled.PropertyValue = new PropertyAck<bool>(client.Property_enabled.PropertyName)
+            {
+                Value = true,
+                Status = 203,
+                Description = "default value"
+            };
+
             //await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
             //await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
-
-            client.Property_started.PropertyValue = DateTime.Now;
+            
             await client.Property_started.ReportPropertyAsync(stoppingToken);
+            await client.Property_interval.ReportPropertyAsync(stoppingToken);
+            await client.Property_enabled.ReportPropertyAsync(stoppingToken);
 
-
-            while (!stoppingToken.IsCancellationRequested)
+            while (client.Property_enabled.PropertyValue.Value==true && !stoppingToken.IsCancellationRequested)
             {
                 await client.Telemetry_workingSet.SendTelemetryAsync(Environment.WorkingSet, stoppingToken);
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
