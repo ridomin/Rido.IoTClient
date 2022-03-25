@@ -50,7 +50,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
 
 
 
-        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
 
             string jsonPayload;
@@ -68,7 +68,8 @@ namespace Rido.Mqtt.MqttNet3Adapter
                 new MqttApplicationMessage()
                 {
                     Topic = topic,
-                    Payload = Encoding.UTF8.GetBytes(jsonPayload)
+                    Payload = Encoding.UTF8.GetBytes(jsonPayload),
+                    Retain = retain
                 },
                 token);
 

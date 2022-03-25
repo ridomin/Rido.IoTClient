@@ -15,7 +15,7 @@ namespace Rido.PnP.TopicBindings
 
         public async Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default)
         {
-            return await connection.PublishAsync($"pnp/{connection.ClientId}/props/reported", payload, 1, cancellationToken);
+            return await connection.PublishAsync($"pnp/{connection.ClientId}/props/reported", payload, 1, true, cancellationToken);
         }
     }
 }

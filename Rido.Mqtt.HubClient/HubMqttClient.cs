@@ -55,6 +55,6 @@ namespace Rido.Mqtt.HubClient
 
         public Task<string> GetTwinAsync(CancellationToken cancellationToken = default) => getTwinBinder.ReadPropertiesDocAsync(cancellationToken);
         public Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default) => updateTwinBinder.ReportPropertyAsync(payload, cancellationToken);
-        public Task<int> SendTelemetryAsync(object payload, CancellationToken t = default) => Connection.PublishAsync($"devices/{Connection.ClientId}/messages/events/", payload, 1, t);
+        public Task<int> SendTelemetryAsync(object payload, CancellationToken t = default) => Connection.PublishAsync($"devices/{Connection.ClientId}/messages/events/", payload, 1, false, t);
     }
 }

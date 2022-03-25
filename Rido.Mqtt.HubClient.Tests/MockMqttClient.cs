@@ -38,7 +38,7 @@ namespace Rido.Mqtt.HubClient.Tests
 
         public Delegate[] GetInvocationList() => OnMessage.GetInvocationList();
 
-        public Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
+        public Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
             string jsonPayload;
             if (payload is string)

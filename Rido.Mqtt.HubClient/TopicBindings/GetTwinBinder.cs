@@ -37,7 +37,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         {
             var rid = RidCounter.NextValue();
             var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
-            var puback = await connection.PublishAsync($"$iothub/twin/GET/?$rid={rid}", string.Empty, 1, cancellationToken);
+            var puback = await connection.PublishAsync($"$iothub/twin/GET/?$rid={rid}", string.Empty, 1, false, cancellationToken);
 
             if (puback == 0)
             {

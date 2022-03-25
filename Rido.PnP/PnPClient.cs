@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Rido.PnP
 {
@@ -22,6 +23,6 @@ namespace Rido.PnP
         }
 
         public async Task<int> Announce(BirthMessage msg, CancellationToken token = default) =>
-            await connection.PublishAsync($"pnp/{connection.ClientId}/birth", msg, 1, token);
+            await connection.PublishAsync($"pnp/{connection.ClientId}/birth", msg, 1,true, token);
     }
 }

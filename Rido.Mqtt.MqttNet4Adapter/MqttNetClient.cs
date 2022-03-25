@@ -46,7 +46,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
 
 
-        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
 
             string jsonPayload;
@@ -64,6 +64,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
                     .WithPayload(jsonPayload)
+                    .WithRetainFlag(retain)
                     .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)
                     .Build(),
                 token);

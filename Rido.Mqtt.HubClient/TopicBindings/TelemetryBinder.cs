@@ -43,7 +43,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                 { name, payload }
             };
 
-            return await connection.PublishAsync(topic, typedPayload, 1, cancellationToken);
+            return await connection.PublishAsync(topic, typedPayload, 1, false, cancellationToken);
         }
     }
 }
