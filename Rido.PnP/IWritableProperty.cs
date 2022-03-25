@@ -6,6 +6,7 @@ namespace Rido.PnP
 {
     public interface IWritableProperty<T>
     {
+        string PropertyName { get; }
         PropertyAck<T> PropertyValue { get; set; }
 
         Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated { get; set; }

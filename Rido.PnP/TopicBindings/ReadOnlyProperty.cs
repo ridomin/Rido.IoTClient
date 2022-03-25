@@ -1,23 +1,23 @@
 ﻿using Rido.MqttCore;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.PnP
+namespace Rido.PnP.TopicBindings
 {
     public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
-        private readonly IPropertyStoreWriter updateTwin;
-        public readonly string Name;
-        private readonly string component;
+        readonly IReportPropertyBinder updateBinder;
+        public string Name;
+        readonly string component;
+
         public T PropertyValue { get; set; }
         public int Version { get; set; }
 
         public ReadOnlyProperty(IMqttBaseClient connection, string name, string component = "")
         {
-            updateTwin = new UpdateTwinBinder(connection);
+            updateBinder = new UpdatePropertyBinder(connection);
             Name = name;
             this.component = component;
         }
@@ -25,11 +25,11 @@ namespace Rido.PnP
         public async Task<int> ReportPropertyAsync(CancellationToken cancellationToken = default)
         {
             bool asComponent = !string.IsNullOrEmpty(component);
-            Version = await updateTwin.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
-            return Version;
+            await updateBinder.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
+            return -1;
         }
 
-        private Dictionary<string, object> ToJsonDict(bool asComponent = false)
+        Dictionary<string, object> ToJsonDict(bool asComponent = false)
         {
             Dictionary<string, object> result;
             if (asComponent == false)

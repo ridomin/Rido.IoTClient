@@ -1,4 +1,5 @@
-using Rido.Mqtt.HubClient;
+
+using Rido.PnP;
 
 namespace pnp_device_sample
 {
@@ -15,10 +16,10 @@ namespace pnp_device_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("dps"), stoppingToken);
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("local"), stoppingToken);
 
-            var twin = await client.GetTwinAsync(stoppingToken);
-            _logger.LogInformation(twin);
+            //var twin = await client.GetTwinAsync(stoppingToken);
+            //_logger.LogInformation(twin);
 
             client.Command_getRuntimeStats.OnCmdDelegate = async cmd =>
             {
@@ -47,11 +48,16 @@ namespace pnp_device_sample
                     Status = 200,
                     Version = p.Version
                 };
-            }; 
+            };
 
-            
-            await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
-            await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
+            client.Property_interval.PropertyValue = new PropertyAck<int>(client.Property_interval.PropertyName)
+            {
+                Value = 5,
+                Status = 203,
+                Description = "default value"
+            };
+            //await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
+            //await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
 
             client.Property_started.PropertyValue = DateTime.Now;
             await client.Property_started.ReportPropertyAsync(stoppingToken);

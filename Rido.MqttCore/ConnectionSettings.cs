@@ -15,6 +15,8 @@ namespace Rido.MqttCore
         public string IdScope { get; set; }
         public string HostName { get; set; }
         public string DeviceId { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
         public string ClientId { get; set; }
         public string SharedAccessKey { get; set; }
         public string X509Key { get; set; } //paht-to.pfx|pfxpwd
@@ -66,6 +68,8 @@ namespace Rido.MqttCore
             HostName = GetStringValue(map, nameof(HostName));
             DeviceId = GetStringValue(map, nameof(DeviceId));
             ClientId = GetStringValue(map, nameof(ClientId));
+            UserName = GetStringValue(map, nameof(UserName));
+            Password = GetStringValue(map, nameof(Password));
             SharedAccessKey = GetStringValue(map, nameof(SharedAccessKey));
             ModuleId = GetStringValue(map, nameof(ModuleId));
             X509Key = GetStringValue(map, nameof(X509Key));

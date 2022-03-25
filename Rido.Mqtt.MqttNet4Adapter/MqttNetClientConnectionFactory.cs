@@ -13,8 +13,6 @@ namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetClientConnectionFactory : IHubClientConnectionFactory
     {
-       
-
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             var connectionSettings = new ConnectionSettings(connectionSettingsString);
@@ -82,6 +80,20 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 await mqtt.ConnectAsync(options, cancellationToken);
             }
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };
+        }
+
+        public async Task<IMqttBaseClient> CreateBasicClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        {
+            var cs = new ConnectionSettings(connectionSettingsString);
+            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
+            var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
+                .WithBasicAuth(cs)
+                .Build(), cancellationToken);
+            if (connack.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                throw new ApplicationException(connack.ReasonString);
+            }
+            return new MqttNetClient(mqtt) { ConnectionSettings =cs };
         }
     }
 }

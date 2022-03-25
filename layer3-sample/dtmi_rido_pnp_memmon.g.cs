@@ -1,10 +1,11 @@
-﻿using Rido.Mqtt.HubClient;
-using Rido.Mqtt.HubClient.TopicBindings;
+﻿
 using Rido.MqttCore;
+using Rido.PnP;
+using Rido.PnP.TopicBindings;
 
 namespace pnp_device_sample
 {
-    internal class dtmi_rido_pnp_memmon : HubMqttClient, Imemmon
+    internal class dtmi_rido_pnp_memmon : Imemmon
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -14,18 +15,18 @@ namespace pnp_device_sample
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-        private dtmi_rido_pnp_memmon(IHubMqttClient c) : base(c.Connection)
+        private dtmi_rido_pnp_memmon(IMqttBaseClient c) 
         {
-            Property_started = new ReadOnlyProperty<DateTime>(c.Connection, "started");
-            Property_interval = new WritableProperty<int>(c.Connection, "interval");
-            Property_enabled = new WritableProperty<bool>(c.Connection, "enabled");
-            Telemetry_workingSet = new Telemetry<double>(c.Connection, "workingSet");
-            Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c.Connection, "getRuntimeStats");
+            Property_started = new ReadOnlyProperty<DateTime>(c, "started");
+            Property_interval = new WritableProperty<int>(c, "interval");
+            Property_enabled = new WritableProperty<bool>(c, "enabled");
+            Telemetry_workingSet = new Telemetry<double>(c, "workingSet");
+            Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
         internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(string connectionString, CancellationToken cancellationToken = default)
         {
-            var mqtt = await HubMqttClient.CreateFromConnectionStringAsync(connectionString + ";ModelId=" + modelId, cancellationToken);
+            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(connectionString, cancellationToken);
             var client = new dtmi_rido_pnp_memmon(mqtt);
             return client;
         }
