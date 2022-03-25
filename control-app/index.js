@@ -98,7 +98,7 @@ const updateReported = twin => {
 
         client.on('message', (t, m) => {
             const msg = m ? JSON.parse(m.toString()) : {};
-            //console.log(t, msg)
+            console.log(t, msg)
             if (t.indexOf(`birth`)>0) {
                 did = t.split('/')[1]
                 console.log('BIRTH:', did)
@@ -114,7 +114,7 @@ const updateReported = twin => {
                 onCommandResponse(msg)
             }
 
-            if (t.startsWith('pnp/${did}/props/reported'))
+            if (t.startsWith(`pnp/${did}/props/reported`))
             {
                 console.log(msg)
                 updateReported(msg)

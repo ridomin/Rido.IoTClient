@@ -24,6 +24,11 @@ namespace pnp_device_sample
             client.Command_getRuntimeStats.OnCmdDelegate = async cmd =>
             {
                 _logger.LogInformation("CMD getRuntimeStats");
+
+                await client.Property_started.ReportPropertyAsync(stoppingToken);
+                await client.Property_interval.ReportPropertyAsync(stoppingToken);
+                await client.Property_enabled.ReportPropertyAsync(stoppingToken);
+
                 await Task.Delay(500);
                 return new Cmd_getRuntimeStats_Response
                 {
