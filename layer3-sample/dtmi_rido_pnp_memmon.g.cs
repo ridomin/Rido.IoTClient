@@ -24,9 +24,9 @@ namespace pnp_device_sample
             Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
-        internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(string connectionString, CancellationToken cancellationToken = default)
+        internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
-            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(connectionString, cancellationToken);
+            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(cs, cancellationToken);
             var client = new dtmi_rido_pnp_memmon(mqtt);
             await client.Announce(new BirthMessage { ModelId = modelId });
             return client;

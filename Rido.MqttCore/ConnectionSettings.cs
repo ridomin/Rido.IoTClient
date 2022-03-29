@@ -11,6 +11,8 @@ namespace Rido.MqttCore
         private const int Default_SasMinutes = 60;
         private const int Default_RetryInterval = 5;
         private const int Default_MaxRetries = 10;
+        private const int Default_KeepAliveInSeconds = 60;
+        private const string Default_CleanSession = "true";
 
         public string IdScope { get; set; }
         public string HostName { get; set; }
@@ -22,6 +24,8 @@ namespace Rido.MqttCore
         public string X509Key { get; set; } //paht-to.pfx|pfxpwd
         public string ModelId { get; set; }
         public string ModuleId { get; set; }
+        public int  KeepAliveInSeconds { get; set; }
+        public bool CleanSession { get; set; }
         public string Auth { get; set; }
         public int SasMinutes { get; set; }
         public int RetryInterval { get; set; }
@@ -78,6 +82,8 @@ namespace Rido.MqttCore
             SasMinutes = GetPositiveIntValueOrDefault(map, nameof(SasMinutes), Default_SasMinutes);
             RetryInterval = GetPositiveIntValueOrDefault(map, nameof(RetryInterval), Default_RetryInterval);
             MaxRetries = GetPositiveIntValueOrDefault(map, nameof(MaxRetries), Default_MaxRetries);
+            KeepAliveInSeconds = GetPositiveIntValueOrDefault(map, nameof(KeepAliveInSeconds), Default_KeepAliveInSeconds);
+            CleanSession = GetStringValue(map, nameof(CleanSession), Default_CleanSession) == "true";
         }
 
         private static void AppendIfNotEmpty(StringBuilder sb, string name, string val)

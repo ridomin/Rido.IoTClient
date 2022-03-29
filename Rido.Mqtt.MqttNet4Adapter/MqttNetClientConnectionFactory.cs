@@ -82,9 +82,8 @@ namespace Rido.Mqtt.MqttNet4Adapter
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };
         }
 
-        public async Task<IMqttBaseClient> CreateBasicClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        public async Task<IMqttBaseClient> CreateBasicClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
-            var cs = new ConnectionSettings(connectionSettingsString);
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
                 .WithBasicAuth(cs)

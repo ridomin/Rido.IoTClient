@@ -1,4 +1,5 @@
 
+using Rido.MqttCore;
 using Rido.PnP;
 
 namespace pnp_device_sample
@@ -16,7 +17,16 @@ namespace pnp_device_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("hive"), stoppingToken);
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(
+                new ConnectionSettings(_configuration.GetConnectionString("hive"))
+                {
+                    ClientId = "memmon1" ,
+                    KeepAliveInSeconds = 3,
+                    CleanSession = true
+                }
+                , stoppingToken); ;
+
+            _logger.LogInformation(client.Connection.ConnectionSettings.ToString());
 
             //var twin = await client.GetTwinAsync(stoppingToken);
             //_logger.LogInformation(twin);
@@ -25,9 +35,6 @@ namespace pnp_device_sample
             {
                 _logger.LogInformation("CMD getRuntimeStats");
 
-                await client.Property_started.ReportPropertyAsync(stoppingToken);
-                await client.Property_interval.ReportPropertyAsync(stoppingToken);
-                await client.Property_enabled.ReportPropertyAsync(stoppingToken);
 
                 await Task.Delay(500);
                 return new Cmd_getRuntimeStats_Response

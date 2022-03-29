@@ -3,6 +3,7 @@ using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace Rido.Mqtt.MqttNet4Adapter
 {
@@ -18,6 +19,11 @@ namespace Rido.Mqtt.MqttNet4Adapter
                     IgnoreCertificateRevocationErrors = true
                 })
                 .WithClientId(cs.ClientId)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
+                .WithCleanSession(false)
+                .WithWillTopic($"pnp/{cs.ClientId}/lwt")
+                .WithWillQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
+                .WithWillPayload(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { lwtp = DateTime.Now})))
                 .WithCredentials(cs.UserName, cs.Password);
             return builder;
         }

@@ -11,18 +11,20 @@ namespace Rido.PnP
 {
     public class BirthMessage
     {
+        public BirthMessage() => ConnectedTime = DateTime.Now;
         public string ModelId { get; set; }
+        public DateTime ConnectedTime { get; private set; }
     }
 
     public class PnPClient
     {
-        IMqttBaseClient connection;
+        public IMqttBaseClient Connection { get; private set; }
         public PnPClient(IMqttBaseClient c)
         {
-            connection = c;
+            Connection = c;
         }
 
         public async Task<int> Announce(BirthMessage msg, CancellationToken token = default) =>
-            await connection.PublishAsync($"pnp/{connection.ClientId}/birth", msg, 1,true, token);
+            await Connection.PublishAsync($"pnp/{Connection.ClientId}/birth", msg, 1,true, token);
     }
 }
