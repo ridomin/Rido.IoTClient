@@ -10,8 +10,6 @@ namespace Rido.Mqtt.HubClient.Tests
         {
             var dcs = new ConnectionSettings();
             Assert.Equal(60, dcs.SasMinutes);
-            Assert.Equal(5, dcs.RetryInterval);
-            Assert.Equal(10, dcs.MaxRetries);
             Assert.Equal("SAS", dcs.Auth);
             Assert.Equal("SasMinutes=60;RetryInterval=5;MaxRetries=10;Auth=SAS", dcs.ToString());
         }
@@ -35,8 +33,6 @@ namespace Rido.Mqtt.HubClient.Tests
             Assert.Equal("<deviceId>", dcs.DeviceId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
             Assert.Equal(60, dcs.SasMinutes);
-            Assert.Equal(5, dcs.RetryInterval);
-            Assert.Equal(-2, dcs.MaxRetries);
         }
 
 
@@ -49,9 +45,7 @@ namespace Rido.Mqtt.HubClient.Tests
             Assert.Equal("<deviceId>", dcs.DeviceId);
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
-            Assert.Equal(10, dcs.MaxRetries);
             Assert.Equal(60, dcs.SasMinutes);
-            Assert.Equal(5, dcs.RetryInterval);
         }
 
         [Fact]
@@ -63,9 +57,7 @@ namespace Rido.Mqtt.HubClient.Tests
             Assert.Equal("<deviceId>", dcs.DeviceId);
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
-            Assert.Equal(2, dcs.MaxRetries);
             Assert.Equal(2, dcs.SasMinutes);
-            Assert.Equal(2, dcs.RetryInterval);
         }
 
         [Fact]
