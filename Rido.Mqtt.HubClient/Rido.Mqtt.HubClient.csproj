@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
     <ProjectReference Include="..\Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj" />
-    <ProjectReference Include="..\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
     <ProjectReference Include="..\Rido.MqttCore\Rido.MqttCore.csproj" />
   </ItemGroup>
 

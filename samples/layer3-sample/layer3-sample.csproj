@@ -13,6 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
+    <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
   </ItemGroup>
 </Project>
