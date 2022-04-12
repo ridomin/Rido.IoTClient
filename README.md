@@ -72,6 +72,10 @@ $"HostName=test.azure-devices.net;DeviceId=myDevice;ModuleId=myModule;SharedAcce
 
 > Note: All samples use the connection settings in the `ConnectionString` configuration, available in the `appSettings.json` file, or as the environment variable `ConnectionString__Key`.
 
+### DPS Client
+
+The Connection Settings allow to use DPS (useful to connect to IoT Central) by adding the `IdScope`, when found it will provision the device using `Rido.Mqtt.DpsClient`.
+
 ## Advanced Samples
 
 ### BYO MQTT
@@ -137,11 +141,8 @@ Given a DTDL interface like
     {
       "@type": "Command",
       "name": "getRuntimeStats",
-      "request": { // truncated }
-    }
-}
 ```
-> Note: full interface available [here](samples/layer3-sample/dtmi_rido_pnp_memmon-1.js)
+> Note: full interface available [here](samples\layer3-sample\dtmi_rido_pnp_memmon-1.json)
 
 We can generate a supporting class like
 
