@@ -70,7 +70,7 @@ Sample Connection String
 $"HostName=test.azure-devices.net;DeviceId=myDevice;ModuleId=myModule;SharedAccessKey=<moduleSasKey>;ModelId=dtmi:my:model;1";SasMinutes=120
 ```
 
-Note> Note: All samples use the connection settings in the `ConnectionString` configuration, available in the `appSettings.json` file, or as the environment variable `ConnectionString__Key`.
+> Note: All samples use the connection settings in the `ConnectionString` configuration, available in the `appSettings.json` file, or as the environment variable `ConnectionString__Key`.
 
 ## Advanced Samples
 
@@ -89,7 +89,7 @@ IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().Crea
 var client = new HubMqttClient(adapter);
 ```
 
-Note> Note: By default the MQTTNet3 adapter is using in the `CreateFromConnectionStringAsync` method.
+> Note: By default the MQTTNet3 adapter is using in the `CreateFromConnectionStringAsync` method.
 
 ### IoT Plug and Play
 
@@ -141,7 +141,7 @@ Given a DTDL interface like
     }
 }
 ```
-note> full interface available [here](samples/layer3-sample/dtmi_rido_pnp_memmon-1.js)
+> Note: full interface available [here](samples/layer3-sample/dtmi_rido_pnp_memmon-1.js)
 
 We can generate a supporting class like
 
