@@ -9,8 +9,6 @@ namespace Rido.MqttCore
     public class ConnectionSettings
     {
         private const int Default_SasMinutes = 60;
-        private const int Default_RetryInterval = 5;
-        private const int Default_MaxRetries = 10;
 
         public string IdScope { get; set; }
         public string HostName { get; set; }
@@ -22,13 +20,10 @@ namespace Rido.MqttCore
         public string ModuleId { get; set; }
         public string Auth { get; set; }
         public int SasMinutes { get; set; }
-        public int RetryInterval { get; set; }
-        public int MaxRetries { get; set; }
+        
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
-            RetryInterval = Default_RetryInterval;
-            MaxRetries = Default_MaxRetries;
             Auth = "SAS";
         }
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
@@ -72,8 +67,6 @@ namespace Rido.MqttCore
             ModelId = GetStringValue(map, nameof(ModelId));
             Auth = GetStringValue(map, nameof(Auth), "SAS");
             SasMinutes = GetPositiveIntValueOrDefault(map, nameof(SasMinutes), Default_SasMinutes);
-            RetryInterval = GetPositiveIntValueOrDefault(map, nameof(RetryInterval), Default_RetryInterval);
-            MaxRetries = GetPositiveIntValueOrDefault(map, nameof(MaxRetries), Default_MaxRetries);
         }
 
         private static void AppendIfNotEmpty(StringBuilder sb, string name, string val)
@@ -104,8 +97,6 @@ namespace Rido.MqttCore
             AppendIfNotEmpty(result, nameof(ModelId), ModelId);
             AppendIfNotEmpty(result, nameof(ClientId), ClientId);
             AppendIfNotEmpty(result, nameof(SasMinutes), SasMinutes.ToString());
-            AppendIfNotEmpty(result, nameof(RetryInterval), RetryInterval.ToString());
-            AppendIfNotEmpty(result, nameof(MaxRetries), MaxRetries.ToString());
             AppendIfNotEmpty(result, nameof(X509Key), X509Key);
             AppendIfNotEmpty(result, nameof(Auth), Auth);
             result.Remove(result.Length - 1, 1);

@@ -1,0 +1,17 @@
+<Project>
+	<PropertyGroup>
+		<Deterministic>true</Deterministic>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Deterministic>true</Deterministic>
+		<RepositoryUrl>https://github.com/ridomin/Rido.IoTClient</RepositoryUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<Copyright>copyleft</Copyright>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/ridomin/Rido.IoTClient</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>mqtt; azure-iot</PackageTags>
+	</PropertyGroup>
+</Project>
