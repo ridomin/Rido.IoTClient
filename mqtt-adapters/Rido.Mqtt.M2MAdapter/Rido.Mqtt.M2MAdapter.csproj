@@ -1,16 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Nullable>disable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<Nullable>disable</Nullable>
+		<PackageId>Rido.Mqtt.M2MAdapter</PackageId>
+		<PackageVersion>0.0.1</PackageVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="M2MqttDotnetCore" Version="1.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="M2MqttDotnetCore" Version="1.1.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Rido.MqttCore\Rido.MqttCore.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Rido.MqttCore\Rido.MqttCore.csproj" />
+	</ItemGroup>
 
 </Project>
