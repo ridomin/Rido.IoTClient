@@ -2,7 +2,7 @@
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
 
-namespace pnp_device_sample
+namespace layer3_sample
 {
     internal class dtmi_rido_pnp_memmon : HubMqttClient, Imemmon
     {

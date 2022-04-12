@@ -1,7 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace Rido.Mqtt.MqttNetSample
+namespace layer2_sample
 {
     public class Program
     {

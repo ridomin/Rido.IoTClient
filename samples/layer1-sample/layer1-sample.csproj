@@ -4,7 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-layer1_sample-7A8525C2-FA77-415C-8168-0EAE2FEF44A3</UserSecretsId>
     <RootNamespace>layer1_sample</RootNamespace>
   </PropertyGroup>
 

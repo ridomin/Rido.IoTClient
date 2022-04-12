@@ -1,4 +1,4 @@
-using pnp_device_sample;
+using layer3_sample;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>

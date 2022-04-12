@@ -2,7 +2,7 @@
 
 using Rido.Mqtt.HubClient;
 
-namespace pnp_device_sample
+namespace layer3_sample
 {
     public interface Imemmon 
     {

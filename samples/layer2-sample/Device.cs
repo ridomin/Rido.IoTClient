@@ -1,14 +1,7 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Rido.Mqtt.HubClient;
-using Rido.MqttCore;
-using System;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Rido.Mqtt.MqttNetSample
+namespace layer2_sample
 {
     public class Device : BackgroundService
     {
@@ -28,14 +21,14 @@ namespace Rido.Mqtt.MqttNetSample
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             //var client = new HubMqttClient(adapter);
 
-            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("dps"));
+            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("dps"), stoppingToken);
             _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
             _logger.LogInformation($"Using MQTT Library:" + client.Connection.BaseClientLibraryInfo);
 
             var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             _logger.LogInformation($"Property updated with version {v}");
             
-            var twin = await client.GetTwinAsync();
+            var twin = await client.GetTwinAsync(stoppingToken);
             _logger.LogInformation(twin);
 
             client.OnCommandReceived = async m =>
@@ -61,7 +54,7 @@ namespace Rido.Mqtt.MqttNetSample
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                var puback = await client.SendTelemetryAsync(new { workingSet = Environment.WorkingSet });
+                var puback = await client.SendTelemetryAsync(new { workingSet = Environment.WorkingSet }, stoppingToken);
                 _logger.LogInformation($"Telemetry pubAck {puback}", DateTimeOffset.Now);
                 await Task.Delay(5000, stoppingToken);
             }
