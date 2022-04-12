@@ -11,7 +11,7 @@ namespace Rido.Mqtt.HubClient.Tests
             var dcs = new ConnectionSettings();
             Assert.Equal(60, dcs.SasMinutes);
             Assert.Equal("SAS", dcs.Auth);
-            Assert.Equal("SasMinutes=60;RetryInterval=5;MaxRetries=10;Auth=SAS", dcs.ToString());
+            Assert.Equal("SasMinutes=60;Auth=SAS", dcs.ToString());
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Rido.Mqtt.HubClient.Tests
         [Fact]
         public void ParseConnectionStringWithAllValues()
         {
-            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;RetryInterval=2;MaxRetries=2;SasMinutes=2";
+            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2";
             ConnectionSettings dcs = ConnectionSettings.FromConnectionString(cs);
             Assert.Equal("<hubname>.azure-devices.net", dcs.HostName);
             Assert.Equal("<deviceId>", dcs.DeviceId);
@@ -70,7 +70,7 @@ namespace Rido.Mqtt.HubClient.Tests
                 SharedAccessKey = "sas",
                 ModelId = "dtmi"
             };
-            string expected = "HostName=h;DeviceId=d;SharedAccessKey=***;ModelId=dtmi;SasMinutes=60;RetryInterval=5;MaxRetries=10;Auth=SAS";
+            string expected = "HostName=h;DeviceId=d;SharedAccessKey=***;ModelId=dtmi;SasMinutes=60;Auth=SAS";
             Assert.Equal(expected, dcs.ToString());
         }
 
@@ -84,7 +84,7 @@ namespace Rido.Mqtt.HubClient.Tests
                 ModuleId = "m",
                 SharedAccessKey = "sas"
             };
-            string expected = "HostName=h;DeviceId=d;ModuleId=m;SharedAccessKey=***;SasMinutes=60;RetryInterval=5;MaxRetries=10;Auth=SAS";
+            string expected = "HostName=h;DeviceId=d;ModuleId=m;SharedAccessKey=***;SasMinutes=60;Auth=SAS";
             Assert.Equal(expected, dcs.ToString());
         }
     }

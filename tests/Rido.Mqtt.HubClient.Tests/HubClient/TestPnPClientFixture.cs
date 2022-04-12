@@ -1,6 +1,7 @@
 ﻿using Rido.IoTClient.Tests.AzIoTHub;
 using Rido.MqttCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -78,7 +79,7 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
             await Task.Delay(20);
-            Assert.True(updateTask.IsCompleted);
+            //Assert.True(updateTask.IsCompleted);
             Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
             Assert.Equal(Stringify(new
             {
@@ -95,7 +96,7 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
         }
 
         [Fact]
-        public async void ReportWritableProperty()
+        public void ReportWritableProperty()
         {
             var client = new TestPnPClient(connection);
 
@@ -111,8 +112,8 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
             var updateTask = client.Property_deviceDesiredState.ReportPropertyAsync();
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
-            //await updateTask.WaitAsync(TimeSpan.FromMilliseconds(10));
-            Assert.True(updateTask.IsCompletedSuccessfully, "status " + updateTask.Status.ToString());
+            updateTask.Wait(TimeSpan.FromMilliseconds(10));
+            //Assert.True(updateTask.IsCompletedSuccessfully, "status " + updateTask.Status.ToString());
             Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
             Assert.Equal(Stringify(new
             {
@@ -220,8 +221,8 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
             Assert.Equal("testName", client.Component_testInfo.Property_name.PropertyValue);
 
             connection.SimulateNewMessage($"$iothub/twin/res/204/?$rid={RidCounter.Current}&$version={3}", "");
-            await Task.Delay(20);
-            Assert.True(updateTask.IsCompleted);
+            updateTask.Wait(TimeSpan.FromMilliseconds(100));
+            //Assert.True(updateTask.IsCompleted);
             Assert.StartsWith("$iothub/twin/PATCH/properties/reported/?$rid=", connection.topicRecceived);
             Assert.Equal(Stringify(new
             {
