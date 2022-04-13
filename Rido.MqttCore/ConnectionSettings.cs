@@ -9,32 +9,21 @@ namespace Rido.MqttCore
     public class ConnectionSettings
     {
         private const int Default_SasMinutes = 60;
-        private const int Default_RetryInterval = 5;
-        private const int Default_MaxRetries = 10;
-        private const int Default_KeepAliveInSeconds = 60;
-        private const string Default_CleanSession = "true";
 
         public string IdScope { get; set; }
         public string HostName { get; set; }
         public string DeviceId { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
         public string ClientId { get; set; }
         public string SharedAccessKey { get; set; }
         public string X509Key { get; set; } //paht-to.pfx|pfxpwd
         public string ModelId { get; set; }
         public string ModuleId { get; set; }
-        public int  KeepAliveInSeconds { get; set; }
-        public bool CleanSession { get; set; }
         public string Auth { get; set; }
         public int SasMinutes { get; set; }
-        public int RetryInterval { get; set; }
-        public int MaxRetries { get; set; }
+        
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
-            RetryInterval = Default_RetryInterval;
-            MaxRetries = Default_MaxRetries;
             Auth = "SAS";
         }
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
@@ -72,18 +61,12 @@ namespace Rido.MqttCore
             HostName = GetStringValue(map, nameof(HostName));
             DeviceId = GetStringValue(map, nameof(DeviceId));
             ClientId = GetStringValue(map, nameof(ClientId));
-            UserName = GetStringValue(map, nameof(UserName));
-            Password = GetStringValue(map, nameof(Password));
             SharedAccessKey = GetStringValue(map, nameof(SharedAccessKey));
             ModuleId = GetStringValue(map, nameof(ModuleId));
             X509Key = GetStringValue(map, nameof(X509Key));
             ModelId = GetStringValue(map, nameof(ModelId));
             Auth = GetStringValue(map, nameof(Auth), "SAS");
             SasMinutes = GetPositiveIntValueOrDefault(map, nameof(SasMinutes), Default_SasMinutes);
-            RetryInterval = GetPositiveIntValueOrDefault(map, nameof(RetryInterval), Default_RetryInterval);
-            MaxRetries = GetPositiveIntValueOrDefault(map, nameof(MaxRetries), Default_MaxRetries);
-            KeepAliveInSeconds = GetPositiveIntValueOrDefault(map, nameof(KeepAliveInSeconds), Default_KeepAliveInSeconds);
-            CleanSession = GetStringValue(map, nameof(CleanSession), Default_CleanSession) == "true";
         }
 
         private static void AppendIfNotEmpty(StringBuilder sb, string name, string val)
@@ -114,8 +97,6 @@ namespace Rido.MqttCore
             AppendIfNotEmpty(result, nameof(ModelId), ModelId);
             AppendIfNotEmpty(result, nameof(ClientId), ClientId);
             AppendIfNotEmpty(result, nameof(SasMinutes), SasMinutes.ToString());
-            AppendIfNotEmpty(result, nameof(RetryInterval), RetryInterval.ToString());
-            AppendIfNotEmpty(result, nameof(MaxRetries), MaxRetries.ToString());
             AppendIfNotEmpty(result, nameof(X509Key), X509Key);
             AppendIfNotEmpty(result, nameof(Auth), Auth);
             result.Remove(result.Length - 1, 1);
