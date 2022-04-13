@@ -39,28 +39,9 @@ namespace Rido.Mqtt.IntergationTests
         //    Assert.True(received);
         //}
 
-        //[Fact]
-        //public async Task GetShadow()
-        //{
-        //    var client = new AwsClient(await AwsConnectionFactory.CreateAsync(cs));
-        //    Assert.True(client.Connection.IsConnected);
-        //    var shadow = await client.GetShadowAsync();
-        //    Assert.NotNull(shadow);
-        //}
+       
 
-        //[Fact]
-        //public async Task UpdateShadow()
-        //{
-        //    var client = new AwsClient(await AwsConnectionFactory.CreateAsync(cs));
-        //    Assert.True(client.Connection.IsConnected);
-        //    var shadow = await client.GetShadowAsync();
-        //    Assert.NotNull(shadow);
-        //    var updRes = await client.UpdateShadowAsync(new
-        //    {
-        //        name = "rido2"
-        //    });
-        //    Assert.True(updRes > 0);
-        //}
+       
 
         //[Fact]
         //public async Task UpdateShadowConcurrent()

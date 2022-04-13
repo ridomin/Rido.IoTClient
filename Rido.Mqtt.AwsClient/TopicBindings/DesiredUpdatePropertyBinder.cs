@@ -12,13 +12,13 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated = null;
         public DesiredUpdatePropertyBinder(IMqttBaseClient connection, string propertyName, string componentName = "")
         {
-            string deviceId = connection.ClientId;
-            _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/accepted");
+            ;
+            _ = connection.SubscribeAsync($"$aws/things/{connection.ClientId}/shadow/update/accepted");
             IPropertyStoreWriter updateShadow = new UpdateShadowBinder(connection);
             connection.OnMessage += async m =>
              {
                  var topic = m.Topic;
-                 if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/accepted"))
+                 if (topic.StartsWith($"$aws/things/{connection.ClientId}/shadow/update/accepted"))
                  {
                      string msg = m.Payload;
                      JsonNode root = JsonNode.Parse(msg);

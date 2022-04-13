@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.AwsClient
 {
-    public class AwsClient //: BaseClient
+    public class AwsMqttClient //: BaseClient
     {
+        public IMqttBaseClient Connection { get; private set; }
         private readonly IPropertyStoreReader getShadowBinder;
         private readonly IPropertyStoreWriter updateShadowBinder;
 
-        public AwsClient(IMqttBaseClient c) //: base(c)
+        public AwsMqttClient(IMqttBaseClient c) //: base(c)
         {
+            Connection = c;
             getShadowBinder = new GetShadowBinder(c);
             updateShadowBinder = new UpdateShadowBinder(c);
         }

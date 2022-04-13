@@ -13,7 +13,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
 
         public Command(IMqttBaseClient connection, string commandName, string componentName = "")
         {
-            _ = connection.SubscribeAsync($"pnp/+/commands/#");
+            _ = connection.SubscribeAsync($"pnp/{connection.ClientId}/commands/#");
             connection.OnMessage += async m =>
             {
                 var topic = m.Topic;

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+    <ProjectReference Include="..\..\Rido.Mqtt.AwsClient\Rido.Mqtt.AwsClient.csproj" />
     <ProjectReference Include="..\..\Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj" />
   </ItemGroup>
 

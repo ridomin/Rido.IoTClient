@@ -7,11 +7,10 @@ using Rido.MqttCore;
 
 namespace pnp_memmon_aws
 {
-    public class memmon :  Imemmon
+    public class memmon :  AwsMqttClient, Imemmon
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
         public string InitialState { get; set; }
-        public IMqttBaseClient Connection { get; private set; }
 
         public IReadOnlyProperty<DateTime> Property_started { get; set; }
         public IWritableProperty<bool> Property_enabled { get; set; }
@@ -19,9 +18,8 @@ namespace pnp_memmon_aws
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-        private memmon(IMqttBaseClient c) //: base(c)
+        private memmon(IMqttBaseClient c) : base(c)
         {
-            Connection = c;
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
@@ -34,7 +32,7 @@ namespace pnp_memmon_aws
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
             var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
             var client = new memmon(mqtt) ;
-            //client.InitialState = await client.GetShadowAsync(cancellationToken);
+            client.InitialState = await client.GetShadowAsync(cancellationToken);
             return client;
         }
     }

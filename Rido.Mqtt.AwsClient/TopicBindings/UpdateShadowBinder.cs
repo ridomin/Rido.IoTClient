@@ -49,7 +49,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
                     }
                 }
             };
-            var puback = await connection.PublishAsync($"$aws/things/{connection.ClientId}/shadow/update", data, 1, true, cancellationToken);
+            var puback = await connection.PublishAsync($"$aws/things/{connection.ClientId}/shadow/update", data, 1, false, cancellationToken);
             if (puback != 0)
             {
                 Trace.TraceError("Error publishing message: " + puback);

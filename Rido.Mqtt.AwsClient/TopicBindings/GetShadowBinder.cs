@@ -18,7 +18,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
             pendingGetShadowRequests = new ConcurrentQueue<TaskCompletionSource<string>>();
             string deviceId = conn.ClientId;
             topicBase = $"$aws/things/{deviceId}/shadow";
-            connection.SubscribeAsync(topicBase + "/get/accepted");
+            _ = connection.SubscribeAsync(topicBase + "/get/accepted");
             connection.OnMessage += async m =>
             {
                 var topic = m.Topic;
