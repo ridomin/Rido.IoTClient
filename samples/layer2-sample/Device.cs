@@ -21,7 +21,7 @@ namespace layer2_sample
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             //var client = new HubMqttClient(adapter);
 
-            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("dps"), stoppingToken);
+            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
             _logger.LogInformation($"Using MQTT Library:" + client.Connection.BaseClientLibraryInfo);
 

@@ -9,9 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet4Adapter\Rido.Mqtt.MqttNet4Adapter.csproj" />
+    <PackageReference Include="Rido.Mqtt.MqttNet4Adapter" Version="0.0.1" />
   </ItemGroup>
 </Project>
