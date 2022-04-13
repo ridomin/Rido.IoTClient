@@ -13,12 +13,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Text.Json" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
     <ProjectReference Include="..\Rido.MqttCore\Rido.MqttCore.csproj" />
+    <ProjectReference Include="..\Rido.PnP\Rido.PnP.csproj" />
   </ItemGroup>
 
 </Project>

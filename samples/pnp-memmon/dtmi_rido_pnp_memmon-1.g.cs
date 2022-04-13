@@ -4,6 +4,7 @@ using pnp_memmon;
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
+using Rido.PnP;
 
 namespace dtmi_rido_pnp_IoTHubClassic
 {

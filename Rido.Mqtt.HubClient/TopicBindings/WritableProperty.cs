@@ -1,4 +1,5 @@
 ﻿using Rido.MqttCore;
+using Rido.PnP;
 using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -11,7 +12,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
     {
         public PropertyAck<T> PropertyValue { get; set; }
 
-        private readonly string propertyName;
+        public string PropertyName { get; set; }
         private readonly string componentName;
         private readonly IPropertyStoreWriter updateTwin;
         private readonly DesiredUpdatePropertyBinder<T> desiredBinder;
@@ -24,7 +25,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 
         public WritableProperty(IMqttBaseClient connection, string name, string component = "")
         {
-            propertyName = name;
+            PropertyName = name;
             componentName = component;
             PropertyValue = new PropertyAck<T>(name, componentName);
             updateTwin = new UpdateTwinBinder(connection);
@@ -35,7 +36,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
-            PropertyValue = InitFromTwin(twin, propertyName, componentName, defaultValue);
+            PropertyValue = InitFromTwin(twin, PropertyName, componentName, defaultValue);
             if (desiredBinder.OnProperty_Updated != null && PropertyValue.DesiredVersion > 1)
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);

@@ -1,6 +1,7 @@
 ﻿using Rido.Mqtt.DpsClient;
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
+using Rido.PnP;
 using System;
 using System.Text.Json.Nodes;
 using System.Threading;

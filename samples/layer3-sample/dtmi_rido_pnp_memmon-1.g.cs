@@ -2,6 +2,7 @@
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
+using Rido.PnP;
 
 namespace layer3_sample
 {

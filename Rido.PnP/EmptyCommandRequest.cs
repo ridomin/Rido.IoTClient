@@ -1,4 +1,4 @@
-﻿namespace Rido.Mqtt.Client
+﻿namespace Rido.PnP
 {
     public class EmptyCommandRequest : IBaseCommandRequest<EmptyCommandRequest>
     {

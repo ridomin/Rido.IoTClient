@@ -4,6 +4,7 @@
 
 
 using Rido.Mqtt.AwsClient;
+using Rido.PnP;
 
 namespace pnp_memmon_aws
 {

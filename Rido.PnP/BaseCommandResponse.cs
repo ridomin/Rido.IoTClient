@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Rido.Mqtt.Client
+namespace Rido.PnP
 {
     public abstract class BaseCommandResponse
     {

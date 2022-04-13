@@ -1,11 +1,12 @@
 ﻿using Rido.Mqtt.AwsClient.TopicBindings;
 using Rido.MqttCore;
+using Rido.PnP;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rido.Mqtt.AwsClient
 {
-    public class AwsMqttClient //: BaseClient
+    public class AwsMqttClient 
     {
         public IMqttBaseClient Connection { get; private set; }
         private readonly IPropertyStoreReader getShadowBinder;

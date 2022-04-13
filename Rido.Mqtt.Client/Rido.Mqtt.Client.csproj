@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Rido.MqttCore\Rido.MqttCore.csproj" />
+    <ProjectReference Include="..\Rido.PnP\Rido.PnP.csproj" />
   </ItemGroup>
 
 </Project>

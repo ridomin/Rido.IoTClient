@@ -1,4 +1,5 @@
 using Rido.Mqtt.HubClient;
+using Rido.PnP;
 using System.Text.Json;
 
 namespace layer2_sample

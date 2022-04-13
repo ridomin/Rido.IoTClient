@@ -1,5 +1,6 @@
 ﻿
 using Rido.MqttCore;
+using Rido.PnP;
 using System;
 
 using System.Threading.Tasks;

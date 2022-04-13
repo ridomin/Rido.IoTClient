@@ -1,4 +1,4 @@
-﻿namespace Rido.Mqtt.AwsClient
+﻿namespace Rido.PnP
 {
     public class CommandResponse : BaseCommandResponse
     {

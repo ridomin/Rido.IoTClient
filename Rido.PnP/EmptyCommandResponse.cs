@@ -1,4 +1,4 @@
-﻿namespace Rido.Mqtt.HubClient
+﻿namespace Rido.PnP
 {
     public class EmptyCommandResponse : BaseCommandResponse
     {

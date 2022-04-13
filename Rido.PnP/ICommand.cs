@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Rido.Mqtt.AwsClient
+namespace Rido.PnP
 {
     public interface ICommand<T, TResponse>
         where T : IBaseCommandRequest<T>, new()
