@@ -39,7 +39,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             return new MqttNetClient(mqtt) { ConnectionSettings = connectionSettings };
         }
 
-        public static async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAwsX509Credentials(cs).Build(), cancellationToken);

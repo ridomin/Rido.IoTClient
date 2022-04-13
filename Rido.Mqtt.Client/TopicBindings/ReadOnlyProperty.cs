@@ -1,6 +1,5 @@
 ﻿using Rido.Mqtt.Client;
 using Rido.MqttCore;
-using Rido.PnP.TopicBindings;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
