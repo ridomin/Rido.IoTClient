@@ -1,13 +1,13 @@
 using Humanizer;
-using Rido.Mqtt.Client;
+using Rido.Mqtt.AwsClient;
 using System.Diagnostics;
 using System.Text;
 
-namespace pnp_memmon_hive;
+namespace pnp_memmon_aws;
 
-public class DeviceRunner : BackgroundService
+public class Device : BackgroundService
 {
-    private readonly ILogger<DeviceRunner> _logger;
+    private readonly ILogger<Device> _logger;
     private readonly IConfiguration _configuration;
 
     private readonly Stopwatch clock = Stopwatch.StartNew();
@@ -22,7 +22,7 @@ public class DeviceRunner : BackgroundService
 
     private memmon client;
 
-    public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
+    public Device(ILogger<Device> logger, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
@@ -43,11 +43,12 @@ public class DeviceRunner : BackgroundService
 
         //await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
         //await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
-        client.Property_interval.PropertyValue.Value = default_interval;
-        await client.Property_interval.ReportPropertyAsync(stoppingToken);
+        
+        //client.Property_interval.PropertyValue.Value = default_interval;
+        //await client.Property_interval.ReportPropertyAsync(stoppingToken);
 
-        client.Property_enabled.PropertyValue.Value = default_enabled;
-        await client.Property_enabled.ReportPropertyAsync(stoppingToken);
+        //client.Property_enabled.PropertyValue.Value = default_enabled;
+        //await client.Property_enabled.ReportPropertyAsync(stoppingToken);
 
         client.Property_started.PropertyValue = DateTime.Now;
         await client.Property_started.ReportPropertyAsync(stoppingToken);

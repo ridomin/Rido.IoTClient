@@ -1,4 +1,4 @@
-using pnp_memmon_hive;
+using pnp_memmon_aws;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>

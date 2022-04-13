@@ -6,9 +6,9 @@ using System.Text;
 
 namespace pnp_memmon;
 
-public class DeviceRunner : BackgroundService
+public class Device : BackgroundService
 {
-    private readonly ILogger<DeviceRunner> _logger;
+    private readonly ILogger<Device> _logger;
     private readonly IConfiguration _configuration;
 
     private readonly Stopwatch clock = Stopwatch.StartNew();
@@ -23,7 +23,7 @@ public class DeviceRunner : BackgroundService
 
     private memmon client;
 
-    public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
+    public Device(ILogger<Device> logger, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
