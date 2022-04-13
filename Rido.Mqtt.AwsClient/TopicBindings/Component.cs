@@ -1,17 +1,18 @@
 ﻿using MQTTnet.Client;
+using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
-    public abstract class Component 
+    public abstract class Component
     {
         readonly string name;
         readonly IPropertyStoreWriter update;
 
-        public Component(IMqttClient connection, string name)
+        public Component(IMqttBaseClient connection, string name)
         {
             this.name = name;
             update = new UpdateShadowBinder(connection);
@@ -23,7 +24,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
                 {
                     { name, new Dictionary<string, object>() }
                 };
-            dict[name] = this.ToJsonDict();
+            dict[name] = ToJsonDict();
             dict[name].Add("__t", "c");
             var v = await update.ReportPropertyAsync(dict, token);
             return v;

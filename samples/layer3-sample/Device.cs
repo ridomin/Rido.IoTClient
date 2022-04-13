@@ -1,6 +1,6 @@
 
+using Rido.Mqtt.HubClient;
 using Rido.MqttCore;
-using Rido.PnP;
 
 namespace layer3_sample
 {
@@ -64,14 +64,14 @@ namespace layer3_sample
 
             client.Property_started.PropertyValue = DateTime.Now;
             
-            client.Property_interval.PropertyValue = new PropertyAck<int>(client.Property_interval.PropertyName)
+            client.Property_interval.PropertyValue = new PropertyAck<int>("interval")
             {
                 Value = 5,
                 Status = 203,
                 Description = "default value"
             };
 
-            client.Property_enabled.PropertyValue = new PropertyAck<bool>(client.Property_enabled.PropertyName)
+            client.Property_enabled.PropertyValue = new PropertyAck<bool>("enabled")
             {
                 Value = true,
                 Status = 203,

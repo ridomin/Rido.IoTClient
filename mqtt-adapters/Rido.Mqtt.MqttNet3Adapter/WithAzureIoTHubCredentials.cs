@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Rido.Mqtt.MqttNet3Adapter
 {
-    public static class MqttNetExtensions
+    public static class MqttNetExtensions2
     {
         public static MqttClientOptionsBuilder WithAzureIoTHubCredentials(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {

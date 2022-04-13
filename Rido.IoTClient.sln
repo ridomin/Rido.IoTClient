@@ -39,6 +39,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.HubClient.Interga
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.HubClient.Tests", "tests\Rido.Mqtt.HubClient.Tests\Rido.Mqtt.HubClient.Tests.csproj", "{98B40FD3-2550-406B-9B28-A6D759BAD0AE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.AwsClient", "Rido.Mqtt.AwsClient\Rido.Mqtt.AwsClient.csproj", "{C93E797F-6016-4DA7-87A9-730534786228}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.PnP", "Rido.PnP\Rido.PnP.csproj", "{362C5D05-5CC3-4A93-BA66-2897A36A564D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +93,14 @@ Global
 		{98B40FD3-2550-406B-9B28-A6D759BAD0AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98B40FD3-2550-406B-9B28-A6D759BAD0AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98B40FD3-2550-406B-9B28-A6D759BAD0AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C93E797F-6016-4DA7-87A9-730534786228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93E797F-6016-4DA7-87A9-730534786228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C93E797F-6016-4DA7-87A9-730534786228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C93E797F-6016-4DA7-87A9-730534786228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{362C5D05-5CC3-4A93-BA66-2897A36A564D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362C5D05-5CC3-4A93-BA66-2897A36A564D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362C5D05-5CC3-4A93-BA66-2897A36A564D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362C5D05-5CC3-4A93-BA66-2897A36A564D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

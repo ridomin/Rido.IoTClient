@@ -1,10 +1,9 @@
-﻿using MQTTnet.Client;
-using Rido.IoTClient.AzIoTHub;
+﻿using Rido.MqttCore;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
 
     public class Command<T, TResponse> : ICommand<T, TResponse>
@@ -13,24 +12,24 @@ namespace Rido.IoTClient.Aws.TopicBindings
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
 
-        public Command(IMqttClient connection, string commandName, string componentName = "")
+        public Command(IMqttBaseClient connection, string commandName, string componentName = "")
         {
             _ = connection.SubscribeAsync($"pnp/+/commands/#");
-            connection.ApplicationMessageReceivedAsync += async m =>
+            connection.OnMessage += async m =>
             {
-                var topic = m.ApplicationMessage.Topic;
+                var topic = m.Topic;
 
                 var fullCommandName = string.IsNullOrEmpty(componentName) ? commandName : $"{componentName}*{commandName}";
 
-                if (topic.Equals($"pnp/{connection.Options.ClientId}/commands/{fullCommandName}"))
+                if (topic.Equals($"pnp/{connection.ClientId}/commands/{fullCommandName}"))
                 {
-                    string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
+                    string msg = m.Payload;
                     T req = new T().DeserializeBody(msg);
                     if (OnCmdDelegate != null && req != null)
                     {
-                        (int rid, _) = TopicParser.ParseTopic(topic);
+                        //(int rid, _) = TopicParser.ParseTopic(topic);
                         TResponse response = await OnCmdDelegate.Invoke(req);
-                        _ = connection.PublishAsync($"pnp/{connection.Options.ClientId}/commands/{fullCommandName}/resp/{response.Status}/?$rid={rid}", response);
+                        _ = connection.PublishAsync($"pnp/{connection.ClientId}/commands/{fullCommandName}/resp/{response.Status}", response);
                     }
                 }
             };

@@ -9,6 +9,8 @@ namespace Rido.MqttCore
     public class ConnectionSettings
     {
         private const int Default_SasMinutes = 60;
+        private const int Default_KeepAliveInSeconds = 60;
+        private const string Default_CleanSession = "true";
 
         public string IdScope { get; set; }
         public string HostName { get; set; }
@@ -20,7 +22,11 @@ namespace Rido.MqttCore
         public string ModuleId { get; set; }
         public string Auth { get; set; }
         public int SasMinutes { get; set; }
-        
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public int KeepAliveInSeconds { get; set; }
+        public bool CleanSession { get; set; }
+
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
@@ -67,6 +73,10 @@ namespace Rido.MqttCore
             ModelId = GetStringValue(map, nameof(ModelId));
             Auth = GetStringValue(map, nameof(Auth), "SAS");
             SasMinutes = GetPositiveIntValueOrDefault(map, nameof(SasMinutes), Default_SasMinutes);
+            UserName = GetStringValue(map, nameof(UserName));
+            Password = GetStringValue(map, nameof(Password));
+            KeepAliveInSeconds = GetPositiveIntValueOrDefault(map, nameof(KeepAliveInSeconds), Default_KeepAliveInSeconds);
+            CleanSession = GetStringValue(map, nameof(CleanSession), Default_CleanSession) == "true";
         }
 
         private static void AppendIfNotEmpty(StringBuilder sb, string name, string val)

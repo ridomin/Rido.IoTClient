@@ -1,26 +1,27 @@
-﻿using MQTTnet.Client;
+﻿
+using Rido.MqttCore;
 using System;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class DesiredUpdatePropertyBinder<T>
     {
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated = null;
-        public DesiredUpdatePropertyBinder(IMqttClient connection, string propertyName, string componentName = "")
+        public DesiredUpdatePropertyBinder(IMqttBaseClient connection, string propertyName, string componentName = "")
         {
-            string deviceId = connection.Options.ClientId;
+            string deviceId = connection.ClientId;
             _ = connection.SubscribeAsync($"$aws/things/{deviceId}/shadow/update/accepted");
             IPropertyStoreWriter updateShadow = new UpdateShadowBinder(connection);
-            connection.ApplicationMessageReceivedAsync += async m =>
+            connection.OnMessage += async m =>
              {
-                 var topic = m.ApplicationMessage.Topic;
+                 var topic = m.Topic;
                  if (topic.StartsWith($"$aws/things/{deviceId}/shadow/update/accepted"))
                  {
-                     string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
+                     string msg = m.Payload;
                      JsonNode root = JsonNode.Parse(msg);
                      JsonNode desired = root["state"]["desired"];
                      JsonNode desiredProperty = null;

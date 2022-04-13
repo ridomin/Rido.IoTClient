@@ -1,26 +1,27 @@
 ﻿using MQTTnet.Client;
+using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
         readonly IReportPropertyBinder updateBinder;
         public string Name;
         readonly string component;
-        
+
 
         public T PropertyValue { get; set; }
         public int Version { get; set; }
 
-        public ReadOnlyProperty(IMqttClient connection, string name, string component = "")
+        public ReadOnlyProperty(IMqttBaseClient connection, string name, string component = "")
         {
             updateBinder = new UpdateShadowBinder(connection);
-            this.Name = name;
+            Name = name;
             this.component = component;
         }
 

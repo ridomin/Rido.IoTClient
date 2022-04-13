@@ -1,32 +1,31 @@
-﻿using MQTTnet.Client;
+﻿using Rido.MqttCore;
 using System;
 using System.Collections.Concurrent;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class GetShadowBinder : IPropertyStoreReader
     {
         readonly ConcurrentQueue<TaskCompletionSource<string>> pendingGetShadowRequests;
-        readonly IMqttClient connection;
+        readonly IMqttBaseClient connection;
         readonly string topicBase;
 
-        public GetShadowBinder(IMqttClient conn)
+        public GetShadowBinder(IMqttBaseClient conn)
         {
             connection = conn;
             pendingGetShadowRequests = new ConcurrentQueue<TaskCompletionSource<string>>();
-            string deviceId = conn.Options.ClientId;
+            string deviceId = conn.ClientId;
             topicBase = $"$aws/things/{deviceId}/shadow";
             connection.SubscribeAsync(topicBase + "/get/accepted");
-            connection.ApplicationMessageReceivedAsync += async m =>
+            connection.OnMessage += async m =>
             {
-                var topic = m.ApplicationMessage.Topic;
+                var topic = m.Topic;
 
-                if (topic.StartsWith(topicBase + "/get/accepted")) 
+                if (topic.StartsWith(topicBase + "/get/accepted"))
                 {
-                    string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
+                    string msg = m.Payload;
                     if (pendingGetShadowRequests.TryDequeue(out var pendingGetShadowRequest))
                     {
                         pendingGetShadowRequest.SetResult(msg);
@@ -40,7 +39,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
         {
             var pendingGetShadowRequest = new TaskCompletionSource<string>();
             pendingGetShadowRequests.Enqueue(pendingGetShadowRequest);
-            await connection.PublishAsync(topicBase + "/get", string.Empty, cancellationToken);
+            await connection.PublishAsync(topicBase + "/get", string.Empty, 1, false, cancellationToken);
             return await pendingGetShadowRequest.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
         }
     }

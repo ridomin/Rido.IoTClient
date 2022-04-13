@@ -1,10 +1,12 @@
 ﻿using MQTTnet.Client;
+using MQTTnet.Client.Options;
+using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Rido.IoTClient.Aws
+namespace Rido.Mqtt.MqttNet3Adapter
 {
     public static class WithAwsX509CredentialsExtension
     {

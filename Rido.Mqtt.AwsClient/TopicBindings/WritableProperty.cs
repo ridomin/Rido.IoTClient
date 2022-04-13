@@ -1,11 +1,12 @@
 ﻿using MQTTnet.Client;
+using Rido.MqttCore;
 using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class WritableProperty<T> : IWritableProperty<T>
     {
@@ -21,7 +22,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             set => desiredBinder.OnProperty_Updated = value;
         }
 
-        public WritableProperty(IMqttClient connection, string name, string component = "")
+        public WritableProperty(IMqttBaseClient connection, string name, string component = "")
         {
             propertyName = name;
             componentName = component;
@@ -30,13 +31,13 @@ namespace Rido.IoTClient.Aws.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updatePropertyBinder.ReportPropertyAsync(this.PropertyValue.ToAckDict(), token);
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict(), token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
             PropertyValue = InitFromTwin(twin, propertyName, componentName, defaultValue);
 
-            if (desiredBinder.OnProperty_Updated != null && (PropertyValue.DesiredVersion > 1))
+            if (desiredBinder.OnProperty_Updated != null && PropertyValue.DesiredVersion > 1)
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
                 _ = updatePropertyBinder.ReportPropertyAsync(ack.ToAckDict(), cancellationToken);
@@ -72,7 +73,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             T reported_Prop = default;
             int reported_Prop_version = 0;
             int reported_Prop_status = 001;
-            string reported_Prop_description = String.Empty;
+            string reported_Prop_description = string.Empty;
             if (reported?[propName] != null)
             {
                 reported_Prop = reported[propName]["value"].Deserialize<T>();

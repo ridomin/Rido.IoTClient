@@ -1,11 +1,11 @@
 ﻿
+using Rido.Mqtt.HubClient;
+using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
-using Rido.PnP;
-using Rido.PnP.TopicBindings;
 
 namespace layer3_sample
 {
-    internal class dtmi_rido_pnp_memmon : PnPClient, Imemmon
+    internal class dtmi_rido_pnp_memmon : HubMqttClient, Imemmon
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
 
@@ -26,9 +26,9 @@ namespace layer3_sample
 
         internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
-            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(cs, cancellationToken);
+            var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(cs, cancellationToken);
             var client = new dtmi_rido_pnp_memmon(mqtt);
-            await client.Announce(new BirthMessage { ModelId = modelId });
+            //await client.Announce(new BirthMessage { ModelId = modelId });
             return client;
         }
     }

@@ -1,20 +1,17 @@
-﻿using MQTTnet;
-using MQTTnet.Client;
-using Rido.IoTClient.Aws.TopicBindings;
-using System;
-using System.Diagnostics;
+﻿using Rido.Mqtt.AwsClient.TopicBindings;
+using Rido.MqttCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws
+namespace Rido.Mqtt.AwsClient
 {
-    public class AwsClient : BaseClient
+    public class AwsClient //: BaseClient
     {
-        
+
         readonly IPropertyStoreReader getShadowBinder;
         readonly IPropertyStoreWriter updateShadowBinder;
 
-        public AwsClient(IMqttClient c) : base(c)
+        public AwsClient(IMqttBaseClient c) //: base(c)
         {
             getShadowBinder = new GetShadowBinder(c);
             updateShadowBinder = new UpdateShadowBinder(c);

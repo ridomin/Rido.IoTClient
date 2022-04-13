@@ -1,4 +1,4 @@
-﻿using MQTTnet.Client;
+﻿using Rido.MqttCore;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -8,25 +8,25 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class UpdateShadowBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
         readonly ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
-        readonly IMqttClient connection;
+        readonly IMqttBaseClient connection;
 
-        public UpdateShadowBinder(IMqttClient connection)
+        public UpdateShadowBinder(IMqttBaseClient connection)
         {
             this.connection = connection;
             pendingRequests = new ConcurrentQueue<TaskCompletionSource<int>>();
-            _ = connection.SubscribeAsync($"$aws/things/{connection.Options.ClientId}/shadow/update/accepted");
-            connection.ApplicationMessageReceivedAsync += async m =>
+            _ = connection.SubscribeAsync($"$aws/things/{connection.ClientId}/shadow/update/accepted");
+            connection.OnMessage += async m =>
             {
                 await Task.Yield();
-                var topic = m.ApplicationMessage.Topic;
-                if (topic.StartsWith($"$aws/things/{connection.Options.ClientId}/shadow/update/accepted"))
+                var topic = m.Topic;
+                if (topic.StartsWith($"$aws/things/{connection.ClientId}/shadow/update/accepted"))
                 {
-                    string msg = Encoding.UTF8.GetString(m.ApplicationMessage.Payload ?? Array.Empty<byte>());
+                    string msg = m.Payload;
                     JsonNode node = JsonNode.Parse(msg);
                     int version = node["version"].GetValue<int>();
                     if (pendingRequests.TryDequeue(out var pendingRequest))
@@ -50,11 +50,11 @@ namespace Rido.IoTClient.Aws.TopicBindings
                     }
                 }
             };
-            var puback = await connection.PublishAsync($"$aws/things/{connection.Options.ClientId}/shadow/update", data, cancellationToken);
-            if (puback.ReasonCode != MqttClientPublishReasonCode.Success)
+            var puback = await connection.PublishAsync($"$aws/things/{connection.ClientId}/shadow/update", data, 1 , true, cancellationToken);
+            if (puback != 0)
             {
-                Trace.TraceError("Error publishing message: " + puback.ReasonString);
-                throw new ApplicationException(puback.ReasonString);
+                Trace.TraceError("Error publishing message: " + puback);
+                throw new ApplicationException("Publishing Exception");
             }
             return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(5));
         }

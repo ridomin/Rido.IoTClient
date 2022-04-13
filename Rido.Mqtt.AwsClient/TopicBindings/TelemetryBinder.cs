@@ -1,30 +1,33 @@
-﻿using MQTTnet.Client;
+﻿using MQTTnet;
+using MQTTnet.Client;
+using Rido.MqttCore;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.IoTClient.Aws.TopicBindings
+namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class Telemetry<T> : ITelemetry<T>
     {
-        readonly IMqttClient connection;
+        readonly IMqttBaseClient connection;
         readonly string deviceId;
         readonly string moduleId;
         readonly string name;
         readonly string component;
 
-        public Telemetry(IMqttClient connection, string name, string component = "", string moduleId = "")
+        public Telemetry(IMqttBaseClient connection, string name, string component = "", string moduleId = "")
         {
             this.connection = connection;
             this.name = name;
             this.component = component;
-            deviceId = connection.Options.ClientId;
+            deviceId = connection.ClientId;
             this.moduleId = moduleId;
         }
         //public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default) =>
         //    await SendTelemetryAsync(payload, name, string.Empty, cancellationToken);
 
-        public async Task<MqttClientPublishResult> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default)
+        public async Task<int> SendTelemetryAsync(T payload, CancellationToken cancellationToken = default)
         {
             string topic = $"pnp/{deviceId}";
 
@@ -43,7 +46,7 @@ namespace Rido.IoTClient.Aws.TopicBindings
             {
                 { name, payload }
             };
-            return await connection.PublishAsync(topic, typedPayload, cancellationToken);
+            return await connection.PublishAsync(topic, typedPayload, 1, false, cancellationToken);
         }
     }
 }
