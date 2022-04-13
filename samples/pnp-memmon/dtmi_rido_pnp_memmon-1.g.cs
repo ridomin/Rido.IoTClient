@@ -2,15 +2,16 @@
 
 using MQTTnet.Client;
 using pnp_memmon;
-using Rido.IoTClient;
-using Rido.IoTClient.AzIoTHub;
-using Rido.IoTClient.AzIoTHub.TopicBindings;
+using Rido.Mqtt.HubClient;
+using Rido.Mqtt.HubClient.TopicBindings;
+using Rido.MqttCore;
 
 namespace dtmi_rido_pnp_IoTHubClassic
 {
-    public class memmon : IoTHubClient, Imemmon
+    public class memmon : HubMqttClient, Imemmon
     {
         const string modelId = "dtmi:rido:pnp:memmon;1";
+        public string InitialState { get; set; }
 
         public IReadOnlyProperty<DateTime> Property_started { get; set; }
         public IWritableProperty<bool> Property_enabled { get; set; }
@@ -18,7 +19,7 @@ namespace dtmi_rido_pnp_IoTHubClassic
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-        private memmon(IMqttClient c) : base(c)
+        private memmon(IMqttBaseClient c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
@@ -30,7 +31,8 @@ namespace dtmi_rido_pnp_IoTHubClassic
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var client = new memmon(await IoTHubConnectionFactory.CreateAsync(cs, cancellationToken)) { ConnectionSettings = cs };
+            var hub = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
+            var client = new memmon(hub) ;
             client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;
         }

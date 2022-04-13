@@ -1,6 +1,5 @@
 ﻿using Rido.MqttCore;
 using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Rido.Mqtt.AwsClient.TopicBindings

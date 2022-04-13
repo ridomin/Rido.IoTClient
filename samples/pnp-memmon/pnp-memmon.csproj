@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Rido.IoTClient\Rido.IoTClient.csproj" />
+	  <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -31,28 +31,13 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="dtmi_rido_pnp_memmon-2.g.cs">
-			<DependentUpon>dtmi_rido_pnp_memmon-2.json</DependentUpon>
-		</Compile>
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Update="dtmi_rido_pnp_memmon-3.g.cs">
 			<DependentUpon>dtmi_rido_pnp_memmon-3.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="dtmi_rido_pnp_memmon-4.g.cs">
-			<DependentUpon>dtmi_rido_pnp_memmon-4.json</DependentUpon>
-		</Compile>
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Update="dtmi_rido_pnp_memmon-5.g.cs">
 			<DependentUpon>dtmi_rido_pnp_memmon-5.json</DependentUpon>
-		</Compile>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Update="dtmi_rido_pnp_memmon-6.g.cs">
-			<DependentUpon>dtmi_rido_pnp_memmon-6.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>

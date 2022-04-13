@@ -1,6 +1,6 @@
-using dtmi_rido_pnp_PnPBroker;
+using dtmi_rido_pnp_IoTHubClassic;
 using Humanizer;
-using Rido.IoTClient;
+using Rido.Mqtt.HubClient;
 using System.Diagnostics;
 using System.Text;
 
@@ -21,7 +21,7 @@ public class DeviceRunner : BackgroundService
     private const bool default_enabled = true;
     private const int default_interval = 8;
 
-    private Imemmon client;
+    private memmon client;
 
     public DeviceRunner(ILogger<DeviceRunner> logger, IConfiguration configuration)
     {
@@ -32,15 +32,11 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("csx"), stoppingToken);
         _logger.LogInformation("Connected");
 
-        client.Connection.DisconnectedAsync += async e =>
-        {
-            await Task.Delay(1);
-            reconnectCounter++;
-            Console.WriteLine(e.Exception.ToString());
-        };
+        client.Connection.OnMqttClientDisconnected += Connection_OnMqttClientDisconnected;
+        
 
         client.Property_enabled.OnProperty_Updated = Property_enabled_UpdateHandler;
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
@@ -65,6 +61,11 @@ public class DeviceRunner : BackgroundService
             var interval = client?.Property_interval.PropertyValue?.Value;
             await Task.Delay(interval.HasValue ? interval.Value * 1000 : 1000, stoppingToken);
         }
+    }
+
+    private void Connection_OnMqttClientDisconnected(object sender, Rido.MqttCore.DisconnectEventArgs e)
+    {
+        reconnectCounter++;
     }
 
     private async Task<PropertyAck<bool>> Property_enabled_UpdateHandler(PropertyAck<bool> p)
@@ -131,8 +132,8 @@ public class DeviceRunner : BackgroundService
             string interval_value = client?.Property_interval.PropertyValue?.Value.ToString();
             StringBuilder sb = new();
             AppendLineWithPadRight(sb, " ");
-            AppendLineWithPadRight(sb, client?.ConnectionSettings?.HostName);
-            AppendLineWithPadRight(sb, $"{client?.ConnectionSettings.ClientId} ({client.ConnectionSettings.Auth})");
+            AppendLineWithPadRight(sb, client?.Connection.ConnectionSettings?.HostName);
+            AppendLineWithPadRight(sb, $"{client?.Connection.ConnectionSettings.ClientId} ({client.Connection.ConnectionSettings.Auth})");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
             AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));
@@ -149,7 +150,7 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, $"WorkingSet: {telemetryWorkingSet.Bytes()}");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Time Running: {TimeSpan.FromMilliseconds(clock.ElapsedMilliseconds).Humanize(3)}");
-            AppendLineWithPadRight(sb, $"{client.ConnectionSettings}");
+            AppendLineWithPadRight(sb, $"{client.Connection.ConnectionSettings}");
             AppendLineWithPadRight(sb, " ");
             return sb.ToString();
         }

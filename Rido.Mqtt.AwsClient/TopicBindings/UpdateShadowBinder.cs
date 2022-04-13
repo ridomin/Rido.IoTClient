@@ -3,7 +3,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,8 +11,8 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class UpdateShadowBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
-        readonly ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
-        readonly IMqttBaseClient connection;
+        private readonly ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
+        private readonly IMqttBaseClient connection;
 
         public UpdateShadowBinder(IMqttBaseClient connection)
         {
@@ -50,7 +49,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
                     }
                 }
             };
-            var puback = await connection.PublishAsync($"$aws/things/{connection.ClientId}/shadow/update", data, 1 , true, cancellationToken);
+            var puback = await connection.PublishAsync($"$aws/things/{connection.ClientId}/shadow/update", data, 1, true, cancellationToken);
             if (puback != 0)
             {
                 Trace.TraceError("Error publishing message: " + puback);

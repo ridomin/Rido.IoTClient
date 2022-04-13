@@ -1,5 +1,4 @@
-﻿using MQTTnet.Client;
-using Rido.MqttCore;
+﻿using Rido.MqttCore;
 using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -11,10 +10,11 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
     public class WritableProperty<T> : IWritableProperty<T>
     {
         public PropertyAck<T> PropertyValue { get; set; }
-        readonly string propertyName;
-        readonly string componentName;
-        readonly IPropertyStoreWriter updatePropertyBinder;
-        readonly DesiredUpdatePropertyBinder<T> desiredBinder;
+
+        private readonly string propertyName;
+        private readonly string componentName;
+        private readonly IPropertyStoreWriter updatePropertyBinder;
+        private readonly DesiredUpdatePropertyBinder<T> desiredBinder;
 
         public Func<PropertyAck<T>, Task<PropertyAck<T>>> OnProperty_Updated
         {
@@ -49,7 +49,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
             }
         }
 
-        PropertyAck<T> InitFromTwin(string twinJson, string propName, string componentName, T defaultValue)
+        private PropertyAck<T> InitFromTwin(string twinJson, string propName, string componentName, T defaultValue)
         {
             if (string.IsNullOrEmpty(twinJson))
             {

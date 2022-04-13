@@ -8,9 +8,9 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class GetShadowBinder : IPropertyStoreReader
     {
-        readonly ConcurrentQueue<TaskCompletionSource<string>> pendingGetShadowRequests;
-        readonly IMqttBaseClient connection;
-        readonly string topicBase;
+        private readonly ConcurrentQueue<TaskCompletionSource<string>> pendingGetShadowRequests;
+        private readonly IMqttBaseClient connection;
+        private readonly string topicBase;
 
         public GetShadowBinder(IMqttBaseClient conn)
         {

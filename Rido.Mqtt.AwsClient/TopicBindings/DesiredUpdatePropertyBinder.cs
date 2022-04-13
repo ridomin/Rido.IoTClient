@@ -1,7 +1,6 @@
 ﻿
 using Rido.MqttCore;
 using System;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -36,8 +35,9 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
                              desired[componentName][propertyName] != null &&
                              desired[componentName]["__t"] != null &&
                              desired[componentName]["__t"].GetValue<string>() == "c")
-
+                         {
                              desiredProperty = desired?[componentName][propertyName];
+                         }
                      }
 
                      if (desiredProperty != null)

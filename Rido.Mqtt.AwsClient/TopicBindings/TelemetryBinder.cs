@@ -1,8 +1,5 @@
-﻿using MQTTnet;
-using MQTTnet.Client;
-using Rido.MqttCore;
+﻿using Rido.MqttCore;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,11 +7,11 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class Telemetry<T> : ITelemetry<T>
     {
-        readonly IMqttBaseClient connection;
-        readonly string deviceId;
-        readonly string moduleId;
-        readonly string name;
-        readonly string component;
+        private readonly IMqttBaseClient connection;
+        private readonly string deviceId;
+        private readonly string moduleId;
+        private readonly string name;
+        private readonly string component;
 
         public Telemetry(IMqttBaseClient connection, string name, string component = "", string moduleId = "")
         {

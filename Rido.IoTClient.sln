@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.Client", "Rido.Mq
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.IntergationTests", "tests\Rido.Mqtt.IntergationTests\Rido.Mqtt.IntergationTests.csproj", "{2902F629-934A-443D-B739-4F6D29FF005E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon", "samples\pnp-memmon\pnp-memmon.csproj", "{47F8683F-7407-46B2-9A45-6E5104389DE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{2902F629-934A-443D-B739-4F6D29FF005E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2902F629-934A-443D-B739-4F6D29FF005E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2902F629-934A-443D-B739-4F6D29FF005E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F8683F-7407-46B2-9A45-6E5104389DE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F8683F-7407-46B2-9A45-6E5104389DE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F8683F-7407-46B2-9A45-6E5104389DE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F8683F-7407-46B2-9A45-6E5104389DE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{C71876D0-2658-45BE-B684-2CBB84F5A37E} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 		{98B40FD3-2550-406B-9B28-A6D759BAD0AE} = {E501F8AE-4B5D-4FEC-BC00-F6B59A11B9A2}
 		{2902F629-934A-443D-B739-4F6D29FF005E} = {E501F8AE-4B5D-4FEC-BC00-F6B59A11B9A2}
+		{47F8683F-7407-46B2-9A45-6E5104389DE0} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}

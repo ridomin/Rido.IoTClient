@@ -7,9 +7,8 @@ namespace Rido.Mqtt.AwsClient
 {
     public class AwsClient //: BaseClient
     {
-
-        readonly IPropertyStoreReader getShadowBinder;
-        readonly IPropertyStoreWriter updateShadowBinder;
+        private readonly IPropertyStoreReader getShadowBinder;
+        private readonly IPropertyStoreWriter updateShadowBinder;
 
         public AwsClient(IMqttBaseClient c) //: base(c)
         {

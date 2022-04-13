@@ -1,6 +1,4 @@
-using MQTTnet;
 using Rido.Mqtt.DpsClient;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 

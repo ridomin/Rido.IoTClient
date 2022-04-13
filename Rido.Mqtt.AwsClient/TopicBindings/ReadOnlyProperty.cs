@@ -1,6 +1,4 @@
-﻿using MQTTnet.Client;
-using Rido.MqttCore;
-using System;
+﻿using Rido.MqttCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,9 +8,9 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
-        readonly IReportPropertyBinder updateBinder;
+        private readonly IReportPropertyBinder updateBinder;
         public string Name;
-        readonly string component;
+        private readonly string component;
 
 
         public T PropertyValue { get; set; }
@@ -31,7 +29,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
             return await updateBinder.ReportPropertyAsync(ToJsonDict(asComponent), cancellationToken);
         }
 
-        Dictionary<string, object> ToJsonDict(bool asComponent = false)
+        private Dictionary<string, object> ToJsonDict(bool asComponent = false)
         {
             Dictionary<string, object> result;
             if (asComponent == false)
