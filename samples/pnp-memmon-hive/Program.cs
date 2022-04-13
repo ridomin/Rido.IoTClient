@@ -1,9 +1,9 @@
-using temperature_controller;
+using pnp_memmon_hive;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddHostedService<Worker>();
+        services.AddHostedService<DeviceRunner>();
     })
     .Build();
 

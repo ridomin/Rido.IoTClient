@@ -1,10 +1,9 @@
-using dtmi_rido_pnp_IoTHubClassic;
 using Humanizer;
-using Rido.Mqtt.HubClient;
+using Rido.Mqtt.Client;
 using System.Diagnostics;
 using System.Text;
 
-namespace pnp_memmon;
+namespace pnp_memmon_hive;
 
 public class DeviceRunner : BackgroundService
 {
@@ -32,7 +31,7 @@ public class DeviceRunner : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("csx"), stoppingToken);
+        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
         _logger.LogInformation("Connected");
 
         client.Connection.OnMqttClientDisconnected += Connection_OnMqttClientDisconnected;
@@ -42,8 +41,13 @@ public class DeviceRunner : BackgroundService
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
 
-        await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
-        await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
+        //await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
+        //await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
+        client.Property_interval.PropertyValue.Value = default_interval;
+        await client.Property_interval.ReportPropertyAsync(stoppingToken);
+
+        client.Property_enabled.PropertyValue.Value = default_enabled;
+        await client.Property_enabled.ReportPropertyAsync(stoppingToken);
 
         client.Property_started.PropertyValue = DateTime.Now;
         await client.Property_started.ReportPropertyAsync(stoppingToken);
@@ -88,8 +92,8 @@ public class DeviceRunner : BackgroundService
         twinRecCounter++;
         var ack = new PropertyAck<int>(p.Name)
         {
-            Description = (client.Property_enabled?.PropertyValue.Value == true) ? "desired notification accepted" : "disabled, not accepted",
-            Status = (client.Property_enabled?.PropertyValue.Value == true) ? 200 : 205,
+            Description = client.Property_enabled?.PropertyValue.Value == true ? "desired notification accepted" : "disabled, not accepted",
+            Status = client.Property_enabled?.PropertyValue.Value == true ? 200 : 205,
             Version = p.Version,
             Value = p.Value
         };
@@ -114,7 +118,7 @@ public class DeviceRunner : BackgroundService
         if (req.DiagnosticsMode == DiagnosticsMode.full)
         {
             result.diagnosticResults.Add($"twin receive: ", twinRecCounter.ToString());
-            result.diagnosticResults.Add($"twin sends: ", RidCounter.Current.ToString());
+            //result.diagnosticResults.Add($"twin sends: ", RidCounter.Current.ToString());
             result.diagnosticResults.Add("telemetry: ", telemetryCounter.ToString());
             result.diagnosticResults.Add("command: ", commandCounter.ToString());
             result.diagnosticResults.Add("reconnects: ", reconnectCounter.ToString());
@@ -135,16 +139,16 @@ public class DeviceRunner : BackgroundService
             AppendLineWithPadRight(sb, client?.Connection.ConnectionSettings?.HostName);
             AppendLineWithPadRight(sb, $"{client?.Connection.ConnectionSettings.ClientId} ({client.Connection.ConnectionSettings.Auth})");
             AppendLineWithPadRight(sb, " ");
-            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
-            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));
-            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Property_enabled?.PropertyValue.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "interval".PadRight(8), interval_value?.PadLeft(15), client?.Property_interval.PropertyValue?.Version));
-            AppendLineWithPadRight(sb, String.Format("{0:8} | {1:15} | {2}", "started".PadRight(8), client.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Property_started?.Version));
+            AppendLineWithPadRight(sb, string.Format("{0:8} | {1:15} | {2}", "Property", "Value".PadRight(15), "Version"));
+            AppendLineWithPadRight(sb, string.Format("{0:8} | {1:15} | {2}", "--------", "-----".PadLeft(15, '-'), "------"));
+            AppendLineWithPadRight(sb, string.Format("{0:8} | {1:15} | {2}", "enabled".PadRight(8), enabled_value?.PadLeft(15), client?.Property_enabled?.PropertyValue.Version));
+            AppendLineWithPadRight(sb, string.Format("{0:8} | {1:15} | {2}", "interval".PadRight(8), interval_value?.PadLeft(15), client?.Property_interval.PropertyValue?.Version));
+            AppendLineWithPadRight(sb, string.Format("{0:8} | {1:15} | {2}", "started".PadRight(8), client.Property_started.PropertyValue.ToShortTimeString().PadLeft(15), client?.Property_started?.Version));
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Reconnects: {reconnectCounter}");
             AppendLineWithPadRight(sb, $"Telemetry: {telemetryCounter}");
             AppendLineWithPadRight(sb, $"Twin receive: {twinRecCounter}");
-            AppendLineWithPadRight(sb, $"Twin send: {RidCounter.Current}");
+            //AppendLineWithPadRight(sb, $"Twin send: {RidCounter.Current}");
             AppendLineWithPadRight(sb, $"Command messages: {commandCounter}");
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"WorkingSet: {telemetryWorkingSet.Bytes()}");

@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>pnp_memmon</RootNamespace>
 	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -14,11 +13,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
+	  <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+	  <ProjectReference Include="..\..\Rido.Mqtt.Client\Rido.Mqtt.Client.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Imemmon.cs">
 			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
