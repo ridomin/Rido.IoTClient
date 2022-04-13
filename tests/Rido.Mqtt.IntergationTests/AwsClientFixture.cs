@@ -15,21 +15,21 @@ namespace Rido.Mqtt.IntergationTests
             X509Key = "testdevice22.pfx|1234"
         };
 
-        [Fact]
-        public async Task GetShadow()
-        {
-            var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
-            var client = new Rido.Mqtt.AwsClient.AwsMqttClient(mqtt);
-            Assert.True(mqtt.IsConnected);
-            var shadow = await client.GetShadowAsync();
-            System.Diagnostics.Debug.WriteLine(shadow);
-            Assert.NotNull(shadow);
-            await mqtt.DisconnectAsync();
-            Assert.False(mqtt.IsConnected);
-        }
+        //[Fact]
+        //public async Task GetShadow()
+        //{
+        //    var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
+        //    var client = new Rido.Mqtt.AwsClient.AwsMqttClient(mqtt);
+        //    Assert.True(mqtt.IsConnected);
+        //    var shadow = await client.GetShadowAsync();
+        //    System.Diagnostics.Debug.WriteLine(shadow);
+        //    Assert.NotNull(shadow);
+        //    await mqtt.DisconnectAsync();
+        //    Assert.False(mqtt.IsConnected);
+        //}
 
         [Fact]
-        public async Task UpdateShadow()
+        public async Task GetUpdateShadow()
         {
             var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
             var client = new AwsMqttClient(mqtt);
