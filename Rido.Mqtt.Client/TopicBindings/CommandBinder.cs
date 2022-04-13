@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rido.PnP.TopicBindings
+namespace Rido.Mqtt.Client.TopicBindings
 {
     public class Command<T, TResponse> : ICommand<T, TResponse>
         where T : IBaseCommandRequest<T>, new()

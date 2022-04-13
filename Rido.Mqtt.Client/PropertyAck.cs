@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-namespace Rido.PnP
+namespace Rido.Mqtt.Client
 {
     public class PropertyAck<T>
     {

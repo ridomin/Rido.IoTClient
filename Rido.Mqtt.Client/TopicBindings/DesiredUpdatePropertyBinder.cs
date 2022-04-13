@@ -1,11 +1,12 @@
 ﻿using Rido.MqttCore;
+using Rido.PnP.TopicBindings;
 using System;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace Rido.PnP.TopicBindings
+namespace Rido.Mqtt.Client.TopicBindings
 {
     public class DesiredUpdatePropertyBinder<T>
     {

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.PnP
+namespace Rido.Mqtt.Client
 {
     public interface ITelemetry<T>
     {

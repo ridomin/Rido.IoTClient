@@ -1,4 +1,4 @@
-﻿namespace Rido.PnP
+﻿namespace Rido.Mqtt.Client
 {
     public interface IBaseCommandRequest<T>
     {

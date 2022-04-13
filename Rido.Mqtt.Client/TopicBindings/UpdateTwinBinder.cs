@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.PnP.TopicBindings
+namespace Rido.Mqtt.Client.TopicBindings
 {
     public class UpdateTwinBinder : IReportPropertyBinder, IPropertyStoreWriter
     {

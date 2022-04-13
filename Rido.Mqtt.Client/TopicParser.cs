@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace Rido.PnP
+namespace Rido.Mqtt.Client
 {
     public class TopicParser
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Rido.PnP
+namespace Rido.Mqtt.Client
 {
     internal class TwinParser
     {

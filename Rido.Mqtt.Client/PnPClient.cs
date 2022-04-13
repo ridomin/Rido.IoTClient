@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Rido.PnP
+namespace Rido.Mqtt.Client
 {
     public class BirthMessage
     {
@@ -25,6 +25,6 @@ namespace Rido.PnP
         }
 
         public async Task<int> Announce(BirthMessage msg, CancellationToken token = default) =>
-            await Connection.PublishAsync($"pnp/{Connection.ClientId}/birth", msg, 1,true, token);
+            await Connection.PublishAsync($"pnp/{Connection.ClientId}/birth", msg, 1, true, token);
     }
 }

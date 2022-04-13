@@ -1,9 +1,10 @@
-﻿using Rido.MqttCore;
+﻿using Rido.Mqtt.Client;
+using Rido.MqttCore;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.PnP.TopicBindings
+namespace Rido.Mqtt.Client.TopicBindings
 {
     public class Telemetry<T> : ITelemetry<T>
     {
