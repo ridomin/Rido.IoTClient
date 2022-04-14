@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Rido.Mqtt.AzIoTClient\Rido.Mqtt.AzIoTClient.csproj" />
+    <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+    <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
   </ItemGroup>
 </Project>
