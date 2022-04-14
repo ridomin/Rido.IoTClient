@@ -1,4 +1,5 @@
-﻿using Rido.PnP;
+﻿
+using Rido.MqttCore.PnP;
 using System;
 using Xunit;
 

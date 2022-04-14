@@ -1,5 +1,6 @@
 using Humanizer;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 using System.Diagnostics;
 using System.Text;
 

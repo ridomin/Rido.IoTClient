@@ -1,6 +1,6 @@
 ﻿using Rido.Mqtt.AwsClient.TopicBindings;
 using Rido.MqttCore;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
 using System.Threading;
 using System.Threading.Tasks;
 

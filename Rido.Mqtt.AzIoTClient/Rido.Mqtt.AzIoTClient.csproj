@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+    <ProjectReference Include="..\Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj" />
+    <ProjectReference Include="..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
+  </ItemGroup>
+
+</Project>

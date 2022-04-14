@@ -1,7 +1,7 @@
-﻿using Rido.Mqtt.DpsClient;
-using Rido.Mqtt.HubClient.TopicBindings;
+﻿using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 using System;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -18,20 +18,7 @@ namespace Rido.Mqtt.HubClient
         private readonly GenericDesiredUpdatePropertyBinder genericDesiredUpdateProperty;
         private readonly GenericCommand command;
 
-        public static async Task<HubMqttClient> CreateFromConnectionStringAsync(string connectionString, CancellationToken cancellationToken = default)
-        {
-            var cs = new ConnectionSettings(connectionString);
-            if (string.IsNullOrEmpty(cs.HostName) && !string.IsNullOrEmpty(cs.IdScope))
-            {
-                var dpsMqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(connectionString, cancellationToken);
-                var dpsClient = new MqttDpsClient(dpsMqtt);
-                var dpsRes = await dpsClient.ProvisionDeviceIdentity();
-                cs.HostName = dpsRes.RegistrationState.AssignedHub;
-                await dpsMqtt.DisconnectAsync(cancellationToken);
-            }
-            var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
-            return new HubMqttClient(mqtt);
-        }
+       
 
         public HubMqttClient(IMqttBaseClient c)
         {

@@ -1,7 +1,7 @@
 
 using Rido.Mqtt.HubClient;
 using Rido.MqttCore;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
 
 namespace layer3_sample
 {

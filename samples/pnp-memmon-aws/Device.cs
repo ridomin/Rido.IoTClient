@@ -1,6 +1,7 @@
 using Humanizer;
 using Rido.Mqtt.AwsClient;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 using System.Diagnostics;
 using System.Text;
 

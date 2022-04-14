@@ -1,7 +1,8 @@
 using dtmi_rido_pnp_IoTHubClassic;
 using Humanizer;
 using Rido.Mqtt.HubClient;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 using System.Diagnostics;
 using System.Text;
 

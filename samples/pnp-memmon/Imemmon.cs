@@ -2,7 +2,8 @@
 
 
 using Rido.Mqtt.HubClient;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 
 namespace pnp_memmon
 {

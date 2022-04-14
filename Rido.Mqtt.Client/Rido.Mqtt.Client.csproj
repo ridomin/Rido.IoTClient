@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rido.MqttCore\Rido.MqttCore.csproj" />
-    <ProjectReference Include="..\Rido.PnP\Rido.PnP.csproj" />
   </ItemGroup>
 
 </Project>

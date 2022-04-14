@@ -3,7 +3,8 @@
 
 
 using Rido.Mqtt.Client;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 
 namespace pnp_memmon_hive
 {

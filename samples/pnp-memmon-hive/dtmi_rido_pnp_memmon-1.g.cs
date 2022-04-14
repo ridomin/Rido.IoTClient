@@ -4,7 +4,8 @@
 using Rido.Mqtt.Client;
 using Rido.Mqtt.Client.TopicBindings;
 using Rido.MqttCore;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 
 namespace pnp_memmon_hive
 {

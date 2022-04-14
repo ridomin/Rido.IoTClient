@@ -4,7 +4,8 @@
 using Rido.Mqtt.AwsClient;
 using Rido.Mqtt.AwsClient.TopicBindings;
 using Rido.MqttCore;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
+
 
 namespace pnp_memmon_aws
 {

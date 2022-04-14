@@ -1,6 +1,6 @@
 ﻿using Rido.IoTClient.Tests.AzIoTHub;
 using Rido.MqttCore;
-using Rido.PnP;
+using Rido.MqttCore.PnP;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
