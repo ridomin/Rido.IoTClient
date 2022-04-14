@@ -1,5 +1,4 @@
 using Humanizer;
-using Rido.Mqtt.AwsClient;
 using Rido.MqttCore.PnP;
 
 using System.Diagnostics;
@@ -43,14 +42,14 @@ public class Device : BackgroundService
         client.Property_interval.OnProperty_Updated = Property_interval_UpdateHandler;
         client.Command_getRuntimeStats.OnCmdDelegate = Command_getRuntimeStats_Handler;
 
-        await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
-        await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
+        //await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
+        //await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
         
-        //client.Property_interval.PropertyValue.Value = default_interval;
-        //await client.Property_interval.ReportPropertyAsync(stoppingToken);
+        client.Property_interval.PropertyValue.Value = default_interval;
+        await client.Property_interval.ReportPropertyAsync(stoppingToken);
 
-        //client.Property_enabled.PropertyValue.Value = default_enabled;
-        //await client.Property_enabled.ReportPropertyAsync(stoppingToken);
+        client.Property_enabled.PropertyValue.Value = default_enabled;
+        await client.Property_enabled.ReportPropertyAsync(stoppingToken);
 
         client.Property_started.PropertyValue = DateTime.Now;
         await client.Property_started.ReportPropertyAsync(stoppingToken);

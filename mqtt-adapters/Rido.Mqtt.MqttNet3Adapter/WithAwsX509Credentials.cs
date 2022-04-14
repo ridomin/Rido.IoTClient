@@ -1,10 +1,13 @@
-﻿using MQTTnet.Client;
+﻿using MQTTnet;
+using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using Rido.MqttCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Text.Json;
 
 namespace Rido.Mqtt.MqttNet3Adapter
 {
@@ -20,7 +23,14 @@ namespace Rido.Mqtt.MqttNet3Adapter
                 .WithKeepAlivePeriod(new TimeSpan(0, 0, 0, 300))
                 .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V311)
                 .WithClientId(cs.ClientId)
-                .WithCleanSession(false)
+                .WithCleanSession(true)
+                .WithWillMessage(
+                    new MqttApplicationMessageBuilder()
+                        .WithTopic($"pnp/{cs.ClientId}/lwt")
+                        .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
+                        .WithPayload(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { lwtp = DateTime.Now })))
+                        .WithRetainFlag(false)
+                        .Build())
                 .WithTls(new MqttClientOptionsBuilderTlsParameters
                 {
                     UseTls = true,
