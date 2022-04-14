@@ -27,9 +27,8 @@ namespace Rido.Mqtt.Client.TopicBindings
                     T req = new T().DeserializeBody(m.Payload);
                     if (OnCmdDelegate != null && req != null)
                     {
-                        (int rid, _) = TopicParser.ParseTopic(topic);
                         TResponse response = await OnCmdDelegate.Invoke(req);
-                        _ = connection.PublishAsync($"pnp/{connection.ClientId}/commands/{fullCommandName}/resp/{response.Status}/?$rid={rid}", response);
+                        _ = connection.PublishAsync($"pnp/{connection.ClientId}/commands/{fullCommandName}/resp/{response.Status}", response);
                     }
                 }
             };
