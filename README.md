@@ -14,7 +14,8 @@ See this [sample](samples/layer2-sample) for a complete project
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.MqttNet3Adapter;
 
-IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+IMqttBaseClient adapter = await new MqttNetClientConnectionFactory()
+        .CreateHubClientAsync(_configuration.GetConnectionString("cs"));
 var client = new HubMqttClient(adapter);
 
 // Send Telemetry
@@ -68,11 +69,48 @@ This library implements a compatible *connection string* with Azure IoT SDK Devi
 - `UserName` Username to be used to authenticate MQTT Brokers
 - `Password` Username to be used to authenticate MQTT Brokers
 
-Sample Connection String
+### Sample Connection Strings
 
-```cs
-$"HostName=test.azure-devices.net;DeviceId=myDevice;ModuleId=myModule;SharedAccessKey=<moduleSasKey>;ModelId=dtmi:my:model;1";SasMinutes=120
+Azure IoT Hub
+
 ```
+HostName=<hubName>.azure-devices.net;DeviceId=<deviceId>;SharedAccessKey=<deviceSasKey>
+```
+
+Azure Device Provisioning Service
+
+```
+IdScope=<dps-id-scope>;DeviceId=<deviceId>;SharedAccessKey=<deviceSasKey>
+```
+
+Azure IoT Plug and Play
+
+```
+HostName=<hubName>.azure-devices.net;DeviceId=<deviceId>;SharedAccessKey=<deviceSasKey>;ModelId=<dtmi:yourmodel;1>
+IdScope=<dps-id-scope>;DeviceId=<deviceId>;SharedAccessKey=<deviceSasKey>;ModelId=<dtmi:yourmodel;1>
+```
+
+Using Certificates
+
+```
+HostName=<hubName>.azure-devices.net;DeviceId=<deviceId>;Auth=X509;X509Key=<path-to-pfx>|<pfx-password>
+IdScope=<dps-id-scope>;DeviceId=<deviceId>;Auth=X509;X509Key=<path-to-pfx>|<pfx-password>
+```
+
+Advanced Connection Options
+
+```
+HostName=<hubName>.azure-devices.net;DeviceId=<deviceId>;SharedAccessKey=<deviceSasKey>;ModelId=<dtmi:yourmodel;1>;SasMinutes=60;KeepAliveInSeconds=30
+IdScope=<dps-id-scope>;DeviceId=<deviceId>;SharedAccessKey=<deviceSasKey>;ModelId=<dtmi:yourmodel;1>;SasMinutes=60;KeepAliveInSeconds=30
+```
+
+Connecting to a MQTT Broker
+
+```
+HostName=<broker-hostname>;UserName=<user-name>;Password=<password>;CliendId=<client-id>
+HostName=<broker-hostname>;Auth=X509;X509Key=<path-to-pfx>|<pfx-password>;ClientId=<client-id>
+```
+
 
 > Note: All samples use the connection settings in the `ConnectionString` configuration, available in the `appSettings.json` file, or as the environment variable `ConnectionString__Key`.
 
@@ -84,8 +122,9 @@ The Connection Settings allow to use DPS (useful to connect to IoT Central) by a
 
 To support IoTHub connection strings, and DPS connection strings, the project `Rido.Mqtt.AzIoTClient` includes a single entry point:
 
-```
-
+```cs
+using Rido.Mqtt.AzIoTClient;
+var hub = await HubDpsFactory.CreateFromConnectionStringAsync(cs);
 ```
 
 ## Advanced Samples
