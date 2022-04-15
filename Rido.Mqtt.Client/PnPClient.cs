@@ -1,6 +1,4 @@
 ﻿using Rido.MqttCore;
-using System.Threading;
-using System.Threading.Tasks;
 using static Rido.MqttCore.Birth.BirthConvention;
 
 namespace Rido.Mqtt.Client
@@ -11,9 +9,13 @@ namespace Rido.Mqtt.Client
         public PnPClient(IMqttBaseClient c)
         {
             Connection = c;
+            _ = Connection.PublishAsync(
+                BirthTopic(Connection.ClientId), 
+                new BirthMessage(ConnectionStatus.online)
+                {
+                    ModelId = c.ConnectionSettings.ModelId
+                }, 
+                1, true);
         }
-
-        public async Task<int> Announce(BirthMessage msg, CancellationToken token = default) =>
-            await Connection.PublishAsync(BirthTopic(Connection.ClientId), msg, 1, true, token);
     }
 }

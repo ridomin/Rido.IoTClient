@@ -25,6 +25,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
                         .WithTopic(BirthConvention.BirthTopic(cs.ClientId))
                         .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
                         .WithPayload(BirthConvention.LastWillPayload())
+                        .WithRetainFlag(true)
                         .Build()
                 )
                 .WithCredentials(cs.UserName, cs.Password);

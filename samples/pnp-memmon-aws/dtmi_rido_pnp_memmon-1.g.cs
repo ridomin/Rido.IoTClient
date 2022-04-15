@@ -32,7 +32,6 @@ namespace pnp_memmon_aws
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
             var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
             var client = new memmon(mqtt) ;
-            await client.Announce(new BirthMessage (ConnectionStatus.online) { ModelId = modelId });
             //client.InitialState = await client.GetShadowAsync(cancellationToken);
             return client;
         }
