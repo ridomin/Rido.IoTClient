@@ -1,9 +1,9 @@
-using pnp_aws_sample;
+using pnp_memmon_hub;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddHostedService<DeviceRunner>();
+        services.AddHostedService<Device>();
     })
     .Build();
 

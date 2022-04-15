@@ -1,4 +1,5 @@
 ﻿
+using Rido.Mqtt.AzIoTClient;
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
@@ -26,10 +27,10 @@ namespace layer3_sample
             Command_getRuntimeStats = new Command<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response>(c, "getRuntimeStats");
         }
 
-        internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        internal static async Task<dtmi_rido_pnp_memmon> CreateAsync(string connectionString, CancellationToken cancellationToken = default)
         {
-            var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(cs, cancellationToken);
-            var client = new dtmi_rido_pnp_memmon(mqtt);
+            var hub = await HubDpsFactory.CreateFromConnectionStringAsync(connectionString + ";ModelId=" + modelId);
+            var client = new dtmi_rido_pnp_memmon(hub.Connection);
             //await client.Announce(new BirthMessage { ModelId = modelId });
             return client;
         }

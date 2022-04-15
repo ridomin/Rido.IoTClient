@@ -18,19 +18,12 @@ namespace layer3_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await dtmi_rido_pnp_memmon.CreateAsync(
-                new ConnectionSettings(_configuration.GetConnectionString("hive"))
-                {
-                    ClientId = "memmon1" ,
-                    KeepAliveInSeconds = 3,
-                    CleanSession = true
-                }
-                , stoppingToken); ;
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken); ;
 
             _logger.LogInformation(client.Connection.ConnectionSettings.ToString());
 
-            //var twin = await client.GetTwinAsync(stoppingToken);
-            //_logger.LogInformation(twin);
+            var twin = await client.GetTwinAsync(stoppingToken);
+            _logger.LogInformation(twin);
 
             client.Command_getRuntimeStats.OnCmdDelegate = async cmd =>
             {
@@ -65,27 +58,25 @@ namespace layer3_sample
 
             client.Property_started.PropertyValue = DateTime.Now;
             
-            client.Property_interval.PropertyValue = new PropertyAck<int>("interval")
+            client.Property_interval.PropertyValue = new PropertyAck<int>(client.Property_interval.PropertyName)
             {
                 Value = 5,
                 Status = 203,
                 Description = "default value"
             };
 
-            client.Property_enabled.PropertyValue = new PropertyAck<bool>("enabled")
+            client.Property_enabled.PropertyValue = new PropertyAck<bool>(client.Property_enabled.PropertyName)
             {
                 Value = true,
                 Status = 203,
                 Description = "default value"
             };
 
-            //await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
-            //await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
+            await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
+            await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
             
             await client.Property_started.ReportPropertyAsync(stoppingToken);
-            await client.Property_interval.ReportPropertyAsync(stoppingToken);
-            await client.Property_enabled.ReportPropertyAsync(stoppingToken);
-
+            
             while (client.Property_enabled.PropertyValue.Value==true && !stoppingToken.IsCancellationRequested)
             {
                 await client.Telemetry_workingSet.SendTelemetryAsync(Environment.WorkingSet, stoppingToken);

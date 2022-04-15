@@ -12,8 +12,10 @@ See this [sample](samples/layer2-sample) for a complete project
 
 ```cs
 using Rido.Mqtt.HubClient;
+using Rido.Mqtt.MqttNet3Adapter;
 
-var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("myConnectinStringKey"));
+IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+var client = new HubMqttClient(adapter);
 
 // Send Telemetry
 var puback = await client.SendTelemetryAsync(new { workingSet = Environment.WorkingSet });
@@ -63,6 +65,8 @@ This library implements a compatible *connection string* with Azure IoT SDK Devi
 - `ModuleId` Device Module Identity
 - `Auth` Device Authentication: [SAS, X509]
 - `SasMinutes` SasToken expire time in minutes, default to `60`.
+- `UserName` Username to be used to authenticate MQTT Brokers
+- `Password` Username to be used to authenticate MQTT Brokers
 
 Sample Connection String
 
@@ -72,9 +76,17 @@ $"HostName=test.azure-devices.net;DeviceId=myDevice;ModuleId=myModule;SharedAcce
 
 > Note: All samples use the connection settings in the `ConnectionString` configuration, available in the `appSettings.json` file, or as the environment variable `ConnectionString__Key`.
 
-### DPS Client
+## DPS Support
+
+There is a DPS MQTT client implemented in `Rido.Mqtt.DpsClient` based on the same `IMqttBaseClient` interface.
 
 The Connection Settings allow to use DPS (useful to connect to IoT Central) by adding the `IdScope`, when found it will provision the device using `Rido.Mqtt.DpsClient`.
+
+To support IoTHub connection strings, and DPS connection strings, the project `Rido.Mqtt.AzIoTClient` includes a single entry point:
+
+```
+
+```
 
 ## Advanced Samples
 
