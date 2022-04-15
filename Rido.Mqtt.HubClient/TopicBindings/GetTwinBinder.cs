@@ -14,6 +14,8 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         private static readonly ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
         private readonly IMqttBaseClient connection;
 
+        internal int lastRid = -1;
+
         public GetTwinBinder(IMqttBaseClient conn)
         {
             connection = conn;
@@ -38,6 +40,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         public async Task<string> ReadPropertiesDocAsync(CancellationToken cancellationToken = default)
         {
             var rid = RidCounter.NextValue();
+            lastRid = rid; // for testing
             var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
             var puback = await connection.PublishAsync($"$iothub/twin/GET/?$rid={rid}", string.Empty, 1, false, cancellationToken);
 

@@ -1,5 +1,6 @@
 ﻿using Rido.Mqtt.HubClient.TopicBindings;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Rido.Mqtt.HubClient.Tests.HubClient
@@ -16,10 +17,11 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
         }
 
         [Fact]
-        public void GetTwinAsync()
+        public async Task GetTwinAsync()
         {
             var twinTask = binder.ReadPropertiesDocAsync();
-            mockClient.SimulateNewMessage($"$iothub/twin/res/200/?$rid={RidCounter.Current}", SampleTwin);
+            var rid = binder.lastRid;
+            mockClient.SimulateNewMessage($"$iothub/twin/res/200/?$rid={rid}", SampleTwin);
             Assert.StartsWith("$iothub/twin/GET/?$rid=", mockClient.topicRecceived);
             Assert.Equal(string.Empty, mockClient.payloadReceived);
             var twin = twinTask.Result;
