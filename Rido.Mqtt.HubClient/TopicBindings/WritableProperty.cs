@@ -33,7 +33,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updateTwin.ReportPropertyAsync(JsonSerializer.Serialize(PropertyValue.ToAckDict()), token);
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updateTwin.ReportPropertyAsync(PropertyValue.ToAckDict(), token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {

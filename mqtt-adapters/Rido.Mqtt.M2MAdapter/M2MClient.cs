@@ -47,7 +47,7 @@ namespace Rido.Mqtt.M2MAdapter
             }
             else
             {
-                jsonPayload = JsonSerializer.Serialize(payload);
+                jsonPayload = JsonSerializerWithEnums.Stringify(payload);
             }
 
             var res = client.Publish(topic, Encoding.UTF8.GetBytes(jsonPayload), Convert.ToByte(qos), retain);

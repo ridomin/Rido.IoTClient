@@ -1,20 +1,10 @@
 ﻿using Rido.MqttCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
+using static Rido.MqttCore.Birth.BirthConvention;
 
 namespace Rido.Mqtt.Client
 {
-    public class BirthMessage
-    {
-        public BirthMessage() => ConnectedTime = DateTime.Now;
-        public string ModelId { get; set; }
-        public DateTime ConnectedTime { get; private set; }
-    }
-
     public class PnPClient
     {
         public IMqttBaseClient Connection { get; private set; }
@@ -24,6 +14,6 @@ namespace Rido.Mqtt.Client
         }
 
         public async Task<int> Announce(BirthMessage msg, CancellationToken token = default) =>
-            await Connection.PublishAsync($"pnp/{Connection.ClientId}/birth", msg, 1, true, token);
+            await Connection.PublishAsync(BirthTopic(Connection.ClientId), msg, 1, true, token);
     }
 }

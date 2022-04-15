@@ -57,7 +57,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             }
             else
             {
-                jsonPayload = JsonSerializer.Serialize(payload);
+                jsonPayload = JsonSerializerWithEnums.Stringify(payload);
             }
 
             var res = await client.PublishAsync(

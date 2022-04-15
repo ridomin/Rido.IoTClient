@@ -1,7 +1,7 @@
 ﻿using MQTTnet;
-using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using Rido.MqttCore;
+using Rido.MqttCore.Birth;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,13 +23,13 @@ namespace Rido.Mqtt.MqttNet3Adapter
                 .WithKeepAlivePeriod(new TimeSpan(0, 0, 0, 300))
                 .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V311)
                 .WithClientId(cs.ClientId)
-                .WithCleanSession(true)
+                .WithCleanSession(false)
                 .WithWillMessage(
                     new MqttApplicationMessageBuilder()
-                        .WithTopic($"pnp/{cs.ClientId}/lwt")
+                        .WithTopic(BirthConvention.BirthTopic(cs.ClientId))
                         .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
-                        .WithPayload(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { lwtp = DateTime.Now })))
-                        .WithRetainFlag(false)
+                        .WithPayload(BirthConvention.LastWillPayload())
+                        .WithRetainFlag(true)
                         .Build())
                 .WithTls(new MqttClientOptionsBuilderTlsParameters
                 {
