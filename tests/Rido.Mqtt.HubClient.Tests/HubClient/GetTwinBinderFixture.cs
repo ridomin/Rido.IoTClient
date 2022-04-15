@@ -17,7 +17,7 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
         }
 
         [Fact]
-        public async Task GetTwinAsync()
+        public void GetTwinAsync()
         {
             var twinTask = binder.ReadPropertiesDocAsync();
             var rid = binder.lastRid;
