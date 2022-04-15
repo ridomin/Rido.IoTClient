@@ -27,6 +27,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             var connAck = await mqtt.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
+                    .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
                     .Build(),
                 cancellationToken);
 
@@ -42,7 +43,10 @@ namespace Rido.Mqtt.MqttNet3Adapter
         public async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
-            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder().WithAwsX509Credentials(cs).Build(), cancellationToken);
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
+                .WithAwsX509Credentials(cs)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
+                .Build(), cancellationToken);
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
             {
                 Trace.TraceError(connAck.ReasonString);
@@ -56,6 +60,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
                 .WithBasicAuth(cs)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .Build(), cancellationToken);
             if (connack.ResultCode != MqttClientConnectResultCode.Success)
             {

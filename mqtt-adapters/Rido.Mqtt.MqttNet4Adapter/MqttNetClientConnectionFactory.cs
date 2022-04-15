@@ -20,6 +20,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             var connAck = await mqtt.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
+                    .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
                     .Build(),
                 cancellationToken);
 
@@ -87,6 +88,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
                 .WithBasicAuth(cs)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .Build(), cancellationToken);
             if (connack.ResultCode != MqttClientConnectResultCode.Success)
             {
