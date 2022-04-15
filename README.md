@@ -68,6 +68,7 @@ This library implements a compatible *connection string* with Azure IoT SDK Devi
 - `SasMinutes` SasToken expire time in minutes, default to `60`.
 - `UserName` Username to be used to authenticate MQTT Brokers
 - `Password` Username to be used to authenticate MQTT Brokers
+- `ClientId` Client ID used when connecting to MQTT Brokers (IoT Hub requires used deviceId as clientId)
 
 ### Sample Connection Strings
 
