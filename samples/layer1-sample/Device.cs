@@ -22,7 +22,7 @@ namespace layer1_sample
 
             await mqtt.PublishAsync(
                 $"$iothub/twin/PATCH/properties/reported/?$rid=1", 
-                new { DateTime.Now }, 1, stoppingToken);
+                new { DateTime.Now }, 1, false, stoppingToken);
 
             var twin = await GetTwin(mqtt, stoppingToken);
             Console.WriteLine(twin);
@@ -32,7 +32,7 @@ namespace layer1_sample
                 var pubAck = await mqtt.PublishAsync(
                     $"devices/{mqtt.ConnectionSettings.ClientId}/messages/events/",
                     new { worksingSet = Environment.WorkingSet },
-                    1, stoppingToken);
+                    1, false, stoppingToken);
 
                 _logger.LogInformation("PubAck: {pubAck}", pubAck);
                 await Task.Delay(1000, stoppingToken);
@@ -55,7 +55,7 @@ namespace layer1_sample
                 }
                 await Task.Yield();
             };
-            var puback = await client.PublishAsync($"$iothub/twin/GET/?$rid={rid++}", string.Empty, 1, cancellationToken);
+            var puback = await client.PublishAsync($"$iothub/twin/GET/?$rid={rid++}", string.Empty, 1, false, cancellationToken);
             return await tcs.Task.TimeoutAfter(TimeSpan.FromSeconds(10));
         }
     }

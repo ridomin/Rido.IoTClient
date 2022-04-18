@@ -1,4 +1,7 @@
 using Rido.Mqtt.HubClient;
+using Rido.Mqtt.MqttNet3Adapter;
+using Rido.MqttCore;
+using Rido.MqttCore.PnP;
 using System.Text.Json;
 
 namespace layer2_sample
@@ -16,12 +19,11 @@ namespace layer2_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //IMqttBaseClient adapter = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             //IMqttBaseClient adapter = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            //var client = new HubMqttClient(adapter);
-
-            var client = await HubMqttClient.CreateFromConnectionStringAsync(_configuration.GetConnectionString("dps"), stoppingToken);
+            IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            var client = new HubMqttClient(adapter);
+            
             _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
             _logger.LogInformation($"Using MQTT Library:" + client.Connection.BaseClientLibraryInfo);
 

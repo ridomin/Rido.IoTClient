@@ -37,7 +37,7 @@ namespace Rido.Mqtt.M2MAdapter
             return Task.CompletedTask;
         }
 
-        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 1, bool retain = false, CancellationToken token = default)
         {
             string jsonPayload;
 
@@ -47,10 +47,10 @@ namespace Rido.Mqtt.M2MAdapter
             }
             else
             {
-                jsonPayload = JsonSerializer.Serialize(payload);
+                jsonPayload = JsonSerializerWithEnums.Stringify(payload);
             }
 
-            var res = client.Publish(topic, Encoding.UTF8.GetBytes(jsonPayload));
+            var res = client.Publish(topic, Encoding.UTF8.GetBytes(jsonPayload), Convert.ToByte(qos), retain);
             //return await Task.FromResult(Convert.ToInt32(res==2 ? 0 : res));
             return await Task.FromResult(0);
         }

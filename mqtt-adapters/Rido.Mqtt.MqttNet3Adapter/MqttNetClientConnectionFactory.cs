@@ -27,6 +27,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             var connAck = await mqtt.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
+                    .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
                     .Build(),
                 cancellationToken);
 
@@ -39,6 +40,34 @@ namespace Rido.Mqtt.MqttNet3Adapter
             return new MqttNetClient(mqtt) { ConnectionSettings = connectionSettings };
         }
 
+        public async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        {
+            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
+            var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
+                .WithAwsX509Credentials(cs)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
+                .Build(), cancellationToken);
+            if (connAck.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                Trace.TraceError(connAck.ReasonString);
+                throw new ApplicationException("Error connecting to MQTT endpoint. " + connAck.ReasonString);
+            }
+            return new MqttNetClient(mqtt) { ConnectionSettings = cs };
+        }
+
+        public async Task<IMqttBaseClient> CreateBasicClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        {
+            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
+            var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
+                .WithBasicAuth(cs)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
+                .Build(), cancellationToken);
+            if (connack.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                throw new ApplicationException(connack.ReasonString);
+            }
+            return new MqttNetClient(mqtt) { ConnectionSettings = cs };
+        }
         public async Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;

@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Humanizer" Version="2.13.14" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Rido.Mqtt.AzIoTClient\Rido.Mqtt.AzIoTClient.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Update="dtmi_rido_pnp_memmon-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Idtmi_rido_pnp_memmon-1.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-1.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="memmon1.pfx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+</Project>

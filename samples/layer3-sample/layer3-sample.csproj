@@ -23,8 +23,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
-
+	
   <ItemGroup>
-    <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
+    <ProjectReference Include="..\..\Rido.Mqtt.AzIoTClient\Rido.Mqtt.AzIoTClient.csproj" />
   </ItemGroup>
 </Project>

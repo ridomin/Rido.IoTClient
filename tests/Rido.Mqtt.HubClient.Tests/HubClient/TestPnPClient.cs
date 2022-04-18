@@ -4,6 +4,8 @@
 using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
+using Rido.MqttCore.PnP;
+
 using System;
 using System.Collections.Generic;
 

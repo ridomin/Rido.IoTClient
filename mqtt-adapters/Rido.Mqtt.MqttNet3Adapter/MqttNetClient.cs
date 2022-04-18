@@ -5,12 +5,11 @@ using MQTTnet.Client.Subscribing;
 using MQTTnet.Client.Unsubscribing;
 using Rido.MqttCore;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using static Rido.MqttCore.JsonSerializerWithEnums;
 
 namespace Rido.Mqtt.MqttNet3Adapter
 {
@@ -50,7 +49,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
 
 
 
-        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
 
             string jsonPayload;
@@ -61,14 +60,15 @@ namespace Rido.Mqtt.MqttNet3Adapter
             }
             else
             {
-                jsonPayload = JsonSerializer.Serialize(payload);
+                jsonPayload = Stringify(payload);
             }
 
             var res = await client.PublishAsync(
                 new MqttApplicationMessage()
                 {
                     Topic = topic,
-                    Payload = Encoding.UTF8.GetBytes(jsonPayload)
+                    Payload = Encoding.UTF8.GetBytes(jsonPayload),
+                    Retain = retain
                 },
                 token);
 

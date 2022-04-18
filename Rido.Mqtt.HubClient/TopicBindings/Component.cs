@@ -1,4 +1,6 @@
 ﻿using Rido.MqttCore;
+using Rido.MqttCore.PnP;
+
 using System.Collections.Generic;
 
 using System.Threading;

@@ -1,4 +1,7 @@
+
 using Rido.Mqtt.HubClient;
+using Rido.MqttCore;
+using Rido.MqttCore.PnP;
 
 namespace layer3_sample
 {
@@ -15,7 +18,9 @@ namespace layer3_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("dps"), stoppingToken);
+            var client = await dtmi_rido_pnp_memmon.CreateAsync(_configuration.GetConnectionString("cs"), stoppingToken); ;
+
+            _logger.LogInformation(client.Connection.ConnectionSettings.ToString());
 
             var twin = await client.GetTwinAsync(stoppingToken);
             _logger.LogInformation(twin);
@@ -23,6 +28,8 @@ namespace layer3_sample
             client.Command_getRuntimeStats.OnCmdDelegate = async cmd =>
             {
                 _logger.LogInformation("CMD getRuntimeStats");
+
+
                 await Task.Delay(500);
                 return new Cmd_getRuntimeStats_Response
                 {
@@ -47,17 +54,30 @@ namespace layer3_sample
                     Status = 200,
                     Version = p.Version
                 };
-            }; 
-
-            
-            await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
-            await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
+            };
 
             client.Property_started.PropertyValue = DateTime.Now;
+            
+            client.Property_interval.PropertyValue = new PropertyAck<int>(client.Property_interval.PropertyName)
+            {
+                Value = 5,
+                Status = 203,
+                Description = "default value"
+            };
+
+            client.Property_enabled.PropertyValue = new PropertyAck<bool>(client.Property_enabled.PropertyName)
+            {
+                Value = true,
+                Status = 203,
+                Description = "default value"
+            };
+
+            await client.Property_interval.InitPropertyAsync(twin, 2, stoppingToken);
+            await client.Property_enabled.InitPropertyAsync(twin, true, stoppingToken);
+            
             await client.Property_started.ReportPropertyAsync(stoppingToken);
-
-
-            while (!stoppingToken.IsCancellationRequested)
+            
+            while (client.Property_enabled.PropertyValue.Value==true && !stoppingToken.IsCancellationRequested)
             {
                 await client.Telemetry_workingSet.SendTelemetryAsync(Environment.WorkingSet, stoppingToken);
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);

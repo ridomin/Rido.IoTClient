@@ -1,4 +1,6 @@
 ﻿using Rido.Mqtt.HubClient.TopicBindings;
+using Rido.MqttCore.PnP;
+
 using System.Threading.Tasks;
 using Xunit;
 

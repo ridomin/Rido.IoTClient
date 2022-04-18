@@ -13,8 +13,6 @@ namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetClientConnectionFactory : IHubClientConnectionFactory
     {
-       
-
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             var connectionSettings = new ConnectionSettings(connectionSettingsString);
@@ -22,6 +20,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             var connAck = await mqtt.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
+                    .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
                     .Build(),
                 cancellationToken);
 
@@ -82,6 +81,20 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 await mqtt.ConnectAsync(options, cancellationToken);
             }
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };
+        }
+
+        public async Task<IMqttBaseClient> CreateBasicClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        {
+            MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
+            var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
+                .WithBasicAuth(cs)
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
+                .Build(), cancellationToken);
+            if (connack.ResultCode != MqttClientConnectResultCode.Success)
+            {
+                throw new ApplicationException(connack.ReasonString);
+            }
+            return new MqttNetClient(mqtt) { ConnectionSettings =cs };
         }
     }
 }

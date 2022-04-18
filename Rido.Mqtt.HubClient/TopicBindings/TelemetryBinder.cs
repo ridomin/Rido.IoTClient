@@ -1,4 +1,6 @@
 ﻿using Rido.MqttCore;
+using Rido.MqttCore.PnP;
+
 using System.Collections.Generic;
 
 using System.Threading;
@@ -43,7 +45,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                 { name, payload }
             };
 
-            return await connection.PublishAsync(topic, typedPayload, 1, cancellationToken);
+            return await connection.PublishAsync(topic, typedPayload, 1, false, cancellationToken);
         }
     }
 }

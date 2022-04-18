@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using Rido.MqttCore.PnP;
+using System;
 using Xunit;
 
 namespace Rido.Mqtt.HubClient.Tests

@@ -46,7 +46,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
 
 
-        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, CancellationToken token = default)
+        public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
 
             string jsonPayload;
@@ -57,13 +57,14 @@ namespace Rido.Mqtt.MqttNet4Adapter
             }
             else
             {
-                jsonPayload = JsonSerializer.Serialize(payload);
+                jsonPayload = JsonSerializerWithEnums.Stringify(payload);
             }
 
             var res = await client.PublishAsync(
                 new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
                     .WithPayload(jsonPayload)
+                    .WithRetainFlag(retain)
                     .WithQualityOfServiceLevel((MQTTnet.Protocol.MqttQualityOfServiceLevel)qos)
                     .Build(),
                 token);
@@ -100,7 +101,9 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
         public async Task DisconnectAsync(CancellationToken token = default)
         {
-            await client.DisconnectAsync(new MqttClientDisconnectOptionsBuilder().WithReason(0).Build(), token);
+            await client.DisconnectAsync(new MqttClientDisconnectOptionsBuilder()
+                //.WithReason(MqttClientDisconnectReason.UnspecifiedError)
+                .Build(), token);
         }
     }
 }
