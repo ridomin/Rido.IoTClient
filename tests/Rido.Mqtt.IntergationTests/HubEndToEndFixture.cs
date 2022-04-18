@@ -180,7 +180,6 @@ namespace Rido.Mqtt.IntergationTests
         public void Dispose()
         {
             rm.RemoveDeviceAsync(deviceId).Wait();
-            GC.SuppressFinalize(this);
         }
     }
 }
