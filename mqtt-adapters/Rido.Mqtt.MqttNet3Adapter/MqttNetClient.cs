@@ -3,6 +3,7 @@ using MQTTnet.Client;
 using MQTTnet.Client.Publishing;
 using MQTTnet.Client.Subscribing;
 using MQTTnet.Client.Unsubscribing;
+using MQTTnet.Protocol;
 using Rido.MqttCore;
 using System;
 using System.Linq;
@@ -64,12 +65,12 @@ namespace Rido.Mqtt.MqttNet3Adapter
             }
 
             var res = await client.PublishAsync(
-                new MqttApplicationMessage()
-                {
-                    Topic = topic,
-                    Payload = Encoding.UTF8.GetBytes(jsonPayload),
-                    Retain = retain
-                },
+                new MqttApplicationMessageBuilder()
+                    .WithTopic(topic)
+                    .WithRetainFlag(retain)
+                    .WithPayload(jsonPayload)
+                    .WithQualityOfServiceLevel((MqttQualityOfServiceLevel)qos)
+                    .Build(),
                 token);
 
             if (res.ReasonCode != MqttClientPublishReasonCode.Success)
