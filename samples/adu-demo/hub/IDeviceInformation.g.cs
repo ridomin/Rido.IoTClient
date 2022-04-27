@@ -2,7 +2,7 @@
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore.PnP;
 
-namespace dtmi_rido_pnp
+namespace adu_demo_hub
 {
     public interface IdeviceInformation : IComponent
     {

@@ -1,7 +1,7 @@
-using dtmi_rido_pnp;
+using adu_demo_hive;
 using Rido.MqttCore.PnP;
 
-namespace adu_demo_hub
+namespace adu_demo
 {
     public class Device : BackgroundService
     {
@@ -18,8 +18,8 @@ namespace adu_demo_hub
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            client = await memmon.CreateClientAsync(_configuration.GetConnectionString("hub"), stoppingToken);
-            _logger.LogInformation($"Connected: {client.Connection.ConnectionSettings}");
+            client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            _logger.LogInformation($"Connected: {client}");
 
             client.Component_deviceUpdate.Property_service.OnProperty_Updated = Property_deviceUpdate_service_UpdateHandler;
 
@@ -47,11 +47,11 @@ namespace adu_demo_hub
             var userResponse = Console.ReadLine();
             Console.WriteLine("");
 
-            PropertyAck<serviceMetadata> ack = new PropertyAck<serviceMetadata>(client.Component_deviceUpdate.Property_service.PropertyName);
+            PropertyAck<serviceMetadata> ack = new(client.Component_deviceUpdate.Property_service.PropertyName);
 
             if (userResponse != null && userResponse == "Y")
             {
-                serviceMetadata updateResponse =  await PerformUpdate(req.Value);
+                serviceMetadata updateResponse = await PerformUpdate(req.Value);
 
                 ack.Description = "service update received";
                 ack.Status = 200;
@@ -73,7 +73,7 @@ namespace adu_demo_hub
             foreach (var file in data.fileUrls)
             {
                 Console.WriteLine($"Downloading {file.Key} {file.Value}");
-                byte[] bytes  = await new HttpClient().GetByteArrayAsync(file.Value);
+                byte[] bytes = await new HttpClient().GetByteArrayAsync(file.Value);
                 Console.WriteLine($"Downloaded {bytes.Length} bytes");
             }
             return new serviceMetadata

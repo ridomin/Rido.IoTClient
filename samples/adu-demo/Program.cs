@@ -1,4 +1,4 @@
-using adu_demo_hub;
+using adu_demo;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>

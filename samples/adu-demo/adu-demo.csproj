@@ -4,8 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-adu_demo_hub-EFF3D13F-DE58-48E8-86D3-1129ECC255D5</UserSecretsId>
-    <RootNamespace>adu_demo_hub</RootNamespace>
+    <RootNamespace>adu_demo</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,14 +13,21 @@
 
 	
 	<ItemGroup>
-		<Compile Update="*.g.cs">
-			<DependentUpon>dtmi_rido_pnp_memmon-2.json</DependentUpon>
+		<Compile Update="hive\*.g.cs">
+			<DependentUpon>hive\dtmi_rido_pnp_memmon-2.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="hub\*.g.cs">
+			<DependentUpon>hub\dtmi_rido_pnp_memmon-2.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	
 
 	<ItemGroup>
     <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+    <ProjectReference Include="..\..\Rido.Mqtt.Client\Rido.Mqtt.Client.csproj" />
     <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
   </ItemGroup>
 </Project>
