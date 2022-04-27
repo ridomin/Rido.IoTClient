@@ -42,7 +42,7 @@ namespace adu_demo_hive
         public Dictionary<string,string> fileUrls { get; set; }
     }
 
-    public interface Ideviceupdate
+    public interface Ideviceupdate : IComponent
     {
         IWritableProperty<agentMetadata> Property_agent { get; set; }
         IWritableProperty<serviceMetadata> Property_service {  get; set; }

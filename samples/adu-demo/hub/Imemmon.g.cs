@@ -11,6 +11,8 @@ namespace adu_demo_hub
         public IWritableProperty<int> Property_interval { get; set; }
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
+        public IdeviceInformation Component_deviceInformation { get; set; }
+        public Ideviceupdate Component_deviceUpdate { get; set; }
 
     }
 

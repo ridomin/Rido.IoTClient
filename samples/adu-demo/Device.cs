@@ -1,4 +1,4 @@
-using adu_demo_hive;
+using adu_demo_hub;
 using Rido.MqttCore.PnP;
 
 namespace adu_demo
@@ -19,7 +19,7 @@ namespace adu_demo
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            _logger.LogInformation($"Connected: {client}");
+            _logger.LogInformation($"Connected: {client.Connection.ConnectionSettings}");
 
             client.Component_deviceUpdate.Property_service.OnProperty_Updated = Property_deviceUpdate_service_UpdateHandler;
 
