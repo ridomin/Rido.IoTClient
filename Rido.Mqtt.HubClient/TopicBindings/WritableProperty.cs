@@ -41,8 +41,11 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             if (desiredBinder.OnProperty_Updated != null && PropertyValue.DesiredVersion > 1)
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
-                _ = updateTwin.ReportPropertyAsync(ack.ToAckDict(), cancellationToken);
-                PropertyValue = ack;
+                if (ack != null)
+                {
+                    _ = updateTwin.ReportPropertyAsync(ack.ToAckDict(), cancellationToken);
+                    PropertyValue = ack;
+                }
             }
             else
             {

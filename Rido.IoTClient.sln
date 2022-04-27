@@ -47,9 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-hive", "samples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-aws", "samples\pnp-memmon-aws\pnp-memmon-aws.csproj", "{FA6DECA5-9D99-4EB4-9093-1128BF8428B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.Mqtt.AzIoTClient", "Rido.Mqtt.AzIoTClient\Rido.Mqtt.AzIoTClient.csproj", "{CA2EEACF-B0BE-4799-921E-D8A9055633DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.AzIoTClient", "Rido.Mqtt.AzIoTClient\Rido.Mqtt.AzIoTClient.csproj", "{CA2EEACF-B0BE-4799-921E-D8A9055633DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-hub", "samples\pnp-memmon-hub\pnp-memmon-hub.csproj", "{BEC9B305-0841-40B7-AA16-7EEF25CAAC46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "adu-demo-hub", "samples\adu-demo-hub\adu-demo-hub.csproj", "{233929DE-6FE3-48FE-AFE5-38C316F4EF2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +127,10 @@ Global
 		{BEC9B305-0841-40B7-AA16-7EEF25CAAC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEC9B305-0841-40B7-AA16-7EEF25CAAC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEC9B305-0841-40B7-AA16-7EEF25CAAC46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233929DE-6FE3-48FE-AFE5-38C316F4EF2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233929DE-6FE3-48FE-AFE5-38C316F4EF2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233929DE-6FE3-48FE-AFE5-38C316F4EF2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233929DE-6FE3-48FE-AFE5-38C316F4EF2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{72186A01-1A20-4042-B940-792A08CEC7B1} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 		{FA6DECA5-9D99-4EB4-9093-1128BF8428B8} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 		{BEC9B305-0841-40B7-AA16-7EEF25CAAC46} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
+		{233929DE-6FE3-48FE-AFE5-38C316F4EF2C} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}
