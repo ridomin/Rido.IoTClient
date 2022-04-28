@@ -1,5 +1,7 @@
-using adu_demo_hub;
+
+using adu_demo_pnp_bindings_hub;
 using Rido.MqttCore.PnP;
+using static dtmi.azure.iot.deviceupdate;
 
 namespace adu_demo
 {
@@ -14,17 +16,19 @@ namespace adu_demo
             _configuration = configuration;
         }
 
-        memmon? client;
+        private memmon? client;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            _logger.LogInformation($"Connected: {client.Connection.ConnectionSettings}");
+            _logger.LogInformation("Connected : {settings}", client.Connection.ConnectionSettings);
 
             client.Component_deviceUpdate.Property_service.OnProperty_Updated = Property_deviceUpdate_service_UpdateHandler;
 
-            client.Component_deviceInformation.Property_swVersion.PropertyValue = "0.0.1";
-            await client.Component_deviceInformation.ReportPropertyAsync(stoppingToken);
+            client.Component_deviceUpdate.Property_agent.PropertyValue.Value.installedUpdateId = "0.0.1";
+            client.Component_deviceUpdate.Property_agent.PropertyValue.Value.state = 0;
+            await client.Component_deviceUpdate.Property_agent.ReportPropertyAsync(stoppingToken);
+
 
             await client.Component_deviceUpdate.Property_service.InitPropertyAsync(client.InitialState, null, stoppingToken);
 
@@ -36,11 +40,11 @@ namespace adu_demo
             }
         }
 
-        async Task<PropertyAck<serviceMetadata>> Property_deviceUpdate_service_UpdateHandler(PropertyAck<serviceMetadata> req)
+        private async Task<PropertyAck<serviceMetadata>> Property_deviceUpdate_service_UpdateHandler(PropertyAck<serviceMetadata> req)
         {
             ArgumentNullException.ThrowIfNull(client);
 
-            _logger.LogInformation($"Received Update: {req.Value.workflow.action } {req.Value.updateManifest}");
+            _logger.LogInformation("Received Update: {action}", req.Value.workflow.action);
 
             Console.WriteLine("");
             Console.WriteLine("Accept Update (Y/n)?");
@@ -68,13 +72,13 @@ namespace adu_demo
             return ack;
         }
 
-        private async Task<serviceMetadata> PerformUpdate(serviceMetadata data)
+        private static async Task<serviceMetadata> PerformUpdate(serviceMetadata data)
         {
             foreach (var file in data.fileUrls)
             {
                 Console.WriteLine($"Downloading {file.Key} {file.Value}");
                 byte[] bytes = await new HttpClient().GetByteArrayAsync(file.Value);
-                
+
                 Console.WriteLine($"Downloaded {bytes.Length} bytes");
                 if (data.UpdateManifestParsed.files[file.Key].sizeInBytes != bytes.Length)
                 {

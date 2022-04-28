@@ -2,14 +2,12 @@
 
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
-
-using adu_demo;
 using Rido.MqttCore.PnP;
 
-namespace adu_demo_hub
+namespace adu_demo_pnp_bindings_hub
 {
 
-    public class DeviceInformation : Component, IdeviceInformation
+    public class DeviceInformation : Component, dtmi.azure.DeviceManagement.DeviceInformation
     {
         public DeviceInformation(IMqttBaseClient c, string name) : base(c, name)
         {

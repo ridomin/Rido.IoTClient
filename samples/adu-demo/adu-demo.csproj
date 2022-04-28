@@ -13,8 +13,8 @@
 
 	
 	<ItemGroup>
-		<Compile Update="adu\*.g.cs">
-			<DependentUpon>adu\dtmi_rido_pnp_memmon-2.json</DependentUpon>
+		<Compile Update="*.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-2.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

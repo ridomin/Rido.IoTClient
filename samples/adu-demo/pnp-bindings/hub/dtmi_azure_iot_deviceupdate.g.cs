@@ -3,12 +3,11 @@
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
 using Rido.MqttCore.PnP;
+using static dtmi.azure.iot.deviceupdate;
 
-using adu_demo;
-
-namespace adu_demo_hub
+namespace adu_demo_pnp_bindings_hub
 {
-    public class deviceupdate : Component, Ideviceupdate
+    public class deviceupdate : Component, dtmi.azure.iot.deviceupdate
     {
         public IWritableProperty<agentMetadata> Property_agent { get; set; }
         public IWritableProperty<serviceMetadata> Property_service { get; set ; }
@@ -17,8 +16,6 @@ namespace adu_demo_hub
             Property_agent = new WritableProperty<agentMetadata>(c, "agent", name);
             Property_service = new WritableProperty<serviceMetadata>(c, "service", name);
         }
-
-
         public override Dictionary<string, object> ToJsonDict()
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
