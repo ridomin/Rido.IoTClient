@@ -22,7 +22,8 @@ namespace Rido.Mqtt.Client.TopicBindings
                 if (topic.StartsWith($"pnp/{connection.ClientId}/props/set"))
                 {
                     JsonNode desired = JsonNode.Parse(m.Payload);
-                    var desiredProperty = desired?[propertyName];
+                    JsonNode desiredProperty = PropertyParser.ReadPropertyFromDesired(desired, propertyName, componentName);
+                    //var desiredProperty = desired?[propertyName];
                     if (desiredProperty != null)
                     {
                         if (OnProperty_Updated != null)

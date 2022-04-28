@@ -74,7 +74,12 @@ namespace adu_demo
             {
                 Console.WriteLine($"Downloading {file.Key} {file.Value}");
                 byte[] bytes = await new HttpClient().GetByteArrayAsync(file.Value);
+                
                 Console.WriteLine($"Downloaded {bytes.Length} bytes");
+                if (data.UpdateManifestParsed.files[file.Key].sizeInBytes != bytes.Length)
+                {
+                    Console.WriteLine("sizes do not match " + file.Key);
+                }
             }
             return new serviceMetadata
             {

@@ -1,10 +1,10 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Rido.Mqtt.HubClient
+namespace Rido.MqttCore.PnP
 {
-    internal class TwinParser
+    public class PropertyParser
     {
-        internal static JsonNode ReadPropertyFromDesired(JsonNode desired, string propertyName, string componentName)
+        public static JsonNode ReadPropertyFromDesired(JsonNode desired, string propertyName, string componentName)
         {
             JsonNode result = null;
             if (string.IsNullOrEmpty(componentName))

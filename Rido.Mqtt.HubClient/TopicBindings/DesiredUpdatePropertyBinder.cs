@@ -23,7 +23,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                  {
                      string msg = m.Payload;
                      JsonNode desired = JsonNode.Parse(msg);
-                     JsonNode desiredProperty = TwinParser.ReadPropertyFromDesired(desired, propertyName, componentName);
+                     JsonNode desiredProperty = PropertyParser.ReadPropertyFromDesired(desired, propertyName, componentName);
                      if (desiredProperty != null)
                      {
                          if (OnProperty_Updated != null)

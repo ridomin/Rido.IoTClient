@@ -2,7 +2,7 @@
 
 using Rido.MqttCore.PnP;
 
-namespace adu_demo_hive
+namespace adu_demo
 {
     public interface Imemmon 
     {

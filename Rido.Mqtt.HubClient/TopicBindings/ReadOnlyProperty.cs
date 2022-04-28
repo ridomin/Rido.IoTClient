@@ -12,7 +12,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
     public class ReadOnlyProperty<T> : IReadOnlyProperty<T>
     {
         private readonly IPropertyStoreWriter updateTwin;
-        public readonly string Name;
+        public  string PropertyName { get; }
         private readonly string component;
         public T PropertyValue { get; set; }
         public int Version { get; set; }
@@ -20,7 +20,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         public ReadOnlyProperty(IMqttBaseClient connection, string name, string component = "")
         {
             updateTwin = new UpdateTwinBinder(connection);
-            Name = name;
+            PropertyName = name;
             this.component = component;
         }
 
@@ -36,7 +36,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             Dictionary<string, object> result;
             if (asComponent == false)
             {
-                result = new Dictionary<string, object> { { Name, PropertyValue } };
+                result = new Dictionary<string, object> { { PropertyName, PropertyValue } };
             }
             else
             {
@@ -45,7 +45,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                     { component, new Dictionary<string, object>() }
                 };
                 dict[component].Add("__t", "c");
-                dict[component].Add(Name, PropertyValue);
+                dict[component].Add(PropertyName, PropertyValue);
                 result = dict.ToDictionary(pair => pair.Key, pair => (object)pair.Value);
             }
             return result;

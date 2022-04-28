@@ -13,21 +13,14 @@
 
 	
 	<ItemGroup>
-		<Compile Update="hive\*.g.cs">
-			<DependentUpon>hive\dtmi_rido_pnp_memmon-2.json</DependentUpon>
+		<Compile Update="adu\*.g.cs">
+			<DependentUpon>adu\dtmi_rido_pnp_memmon-2.json</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="hub\*.g.cs">
-			<DependentUpon>hub\dtmi_rido_pnp_memmon-2.json</DependentUpon>
-		</Compile>
-	</ItemGroup>
-	
-
-	<ItemGroup>
-    <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
-    <ProjectReference Include="..\..\Rido.Mqtt.Client\Rido.Mqtt.Client.csproj" />
-    <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
+        <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+        <ProjectReference Include="..\..\Rido.Mqtt.Client\Rido.Mqtt.Client.csproj" />
+        <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
   </ItemGroup>
 </Project>
