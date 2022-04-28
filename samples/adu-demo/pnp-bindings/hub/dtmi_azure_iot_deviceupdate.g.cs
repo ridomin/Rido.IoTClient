@@ -15,6 +15,8 @@ namespace adu_demo_pnp_bindings_hub
         {
             Property_agent = new WritableProperty<agentMetadata>(c, "agent", name);
             Property_service = new WritableProperty<serviceMetadata>(c, "service", name);
+            Property_agent.PropertyValue.Value = new agentMetadata();
+            Property_service.PropertyValue.Value = new serviceMetadata();
         }
         public override Dictionary<string, object> ToJsonDict()
         {
