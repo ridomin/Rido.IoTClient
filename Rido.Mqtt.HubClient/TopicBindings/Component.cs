@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.HubClient.TopicBindings
 {
-    public abstract class Component
+    public abstract class Component : IComponent
     {
         private readonly string name;
         private readonly IPropertyStoreWriter update;

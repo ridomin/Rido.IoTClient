@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>adu_demo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+	
+	<ItemGroup>
+		<Compile Update="*.g.cs">
+			<DependentUpon>dtmi_rido_pnp_memmon-2.json</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+        <ProjectReference Include="..\..\mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj" />
+        <ProjectReference Include="..\..\Rido.Mqtt.Client\Rido.Mqtt.Client.csproj" />
+        <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
+  </ItemGroup>
+</Project>

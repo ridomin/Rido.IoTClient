@@ -27,7 +27,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public override Dictionary<string, object> ToJsonDict()
         {
             var dict = new Dictionary<string, object>();
-            dict.Add(Property_name.Name, Property_name.PropertyValue);
+            dict.Add(Property_name.PropertyName, Property_name.PropertyValue);
             return dict;
         }
     }
