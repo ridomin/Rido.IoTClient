@@ -20,7 +20,7 @@ namespace Rido.MqttCore
         public static string CreateSasToken(string resource, string sasKey, int minutes)
         {
 
-            var expiry = DateTimeOffset.UtcNow.AddMinutes(minutes).ToUnixTimeMilliseconds().ToString();
+            var expiry = DateTimeOffset.UtcNow.AddMinutes(minutes).ToUnixTimeSeconds().ToString();
             var sig = System.Net.WebUtility.UrlEncode(Sign($"{resource}\n{expiry}", sasKey));
             return $"SharedAccessSignature sr={resource}&sig={sig}&se={expiry}";
         }
