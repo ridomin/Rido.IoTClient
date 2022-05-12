@@ -24,7 +24,7 @@ app.UseHttpsRedirection();
 
 var dtc = DigitalTwinClient.CreateFromConnectionString(app.Configuration.GetConnectionString("hub"));
 
-app.MapGet("/pnp/{did}/props/started", async (string did) =>
+app.MapGet("/hub/{did}/props/started", async (string did) =>
 {
     var twin = await dtc.GetDigitalTwinAsync<BasicDigitalTwin>(did);
     if (twin.Body.CustomProperties.TryGetValue("started", out object? propValue))
@@ -43,10 +43,10 @@ app.MapGet("/pnp/{did}/props/started", async (string did) =>
         return Results.NotFound();
     }
     
-}).WithName("readProperty_started");
+}).WithName("readProperty_started").WithTags(new string[] { "hub"});
 
 
-app.MapGet("/pnp/{did}/props/interval", async (string did) =>
+app.MapGet("/hub/{did}/props/interval", async (string did) =>
 {
     var twin = await dtc.GetDigitalTwinAsync<BasicDigitalTwin>(did);
     if (twin.Body.CustomProperties.TryGetValue("interval", out object? propValue))
@@ -65,9 +65,19 @@ app.MapGet("/pnp/{did}/props/interval", async (string did) =>
         return Results.NotFound();
     }
 
-}).WithName("readProperty_interval");
+}).WithName("readProperty_interval").WithTags(new string[] { "hub" });
 
-app.MapGet("/pnp/{did}/props/enabled", async (string did) =>
+app.MapPost("/hub/{did}/props/interval", async (string did, [FromBody]int propVal) =>
+{
+    var updOp = new UpdateOperationsUtility();
+    updOp.AppendAddPropertyOp("/interval", propVal);
+    var res = await dtc.UpdateDigitalTwinAsync(did, updOp.Serialize());
+    res.Response.EnsureSuccessStatusCode();
+    return Results.StatusCode(((int)res.Response.StatusCode));
+    
+}).WithName("updateProperty_interval").WithTags(new string[] { "hub" });
+
+app.MapGet("/hub/{did}/props/enabled", async (string did) =>
 {
     var twin = await dtc.GetDigitalTwinAsync<BasicDigitalTwin>(did);
     if (twin.Body.CustomProperties.TryGetValue("enabled", out object? propValue))
@@ -85,23 +95,10 @@ app.MapGet("/pnp/{did}/props/enabled", async (string did) =>
     {
         return Results.NotFound();
     }
-
-}).WithName("readProperty_enabled");
-
+}).WithName("readProperty_enabled").WithTags(new string[] { "hub" });
 
 
-app.MapPost("/pnp/{did}/props/interval", async (string did, [FromBody]int propVal) =>
-{
-    var updOp = new UpdateOperationsUtility();
-    updOp.AppendAddPropertyOp("/interval", propVal);
-    var res = await dtc.UpdateDigitalTwinAsync(did, updOp.Serialize());
-    res.Response.EnsureSuccessStatusCode();
-    return Results.StatusCode(((int)res.Response.StatusCode));
-    
-}).WithName("updateProperty_interval");
-
-
-app.MapPost("/pnp/{did}/props/enabled", async (string did, [FromBody] bool propVal) =>
+app.MapPost("/hub/{did}/props/enabled", async (string did, [FromBody] bool propVal) =>
 {
     var updOp = new UpdateOperationsUtility();
     updOp.AppendAddPropertyOp("/enabled", propVal);
@@ -109,9 +106,9 @@ app.MapPost("/pnp/{did}/props/enabled", async (string did, [FromBody] bool propV
     res.Response.EnsureSuccessStatusCode();
     return Results.StatusCode(((int)res.Response.StatusCode));
 
-}).WithName("updateProperty_enabled");
+}).WithName("updateProperty_enabled").WithTags(new string[] { "hub" });
 
-app.MapPost("/pnp/{did}/commands/getRuntimeStats", async (string did, [FromBody] DiagnosticsMode diagMode) =>
+app.MapPost("/hub/{did}/commands/getRuntimeStats", async (string did, [FromBody] DiagnosticsMode diagMode) =>
 {
     var resp = await dtc.InvokeCommandAsync(did, "getRuntimeStats", JsonSerializer.Serialize(diagMode),
         new DigitalTwinInvokeCommandRequestOptions { ConnectTimeoutInSeconds = 3, ResponseTimeoutInSeconds = 5 });
@@ -119,6 +116,6 @@ app.MapPost("/pnp/{did}/commands/getRuntimeStats", async (string did, [FromBody]
     var result = JsonSerializer.Deserialize<Cmd_getRuntimeStats_Response>(resp.Body.Payload);
     return Results.Ok(result);
     
-}).WithName("command_getRuntimeStats");
+}).WithName("command_getRuntimeStats").WithTags(new string[] { "hub" });
 
 app.Run();
