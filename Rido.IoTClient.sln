@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-hub", "samples\p
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "adu-demo", "samples\adu-demo\adu-demo.csproj", "{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.HubProxy", "Rido.HubProxy\Rido.HubProxy.csproj", "{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.HubProxy", "Rido.HubProxy\Rido.HubProxy.csproj", "{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
