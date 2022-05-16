@@ -30,12 +30,12 @@ namespace Rido.Mqtt.Client.TopicBindings
             propertyName = name;
             componentName = component;
             //updateTwin = new UpdateTwinBinder(connection);
-            updatePropertyBinder = new UpdatePropertyBinder(connection);
+            updatePropertyBinder = new UpdatePropertyBinder(connection, name);
             PropertyValue = new PropertyAck<T>(name, componentName);
             desiredBinder = new DesiredUpdatePropertyBinder<T>(connection, name, componentName);
         }
 
-        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict(), token);
+        public async Task<int> ReportPropertyAsync(CancellationToken token = default) => await updatePropertyBinder.ReportPropertyAsync(PropertyValue, token);
 
         public async Task InitPropertyAsync(string twin, T defaultValue, CancellationToken cancellationToken = default)
         {
@@ -48,7 +48,7 @@ namespace Rido.Mqtt.Client.TopicBindings
             {
                 Value = defaultValue,
             };
-            _ = await updatePropertyBinder.ReportPropertyAsync(PropertyValue.ToAckDict(), cancellationToken);
+            _ = await updatePropertyBinder.ReportPropertyAsync(PropertyValue, cancellationToken);
         }
     }
 }

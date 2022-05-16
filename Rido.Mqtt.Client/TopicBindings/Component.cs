@@ -13,7 +13,7 @@ namespace Rido.Mqtt.Client.TopicBindings
         public Component(IMqttBaseClient connection, string name)
         {
             this.name = name;
-            update = new UpdatePropertyBinder(connection);
+            update = new UpdatePropertyBinder(connection, name);
         }
 
         public async Task<int> ReportPropertyAsync(CancellationToken token)
