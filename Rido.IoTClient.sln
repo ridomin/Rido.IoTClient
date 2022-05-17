@@ -53,6 +53,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-hub", "samples\p
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "adu-demo", "samples\adu-demo\adu-demo.csproj", "{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.HubProxy", "Rido.HubProxy\Rido.HubProxy.csproj", "{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rido.BrokerProxy", "Rido.BrokerProxy\Rido.BrokerProxy.csproj", "{96E60F29-43DA-483F-B5EE-1D4344AAFB27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +135,14 @@ Global
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE5420DF-F1D5-4C7C-9B59-2F41577447E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96E60F29-43DA-483F-B5EE-1D4344AAFB27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96E60F29-43DA-483F-B5EE-1D4344AAFB27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96E60F29-43DA-483F-B5EE-1D4344AAFB27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96E60F29-43DA-483F-B5EE-1D4344AAFB27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

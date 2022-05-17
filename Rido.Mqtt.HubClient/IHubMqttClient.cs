@@ -17,5 +17,6 @@ namespace Rido.Mqtt.HubClient
         Task<string> GetTwinAsync(CancellationToken cancellationToken = default);
         Task<int> ReportPropertyAsync(object payload, CancellationToken cancellationToken = default);
         Task<int> SendTelemetryAsync(object payload, CancellationToken t = default);
+        Task<int> SendTelemetryAsync(object payload, string componentName, CancellationToken t = default);
     }
 }

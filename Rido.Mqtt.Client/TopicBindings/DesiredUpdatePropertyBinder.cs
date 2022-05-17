@@ -15,14 +15,14 @@ namespace Rido.Mqtt.Client.TopicBindings
         public DesiredUpdatePropertyBinder(IMqttBaseClient connection, string propertyName, string componentName = "")
         {
             _ = connection.SubscribeAsync($"pnp/{connection.ClientId}/props/#");
-            IReportPropertyBinder propertyBinder = new UpdatePropertyBinder(connection);
+            IReportPropertyBinder propertyBinder = new UpdatePropertyBinder(connection, propertyName);
             connection.OnMessage += async m =>
             {
                 var topic = m.Topic;
-                if (topic.StartsWith($"pnp/{connection.ClientId}/props/set"))
+                if (topic.StartsWith($"pnp/{connection.ClientId}/props/{propertyName}/set"))
                 {
-                    JsonNode desired = JsonNode.Parse(m.Payload);
-                    JsonNode desiredProperty = PropertyParser.ReadPropertyFromDesired(desired, propertyName, componentName);
+                    JsonNode desiredProperty = JsonNode.Parse(m.Payload);
+                    //JsonNode desiredProperty = PropertyParser.ReadPropertyFromDesired(desired, propertyName, componentName);
                     //var desiredProperty = desired?[propertyName];
                     if (desiredProperty != null)
                     {
@@ -37,7 +37,7 @@ namespace Rido.Mqtt.Client.TopicBindings
                             if (ack != null)
                             {
                                 //_ = updateTwin.SendRequestWaitForResponse(ack);
-                                _ = propertyBinder.ReportPropertyAsync(ack.ToAckDict());
+                                _ = propertyBinder.ReportPropertyAsync(ack);
                             }
                         }
                     }

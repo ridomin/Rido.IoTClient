@@ -7,6 +7,12 @@ namespace Rido.MqttCore.PnP
     {
         public readonly string Name;
         public readonly string ComponentName;
+
+        public PropertyAck()
+        {
+
+        }
+
         public PropertyAck(string name) : this(name, "") { }
 
         public PropertyAck(string name, string component)
