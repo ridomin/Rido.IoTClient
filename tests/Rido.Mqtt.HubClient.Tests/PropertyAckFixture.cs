@@ -163,5 +163,17 @@ namespace Rido.Mqtt.HubClient.Tests
             });
             Assert.Equal(expectedJson, Stringify(wp.ToAckDict()));
         }
+
+        [Fact]
+        public void SetDefaultsInString()
+        {
+            var sp = new PropertyAck<string>("anString");
+            Assert.Null(sp.Value);
+            sp.SetDefault("def");
+            Assert.Equal("def", sp.Value);
+            Assert.Equal(0, sp.Version);
+            Assert.Equal(203, sp.Status);
+            
+        }
     }
 }

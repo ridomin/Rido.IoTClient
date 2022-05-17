@@ -38,6 +38,14 @@ namespace Rido.MqttCore.PnP
         [JsonPropertyName("value")]
         public T Value { get; set; } = default;
 
+        public void SetDefault(T defaultValue)
+        {
+            Value = defaultValue;
+            Version = 0;
+            Status = 203;
+            Description = "default value";
+        }
+
         public Dictionary<string, object> ToAckDict()
         {
             if (string.IsNullOrEmpty(ComponentName))

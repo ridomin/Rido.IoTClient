@@ -44,22 +44,10 @@ public class Device : BackgroundService
 
         //await client.Property_enabled.InitPropertyAsync(client.InitialState, default_enabled, stoppingToken);
         //await client.Property_interval.InitPropertyAsync(client.InitialState, default_interval, stoppingToken);
-        client.Property_interval.PropertyValue = new PropertyAck<int>(client.Property_interval.PropertyName)
-        {
-            Value = default_interval,
-            Version = 0,
-            Status = 203,
-            Description = "Default interval"
-        };
+        client.Property_interval.PropertyValue.SetDefault(default_interval);
         await client.Property_interval.ReportPropertyAsync(stoppingToken);
 
-        client.Property_enabled.PropertyValue = new PropertyAck<bool>(client.Property_interval.PropertyName)
-        {
-            Value = default_enabled,
-            Version = 0,
-            Status = 203,
-            Description = "Default enabled"
-        };
+        client.Property_enabled.PropertyValue.SetDefault(default_enabled);
         await client.Property_enabled.ReportPropertyAsync(stoppingToken);
 
         client.Property_started.PropertyValue = DateTime.Now;
