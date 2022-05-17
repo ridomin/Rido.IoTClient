@@ -118,14 +118,4 @@ app.MapPost("/hub/{did}/commands/getRuntimeStats", async (string did, [FromBody]
     
 }).WithName("command_getRuntimeStats").WithTags(new string[] { "hub" });
 
-app.MapGet("/pnp/{did}/props/started", async (string did) =>
-{
-    var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory()
-                .CreateBasicClientAsync(
-                        new Rido.MqttCore.ConnectionSettings(app.Configuration.GetConnectionString("broker")));
-    await mqtt.SubscribeAsync($"pnp/{did}/props/#");
-
-});
-
-
 app.Run();
