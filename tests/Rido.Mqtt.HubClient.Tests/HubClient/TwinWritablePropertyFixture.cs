@@ -113,6 +113,68 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
         }
 
         [Fact]
+        public async Task InitInvalidTwinWithDesiredTriggersUpdate()
+        {
+            WritableProperty<double> wp = new(connection, "myDouble");
+            Assert.Equal(0, wp.PropertyValue.Value);
+            bool received = false;
+            wp.OnProperty_Updated = async p =>
+            {
+                received = true;
+                if (p.Value < 0)
+                {
+                    p.Status = 405;
+                    p.Description = "fakie not accepted";
+                    p.Value = p.LastReported > 0 ?
+                                   p.LastReported :
+                                   1;
+                }
+                return await Task.FromResult(p);
+            };
+            string twin = Stringify(new
+            {
+                reported = new Dictionary<string, object>() { { "$version", 1 } },
+                desired = new Dictionary<string, object>() { { "$version", 2 }, { "myDouble", -1 } }
+            });
+            await wp.InitPropertyAsync(twin, 1);
+            Assert.True(received);
+            Assert.Equal(405, wp.PropertyValue.Status);
+            Assert.Equal("fakie not accepted", wp.PropertyValue.Description);
+            Assert.Equal(1, wp.PropertyValue.Value);
+        }
+
+        [Fact]
+        public async Task InitInvalidTwinWithDesiredAndReportedTriggersUpdate()
+        {
+            WritableProperty<double> wp = new(connection, "myDouble");
+            Assert.Equal(0, wp.PropertyValue.Value);
+            bool received = false;
+            wp.OnProperty_Updated = async p =>
+            {
+                received = true;
+                if (p.Value<0)
+                {
+                    p.Status = 405;
+                    p.Description = "fakie not accepted";
+                    p.Value = p.LastReported;
+
+                }
+                return await Task.FromResult(p);
+            };
+            string twin = Stringify(new
+            {
+                reported = new Dictionary<string, object>() { { "$version", 1 }, { "myDouble", new { ac = 203, value = 43 } } },
+                desired = new Dictionary<string, object>() { { "$version", 2 }, { "myDouble", -1 } }
+            });
+            await wp.InitPropertyAsync(twin, 1);
+            Assert.True(received);
+            Assert.Equal(405, wp.PropertyValue.Status);
+            Assert.Equal("fakie not accepted", wp.PropertyValue.Description);
+            Assert.Equal(43, wp.PropertyValue.Value);
+        }
+
+
+        [Fact]
         public async Task InitTwinComplexWithDesiredTriggersUpdate()
         {
             WritableProperty<AComplexObj> wp = new(connection, "myComplexObj");
