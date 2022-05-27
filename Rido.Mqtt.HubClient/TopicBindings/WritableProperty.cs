@@ -41,16 +41,19 @@ namespace Rido.Mqtt.HubClient.TopicBindings
             if (desiredBinder.OnProperty_Updated != null && PropertyValue.DesiredVersion > 1)
             {
                 var ack = await desiredBinder.OnProperty_Updated.Invoke(PropertyValue);
-                if (ack != null)
+                if (ack != null && ack.Status == 200)
                 {
-                    _ = updateTwin.ReportPropertyAsync(ack.ToAckDict(), cancellationToken);
                     PropertyValue = ack;
+                } 
+                else
+                {
+                    PropertyValue.Description = ack.Description;
+                    PropertyValue.Version = ack.Version;
+                    PropertyValue.Status = ack.Status;
+                    //PropertyValue.Value = PropertyValue.LastReported;
                 }
             }
-            else
-            {
-                _ = updateTwin.ReportPropertyAsync(PropertyValue.ToAckDict(), cancellationToken);
-            }
+            _ = updateTwin.ReportPropertyAsync(PropertyValue.ToAckDict(), cancellationToken);
         }
 
         private PropertyAck<T> InitFromTwin(string twinJson, string propName, string componentName, T defaultValue)
@@ -140,7 +143,8 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                     Version = reported_Prop_version,
                     Value = reported_Prop,
                     Status = reported_Prop_status,
-                    Description = reported_Prop_description
+                    Description = reported_Prop_description,
+                    LastReported = reported_Prop
                 };
             }
 
@@ -152,7 +156,8 @@ namespace Rido.Mqtt.HubClient.TopicBindings
                     {
                         DesiredVersion = desiredVersion,
                         Value = desired_Prop,
-                        Version = desiredVersion
+                        Version = desiredVersion,
+                        LastReported = reported_Prop
                     };
                 }
             }

@@ -24,6 +24,9 @@ namespace Rido.MqttCore.PnP
         [JsonIgnore]
         public int? DesiredVersion { get; set; }
 
+        [JsonIgnore]
+        public T LastReported { get; set; }
+
         [JsonPropertyName("av")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Version { get; set; }
