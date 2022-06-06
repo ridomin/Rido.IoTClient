@@ -30,7 +30,7 @@ namespace pnp_memmon_aws
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
+            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
             var client = new memmon(mqtt) ;
             //client.InitialState = await client.GetShadowAsync(cancellationToken);
             return client;

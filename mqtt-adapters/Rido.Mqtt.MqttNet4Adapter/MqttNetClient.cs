@@ -23,8 +23,8 @@ namespace Rido.Mqtt.MqttNet4Adapter
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
-        private readonly MqttClient client;
-        public MqttNetClient(MqttClient client)
+        private readonly IMqttClient client;
+        public MqttNetClient(IMqttClient client)
         {
             this.client = client;
             this.client.ApplicationMessageReceivedAsync += async m =>

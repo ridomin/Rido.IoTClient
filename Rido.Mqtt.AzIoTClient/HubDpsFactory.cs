@@ -14,13 +14,13 @@ namespace Rido.Mqtt.AzIoTClient
             var cs = new ConnectionSettings(connectionString);
             if (string.IsNullOrEmpty(cs.HostName) && !string.IsNullOrEmpty(cs.IdScope))
             {
-                var dpsMqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(connectionString, cancellationToken);
+                var dpsMqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(connectionString, cancellationToken);
                 var dpsClient = new MqttDpsClient(dpsMqtt);
                 var dpsRes = await dpsClient.ProvisionDeviceIdentity();
                 cs.HostName = dpsRes.RegistrationState.AssignedHub;
                 await dpsMqtt.DisconnectAsync(cancellationToken);
             }
-            var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
+            var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
             return new HubMqttClient(mqtt);
         }
     }
