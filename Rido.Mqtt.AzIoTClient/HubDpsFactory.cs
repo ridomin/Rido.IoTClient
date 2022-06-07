@@ -18,6 +18,7 @@ namespace Rido.Mqtt.AzIoTClient
                 var dpsClient = new MqttDpsClient(dpsMqtt);
                 var dpsRes = await dpsClient.ProvisionDeviceIdentity();
                 cs.HostName = dpsRes.RegistrationState.AssignedHub;
+                cs.ClientId = dpsRes.RegistrationState.DeviceId;
                 await dpsMqtt.DisconnectAsync(cancellationToken);
             }
             var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
