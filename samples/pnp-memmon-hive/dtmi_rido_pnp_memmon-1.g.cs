@@ -32,7 +32,7 @@ namespace pnp_memmon_hive
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionString) { ModelId = modelId };
-            var hub = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(cs);
+            var hub = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(cs);
             var client = new memmon(hub) ;
             //client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;
