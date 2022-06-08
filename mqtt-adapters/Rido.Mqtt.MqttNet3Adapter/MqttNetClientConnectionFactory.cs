@@ -72,7 +72,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var cs = new ConnectionSettings(connectionSettingsString);
-            if (cs.Auth == "SAS")
+            if (cs.Auth == AuthType.Sas)
             {
                 var resource = $"{cs.IdScope}/registrations/{cs.DeviceId}";
                 var username = $"{resource}/api-version=2019-03-31";
@@ -90,13 +90,10 @@ namespace Rido.Mqtt.MqttNet3Adapter
                 .Build();
                 await mqtt.ConnectAsync(options, cancellationToken);
             } 
-            else if (cs.Auth == "X509")
+            else if (cs.Auth == AuthType.X509)
             {
-                var segments = cs.X509Key.Split('|');
-                string pfxpath = segments[0];
-                string pfxpwd = segments[1];
-                X509Certificate2 cert = new X509Certificate2(pfxpath, pfxpwd);
-                var registrationId = cert.SubjectName.Name[3..];
+                var cert = ClientCertificateLocator.Load(cs.X509Key);
+                string registrationId = X509CommonNameParser.GetCNFromCertSubject(cert.Subject);
                 var resource = $"{cs.IdScope}/registrations/{registrationId}";
                 var username = $"{resource}/api-version=2019-03-31";
 

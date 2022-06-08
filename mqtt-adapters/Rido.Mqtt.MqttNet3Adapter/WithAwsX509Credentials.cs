@@ -15,8 +15,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
     {
         public static MqttClientOptionsBuilder WithAwsX509Credentials(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {
-            var segments = cs.X509Key.Split('|');
-            var cert = new X509Certificate2(segments[0], segments[1], X509KeyStorageFlags.Exportable);
+            var cert = ClientCertificateLocator.Load(cs.X509Key);
             Trace.TraceInformation($"Loaded cert {cert.Subject} {cert.Thumbprint}");
             builder
                 .WithTcpServer(cs.HostName, 8883)
