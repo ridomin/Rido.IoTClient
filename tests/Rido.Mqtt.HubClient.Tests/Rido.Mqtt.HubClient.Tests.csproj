@@ -24,4 +24,10 @@
     <ProjectReference Include="..\..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="onething.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -12,32 +12,29 @@ namespace Rido.Mqtt.M2MAdapter
     {
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
-            var connectionSettings = new ConnectionSettings(connectionSettingsString);
+            var cs = new ConnectionSettings(connectionSettingsString);
             MqttClient mqtt = null;
-            if (connectionSettings.Auth == "SAS")
+            if (cs.Auth == AuthType.Sas)
             {
-                mqtt = new MqttClient(connectionSettings.HostName, 8883, true, MqttSslProtocols.TLSv1_2, null, null);
-                (string u, string p) = SasAuth.GenerateHubSasCredentials(connectionSettings.HostName, connectionSettings.DeviceId, connectionSettings.SharedAccessKey, connectionSettings.ModelId, connectionSettings.SasMinutes);
-                int res = mqtt.Connect(connectionSettings.DeviceId, u, p);
+                mqtt = new MqttClient(cs.HostName, 8883, true, MqttSslProtocols.TLSv1_2, null, null);
+                (string u, string p) = SasAuth.GenerateHubSasCredentials(cs.HostName, cs.DeviceId, cs.SharedAccessKey, cs.ModelId, cs.SasMinutes);
+                int res = mqtt.Connect(cs.DeviceId, u, p);
                 Console.WriteLine(res);
             } 
-            else if (connectionSettings.Auth == "X509")
+            else if (cs.Auth == AuthType.X509)
             {
-                var segments = connectionSettings.X509Key.Split('|');
-                string pfxpath = segments[0];
-                string pfxpwd = segments[1];
-                var cert = new X509Certificate2(pfxpath, pfxpwd);
+                var cert = ClientCertificateLocator.Load(cs.X509Key);
                 string clientId = X509CommonNameParser.GetCNFromCertSubject(cert.Subject);
-                connectionSettings.ClientId = clientId;
-                mqtt = new MqttClient(connectionSettings.HostName, 8883, true, null, cert, MqttSslProtocols.TLSv1_2);
-                mqtt.Connect(clientId, SasAuth.GetUserName(connectionSettings.HostName, clientId, connectionSettings.ModelId), string.Empty);
+                cs.ClientId = clientId;
+                mqtt = new MqttClient(cs.HostName, 8883, true, null, cert, MqttSslProtocols.TLSv1_2);
+                mqtt.Connect(clientId, SasAuth.GetUserName(cs.HostName, clientId, cs.ModelId), string.Empty);
             }
 
             if (mqtt==null)
             {
                 throw new SecurityException("Cannot create Mqtt client");
             }    
-            return await Task.FromResult(new M2MClient(mqtt) { ConnectionSettings = connectionSettings });
+            return await Task.FromResult(new M2MClient(mqtt) { ConnectionSettings = cs });
         }
 
         public async Task<IMqttBaseClient> CreateBrokerClientAsync(string connectionSettingsString)

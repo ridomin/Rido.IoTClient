@@ -11,9 +11,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
     {
         public static MqttClientOptionsBuilder WithAwsX509Credentials(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {
-            var segments = cs.X509Key.Split('|');
-            var cert = new X509Certificate2(segments[0], segments[1], X509KeyStorageFlags.Exportable);
-            Trace.TraceInformation($"Loaded cert {cert.Subject} {cert.Thumbprint}");
+            var cert = ClientCertificateLocator.Load(cs.X509Key);
             builder
                 .WithTcpServer(cs.HostName, 8883)
                 .WithKeepAlivePeriod(new TimeSpan(0, 0, 0, 300))

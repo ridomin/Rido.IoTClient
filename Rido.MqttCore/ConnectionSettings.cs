@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Rido.MqttCore
 {
+
+    public enum AuthType
+    {
+        Sas,
+        X509,
+        Basic
+    }
+
     public class ConnectionSettings
     {
         private const int Default_SasMinutes = 60;
@@ -17,10 +26,10 @@ namespace Rido.MqttCore
         public string DeviceId { get; set; }
         public string ClientId { get; set; }
         public string SharedAccessKey { get; set; }
-        public string X509Key { get; set; } //paht-to.pfx|pfxpwd
+        public string X509Key { get; set; } //paht-to.pfx|pfxpwd, or thumbprint
         public string ModelId { get; set; }
         public string ModuleId { get; set; }
-        public string Auth { get; set; }
+        public AuthType Auth { get; set; }
         public int SasMinutes { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -30,7 +39,7 @@ namespace Rido.MqttCore
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
-            Auth = "SAS";
+            Auth = AuthType.Sas;
         }
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
         public ConnectionSettings(string cs) => ParseConnectionString(cs);
@@ -60,8 +69,6 @@ namespace Rido.MqttCore
 
         private void ParseConnectionString(string cs)
         {
-
-
             IDictionary<string, string> map = cs.ToDictionary(';', '=');
             IdScope = GetStringValue(map, nameof(IdScope));
             HostName = GetStringValue(map, nameof(HostName));
@@ -71,12 +78,33 @@ namespace Rido.MqttCore
             ModuleId = GetStringValue(map, nameof(ModuleId));
             X509Key = GetStringValue(map, nameof(X509Key));
             ModelId = GetStringValue(map, nameof(ModelId));
-            Auth = GetStringValue(map, nameof(Auth), "SAS");
+            //Auth = GetStringValue(map, nameof(Auth), "SAS");
             SasMinutes = GetPositiveIntValueOrDefault(map, nameof(SasMinutes), Default_SasMinutes);
             UserName = GetStringValue(map, nameof(UserName));
             Password = GetStringValue(map, nameof(Password));
             KeepAliveInSeconds = GetPositiveIntValueOrDefault(map, nameof(KeepAliveInSeconds), Default_KeepAliveInSeconds);
             CleanSession = GetStringValue(map, nameof(CleanSession), Default_CleanSession) == "true";
+
+            if (string.IsNullOrEmpty(SharedAccessKey) && string.IsNullOrEmpty(X509Key) && string.IsNullOrEmpty(Password))
+            {
+                throw new KeyNotFoundException("ConnectionString does not have any key");
+            }
+
+            if (!String.IsNullOrEmpty(X509Key))
+            {
+                Auth = AuthType.X509;
+            }
+
+            if (!String.IsNullOrEmpty(SharedAccessKey))
+            {
+                Auth = AuthType.Sas;
+            }
+
+            if (!String.IsNullOrEmpty(Password))
+            {
+                Auth = AuthType.Basic;
+            }
+
         }
 
         private static void AppendIfNotEmpty(StringBuilder sb, string name, string val)
@@ -96,8 +124,6 @@ namespace Rido.MqttCore
 
         public override string ToString()
         {
-
-
             var result = new StringBuilder();
             AppendIfNotEmpty(result, nameof(HostName), HostName);
             AppendIfNotEmpty(result, nameof(DeviceId), DeviceId);
@@ -108,7 +134,7 @@ namespace Rido.MqttCore
             AppendIfNotEmpty(result, nameof(ClientId), ClientId);
             AppendIfNotEmpty(result, nameof(SasMinutes), SasMinutes.ToString());
             AppendIfNotEmpty(result, nameof(X509Key), X509Key);
-            AppendIfNotEmpty(result, nameof(Auth), Auth);
+            AppendIfNotEmpty(result, nameof(Auth), Auth.ToString());
             result.Remove(result.Length - 1, 1);
             return result.ToString();
         }
