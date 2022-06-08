@@ -10,8 +10,8 @@ namespace Rido.Mqtt.HubClient.Tests
         {
             var dcs = new ConnectionSettings();
             Assert.Equal(60, dcs.SasMinutes);
-            Assert.Equal("SAS", dcs.Auth);
-            Assert.Equal("SasMinutes=60;Auth=SAS", dcs.ToString());
+            Assert.Equal(AuthType.Sas, dcs.Auth);
+            Assert.Equal("SasMinutes=60;Auth=Sas", dcs.ToString());
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace Rido.Mqtt.HubClient.Tests
                 SharedAccessKey = "sas",
                 ModelId = "dtmi"
             };
-            string expected = "HostName=h;DeviceId=d;SharedAccessKey=***;ModelId=dtmi;SasMinutes=60;Auth=SAS";
+            string expected = "HostName=h;DeviceId=d;SharedAccessKey=***;ModelId=dtmi;SasMinutes=60;Auth=Sas";
             Assert.Equal(expected, dcs.ToString());
         }
 
@@ -84,7 +84,7 @@ namespace Rido.Mqtt.HubClient.Tests
                 ModuleId = "m",
                 SharedAccessKey = "sas"
             };
-            string expected = "HostName=h;DeviceId=d;ModuleId=m;SharedAccessKey=***;SasMinutes=60;Auth=SAS";
+            string expected = "HostName=h;DeviceId=d;ModuleId=m;SharedAccessKey=***;SasMinutes=60;Auth=Sas";
             Assert.Equal(expected, dcs.ToString());
         }
     }

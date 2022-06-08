@@ -10,17 +10,14 @@ namespace Rido.Mqtt.MqttNet4Adapter
     {
         public static MqttClientOptionsBuilder WithAzureIoTHubCredentials(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {
-            if (cs.Auth == "SAS")
+            if (cs.Auth == AuthType.Sas)
             {
                 cs.ClientId = cs.DeviceId;
                 return builder.WithAzureIoTHubCredentialsSas(cs.HostName, cs.DeviceId, cs.ModuleId, cs.SharedAccessKey, cs.ModelId, cs.SasMinutes);
             }
-            else if (cs.Auth == "X509")
+            else if (cs.Auth == AuthType.X509)
             {
-                var segments = cs.X509Key.Split('|');
-                string pfxpath = segments[0];
-                string pfxpwd = segments[1];
-                var cert = new X509Certificate2(pfxpath, pfxpwd);
+                var cert = ClientCertificateLocator.Load(cs.X509Key);
                 string clientId = X509CommonNameParser.GetCNFromCertSubject(cert.Subject);
                 if (clientId.Contains('/')) //is a module
                 {

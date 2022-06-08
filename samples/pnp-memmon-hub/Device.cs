@@ -34,7 +34,7 @@ public class Device : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("csx"), stoppingToken);
         _logger.LogInformation("Connected");
 
         client.Connection.OnMqttClientDisconnected += Connection_OnMqttClientDisconnected;

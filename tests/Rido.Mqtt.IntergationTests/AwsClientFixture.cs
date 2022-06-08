@@ -10,7 +10,7 @@ namespace Rido.Mqtt.IntergationTests
         private readonly ConnectionSettings cs = new()
         {
             HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
-            Auth = "X509",
+            Auth = AuthType.X509,
             ClientId = "testdevice22",
             X509Key = "testdevice22.pfx|1234"
         };
