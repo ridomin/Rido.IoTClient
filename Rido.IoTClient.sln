@@ -53,8 +53,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pnp-memmon-hub", "samples\p
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "adu-demo", "samples\adu-demo\adu-demo.csproj", "{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "spike-reconnect", "spikes\spike-reconnect\spike-reconnect.csproj", "{74120A2A-207E-4691-BE4A-BDE2D8E976BE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,10 +131,6 @@ Global
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74120A2A-207E-4691-BE4A-BDE2D8E976BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74120A2A-207E-4691-BE4A-BDE2D8E976BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74120A2A-207E-4691-BE4A-BDE2D8E976BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74120A2A-207E-4691-BE4A-BDE2D8E976BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,7 +148,6 @@ Global
 		{FA6DECA5-9D99-4EB4-9093-1128BF8428B8} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 		{BEC9B305-0841-40B7-AA16-7EEF25CAAC46} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
 		{EDB9067A-8845-48E5-91A2-073CCF9D8E8A} = {651B20FF-32E0-461D-8A43-B06C74CE9596}
-		{74120A2A-207E-4691-BE4A-BDE2D8E976BE} = {E501F8AE-4B5D-4FEC-BC00-F6B59A11B9A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E3758FF-3AA2-4D7E-A124-56FDC4E74DAB}
