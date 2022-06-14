@@ -1,3 +1,4 @@
+using MQTTnet.Client;
 using Rido.MqttCore;
 
 namespace layer1_sample
@@ -6,6 +7,8 @@ namespace layer1_sample
     {
         private readonly ILogger<Device> _logger;
         private readonly IConfiguration _configuration;
+
+        private int reconnects = 0;
 
         public Device(ILogger<Device> logger, IConfiguration configuration)
         {
@@ -18,6 +21,8 @@ namespace layer1_sample
             IMqttBaseClient mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory()
                 .CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
 
+            mqtt.OnMqttClientDisconnected += Mqtt_OnMqttClientDisconnected;
+
             Console.WriteLine($"{mqtt.BaseClientLibraryInfo} {mqtt.ConnectionSettings}");
 
             await mqtt.PublishAsync(
@@ -26,7 +31,7 @@ namespace layer1_sample
 
             var twin = await GetTwin(mqtt, stoppingToken);
             Console.WriteLine(twin);
-
+            int numMsg = 0;
             while (!stoppingToken.IsCancellationRequested)
             {
                 var pubAck = await mqtt.PublishAsync(
@@ -34,9 +39,20 @@ namespace layer1_sample
                     new { worksingSet = Environment.WorkingSet },
                     1, false, stoppingToken);
 
-                _logger.LogInformation("PubAck: {pubAck}", pubAck);
-                await Task.Delay(1000, stoppingToken);
+                if (pubAck == 0)
+                {
+                    numMsg++;
+                }
+
+                _logger.LogInformation("Messages sent {numMsg}, reconnects {reconnects}", numMsg, reconnects);
+                
+                await Task.Delay(10000, stoppingToken);
             }
+        }
+
+        private void Mqtt_OnMqttClientDisconnected(object? sender, DisconnectEventArgs e)
+        {
+            Console.WriteLine($"Client Disconnected reason: {e.ReasonInfo} reconnects: {reconnects++}");
         }
 
         int rid = 0;

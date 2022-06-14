@@ -13,6 +13,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetClientConnectionFactory : IHubClientConnectionFactory
     {
+        private Timer reconnectTimer;
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionSettingsString);
@@ -22,12 +23,20 @@ namespace Rido.Mqtt.MqttNet4Adapter
         public async Task<IMqttBaseClient> CreateHubClientAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
-            var connAck = await mqtt.ConnectAsync(
+            MqttClientConnectResult connAck;
+            if (connectionSettings.Auth == AuthType.Sas)
+            {
+                connAck = ConnectWithTimer(mqtt, connectionSettings, cancellationToken);
+            }
+            else
+            {
+                connAck = await mqtt.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
                     .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
                     .Build(),
                 cancellationToken);
+            }
 
             if (connAck.ResultCode != MqttClientConnectResultCode.Success)
             {
@@ -36,6 +45,27 @@ namespace Rido.Mqtt.MqttNet4Adapter
             }
 
             return new MqttNetClient(mqtt) { ConnectionSettings = connectionSettings };
+        }
+
+        MqttClientConnectResult ConnectWithTimer(IMqttClient mqtt, ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
+        {
+            if (mqtt.IsConnected)
+            {
+                Trace.TraceInformation("Reconnecting before SasToken expires");
+                mqtt.DisconnectAsync(MqttClientDisconnectReason.MaximumConnectTime).Wait();
+            }
+            var connAck = mqtt.ConnectAsync(
+                new MqttClientOptionsBuilder()
+                    .WithAzureIoTHubCredentials(connectionSettings)
+                    .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
+                    .Build(),
+                cancellationToken).Result;
+
+            reconnectTimer = new Timer( o =>
+            {
+                ConnectWithTimer(mqtt, connectionSettings, cancellationToken);
+            }, null, (connectionSettings.SasMinutes * 60 * 1000) - 10, 0);
+            return connAck;
         }
 
         public async Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
@@ -96,7 +126,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             {
                 throw new ApplicationException(connack.ReasonString);
             }
-            return new MqttNetClient(mqtt) { ConnectionSettings =cs };
+            return new MqttNetClient(mqtt) { ConnectionSettings = cs };
         }
 
         public async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
