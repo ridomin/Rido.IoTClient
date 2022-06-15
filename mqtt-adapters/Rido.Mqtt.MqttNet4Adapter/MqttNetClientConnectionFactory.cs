@@ -28,7 +28,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
             if (connectionSettings.Auth == AuthType.Sas)
             {
-                connAck = ConnectWithTimer(connection, connectionSettings);
+                connAck = await ConnectWithTimerAsync(connection, connectionSettings);
             }
             else
             {
@@ -48,18 +48,18 @@ namespace Rido.Mqtt.MqttNet4Adapter
             return managedClient;
         }
         
-        private MqttClientConnectResult ConnectWithTimer(IMqttClient connection, ConnectionSettings connectionSettings)
+        private async Task<MqttClientConnectResult> ConnectWithTimerAsync(IMqttClient connection, ConnectionSettings connectionSettings)
         {
             if (connection.IsConnected)
             {
                 Trace.TraceWarning("Reconnecting for new SasToken");
-                connection.DisconnectAsync().Wait();
+                await connection.DisconnectAsync();
             }
-            var connAck = connection.ConnectAsync(
+            var connAck = await connection.ConnectAsync(
                 new MqttClientOptionsBuilder()
                     .WithAzureIoTHubCredentials(connectionSettings)
                     .WithKeepAlivePeriod(TimeSpan.FromSeconds(connectionSettings.KeepAliveInSeconds))
-                    .Build()).Result;
+                    .Build());
 
             if (managedClient!=null && managedClient.subscriptions.Count>0)
             {
@@ -69,9 +69,9 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 }
             }    
 
-            reconnectTimer = new Timer(o =>
+            reconnectTimer = new Timer(async o =>
             {
-                connAck = ConnectWithTimer(connection, connectionSettings);
+                connAck = await ConnectWithTimerAsync(connection, connectionSettings);
             }, null, (connectionSettings.SasMinutes * 60 * 1000) - 10, 0);
 
             return connAck;
