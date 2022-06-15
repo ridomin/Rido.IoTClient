@@ -34,7 +34,7 @@ namespace dtmi_rido_pnp_IoTHubClassic
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = connectionString + ";ModelId=" + modelId;
-            var mqtt = await new Rido.Mqtt.MqttNet3Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
+            var mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(cs);
             var client = new memmon(mqtt);
             client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;

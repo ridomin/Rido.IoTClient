@@ -35,7 +35,7 @@ namespace layer1_sample
                     1, false, stoppingToken);
 
                 _logger.LogInformation("PubAck: {pubAck}", pubAck);
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(10000, stoppingToken);
             }
         }
 

@@ -13,7 +13,7 @@ namespace Rido.Mqtt.IntergationTests
         [Fact]
         public async Task ConnectToHive()
         {
-            var hiveClient = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(new ConnectionSettings
+            var hiveClient = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateBasicClientAsync(new ConnectionSettings
             {
                 HostName = hostname,
                 UserName = userName,
