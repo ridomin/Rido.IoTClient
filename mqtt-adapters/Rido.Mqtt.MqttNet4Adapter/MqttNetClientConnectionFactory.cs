@@ -13,6 +13,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetClientConnectionFactory : IHubClientConnectionFactory
     {
+
         MqttNetClient managedClient;
         Timer reconnectTimer;
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
@@ -23,6 +24,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
         public async Task<IMqttBaseClient> CreateHubClientAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
         {
+
             IMqttClient connection = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             MqttClientConnectResult connAck;
 
@@ -77,7 +79,8 @@ namespace Rido.Mqtt.MqttNet4Adapter
             return connAck;
         }
 
-            public async Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+
+        public async Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var cs = new ConnectionSettings(connectionSettingsString);
@@ -135,7 +138,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             {
                 throw new ApplicationException(connack.ReasonString);
             }
-            return new MqttNetClient(mqtt) { ConnectionSettings =cs };
+            return new MqttNetClient(mqtt) { ConnectionSettings = cs };
         }
 
         public async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)

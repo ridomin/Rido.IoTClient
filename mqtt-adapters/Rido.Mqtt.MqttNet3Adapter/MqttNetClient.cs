@@ -6,6 +6,7 @@ using MQTTnet.Client.Unsubscribing;
 using MQTTnet.Protocol;
 using Rido.MqttCore;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -52,6 +53,11 @@ namespace Rido.Mqtt.MqttNet3Adapter
 
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
+            if (!client.IsConnected)
+            {
+                Trace.TraceWarning("Missing one message");
+                return 1;
+            }
 
             string jsonPayload;
 
