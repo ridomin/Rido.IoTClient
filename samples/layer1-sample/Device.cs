@@ -39,13 +39,8 @@ namespace layer1_sample
                     new { worksingSet = Environment.WorkingSet },
                     1, false, stoppingToken);
 
-                if (pubAck == 0)
-                {
-                    numMsg++;
-                }
 
-                _logger.LogInformation("Messages sent {numMsg}, reconnects {reconnects}", numMsg, reconnects);
-                
+                _logger.LogInformation("PubAck: {pubAck}", pubAck);
                 await Task.Delay(10000, stoppingToken);
             }
         }

@@ -2,6 +2,7 @@
 using MQTTnet.Client;
 using Rido.MqttCore;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,22 +14,24 @@ namespace Rido.Mqtt.MqttNet4Adapter
 {
     public class MqttNetClient : IMqttBaseClient
     {
-        public bool IsConnected => client.IsConnected;
+        public bool IsConnected => connection.IsConnected;
 
-        public string ClientId => client.Options.ClientId;
+        public string ClientId => connection.Options.ClientId;
 
         public ConnectionSettings ConnectionSettings { get; set; }
 
-        public string BaseClientLibraryInfo => client.GetType().Assembly.FullName.ToLowerInvariant();
+        public string BaseClientLibraryInfo => connection.GetType().Assembly.FullName.ToLowerInvariant();
 
         public event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
         public event Func<MqttMessage, Task> OnMessage;
 
-        private readonly IMqttClient client;
-        public MqttNetClient(IMqttClient client)
+        private readonly IMqttClient connection;
+
+        internal readonly List<string> subscriptions = new List<string>();
+        public MqttNetClient(IMqttClient _conn)
         {
-            this.client = client;
-            this.client.ApplicationMessageReceivedAsync += async m =>
+            this.connection = _conn;
+            this.connection.ApplicationMessageReceivedAsync += async m =>
             {
                 await OnMessage?.Invoke(
                     new MqttMessage()
@@ -38,9 +41,9 @@ namespace Rido.Mqtt.MqttNet4Adapter
                     });
             };
 
-            this.client.DisconnectedAsync += async d =>
+            this.connection.DisconnectedAsync += async d =>
             {
-                OnMqttClientDisconnected?.Invoke(client, new DisconnectEventArgs() { ReasonInfo = d.Reason.ToString() });
+                OnMqttClientDisconnected?.Invoke(_conn, new DisconnectEventArgs() { ReasonInfo = d.Reason.ToString() });
                 await Task.Yield();
             };
         }
@@ -49,9 +52,9 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
-            if (!client.IsConnected)
+            if (!connection.IsConnected)
             {
-                Trace.TraceWarning("Missing one message");
+                Trace.TraceWarning("Missing one message to " + topic);
                 return 1;
             }
 
@@ -66,7 +69,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 jsonPayload = JsonSerializerWithEnums.Stringify(payload);
             }
 
-            var res = await client.PublishAsync(
+            var res = await connection.PublishAsync(
                 new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
                     .WithPayload(jsonPayload)
@@ -85,29 +88,41 @@ namespace Rido.Mqtt.MqttNet4Adapter
 
         public async Task<int> SubscribeAsync(string topic, CancellationToken token = default)
         {
-            var res = await client.SubscribeAsync(new MqttClientSubscribeOptionsBuilder().WithTopicFilter(topic).Build(), token);
-            var errs = res.Items.ToList().Any(x => x.ResultCode > MqttClientSubscribeResultCode.GrantedQoS2);
-            if (errs)
+            if (!subscriptions.Contains(topic))
             {
-                throw new ApplicationException("Error subscribing to " + topic);
+                subscriptions.Add(topic);
+                var res = await connection.SubscribeAsync(new MqttClientSubscribeOptionsBuilder().WithTopicFilter(topic).Build(), token);
+                var errs = res.Items.ToList().Any(x => x.ResultCode > MqttClientSubscribeResultCode.GrantedQoS2);
+                if (errs)
+                {
+                    throw new ApplicationException("Error subscribing to " + topic);
+                }
             }
             return 0;
         }
 
         public async Task<int> UnsubscribeAsync(string topic, CancellationToken token = default)
         {
-            var res = await client.UnsubscribeAsync(new MqttClientUnsubscribeOptionsBuilder().WithTopicFilter(topic).Build(), token);
+            var res = await connection.UnsubscribeAsync(new MqttClientUnsubscribeOptionsBuilder().WithTopicFilter(topic).Build(), token);
             var errs = res.Items.ToList().Any(x => x.ResultCode > MqttClientUnsubscribeResultCode.Success);
             if (errs)
             {
                 throw new ApplicationException("Error unsubscribing to " + topic);
             }
+            //if (subscriptions.Contains(topic))
+            //{
+            //    subscriptions.Remove(topic);
+            //}
             return 0;
         }
 
         public async Task DisconnectAsync(CancellationToken token = default)
         {
-            await client.DisconnectAsync(new MqttClientDisconnectOptionsBuilder()
+            foreach (var topic in subscriptions)
+            {
+                await UnsubscribeAsync(topic, token);
+            }
+            await connection.DisconnectAsync(new MqttClientDisconnectOptionsBuilder()
                 //.WithReason(MqttClientDisconnectReason.UnspecifiedError)
                 .Build(), token);
         }

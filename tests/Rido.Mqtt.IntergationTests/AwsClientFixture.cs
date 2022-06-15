@@ -31,7 +31,7 @@ namespace Rido.Mqtt.IntergationTests
         [Fact]
         public async Task GetUpdateShadow()
         {
-            var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
+            var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateAwsClientAsync(cs);
             var client = new AwsMqttClient(mqtt);
             Assert.True(mqtt.IsConnected);
             var shadow = await client.GetShadowAsync();

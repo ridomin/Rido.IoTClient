@@ -12,7 +12,7 @@ namespace Rido.Mqtt.IntergationTests
         public async Task ProvisionWithSas()
         {
             string cs = "IdScope=0ne003861C6;DeviceId=sasdpstest;SharedAccessKey=l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=";
-            var mqtt = await new MqttNet3Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(cs);
+            var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(cs);
             var dpsClient = new MqttDpsClient(mqtt);
             var dpsRes = await dpsClient.ProvisionDeviceIdentity();
             Assert.Equal("rido.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
