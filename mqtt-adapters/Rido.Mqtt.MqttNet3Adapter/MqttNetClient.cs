@@ -106,5 +106,6 @@ namespace Rido.Mqtt.MqttNet3Adapter
         {
             await client.DisconnectAsync(token);
         }
+        public Delegate[] GetInvocationList() => OnMessage.GetInvocationList();
     }
 }

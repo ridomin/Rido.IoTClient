@@ -27,5 +27,6 @@ namespace Rido.MqttCore
         Task DisconnectAsync(CancellationToken token = default);
         event Func<MqttMessage, Task> OnMessage;
         event EventHandler<DisconnectEventArgs> OnMqttClientDisconnected;
+        Delegate[] GetInvocationList();
     }
 }

@@ -5,7 +5,7 @@ using Rido.Mqtt.HubClient;
 using Rido.Mqtt.HubClient.TopicBindings;
 using Rido.MqttCore;
 using Rido.MqttCore.PnP;
-
+using System.Diagnostics;
 
 namespace dtmi_rido_pnp
 {
@@ -20,8 +20,11 @@ namespace dtmi_rido_pnp
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-        private memmon(IMqttBaseClient c) : base(c)
+        //public IMqttBaseClient Connection;
+
+        internal memmon(IMqttBaseClient c) : base(c)
         {
+            Connection = c;
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
             Property_enabled = new WritableProperty<bool>(c, "enabled");
@@ -32,8 +35,15 @@ namespace dtmi_rido_pnp
         public static async Task<memmon> CreateClientAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             var cs = connectionString + ";ModelId=" + modelId;
+            
+            //HubDpsFactory.OnReconnect += (o, e) =>
+            //{
+            //    var connection = (IMqttBaseClient)o;
+            //    Trace.TraceInformation("Reconnection Status: " + connection.IsConnected);
+            //    client = new memmon(connection);
+            //};
             var hub = await HubDpsFactory.CreateFromConnectionStringAsync(cs);
-            var client = new memmon(hub.Connection);
+            memmon client = new memmon(hub.Connection);
             client.InitialState = await client.GetTwinAsync(cancellationToken);
             return client;
         }

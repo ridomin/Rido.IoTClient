@@ -2,6 +2,7 @@
 using MQTTnet.Client;
 using Rido.MqttCore;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -44,10 +45,15 @@ namespace Rido.Mqtt.MqttNet4Adapter
             };
         }
 
-
+        public Delegate[] GetInvocationList() => OnMessage.GetInvocationList();
 
         public async Task<int> PublishAsync(string topic, object payload, int qos = 0, bool retain = false, CancellationToken token = default)
         {
+            if (!client.IsConnected)
+            {
+                Trace.TraceWarning("Missing one Message");
+                return 1;
+            }
 
             string jsonPayload;
 
@@ -105,5 +111,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 //.WithReason(MqttClientDisconnectReason.UnspecifiedError)
                 .Build(), token);
         }
+
+        
     }
 }

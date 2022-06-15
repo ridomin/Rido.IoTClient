@@ -37,6 +37,9 @@ namespace Rido.Mqtt.M2MAdapter
             return Task.CompletedTask;
         }
 
+        public Delegate[] GetInvocationList() => OnMessage.GetInvocationList();
+        
+
         public async Task<int> PublishAsync(string topic, object payload, int qos = 1, bool retain = false, CancellationToken token = default)
         {
             string jsonPayload;
