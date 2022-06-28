@@ -21,7 +21,7 @@ public class Device : BackgroundService
 
     private double telemetryWorkingSet = 0;
     private const bool default_enabled = true;
-    private const int default_interval = 8;
+    private const int default_interval = 18;
 
     private memmon client;
 
@@ -34,7 +34,7 @@ public class Device : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Connecting..");
-        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+        client = await memmon.CreateClientAsync(_configuration.GetConnectionString("csx"), stoppingToken);
         _logger.LogInformation("Connected");
 
         client.Connection.OnMqttClientDisconnected += Connection_OnMqttClientDisconnected;

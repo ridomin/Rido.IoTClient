@@ -19,7 +19,7 @@ public class Device : BackgroundService
 
     private double telemetryWorkingSet = 0;
     private const bool default_enabled = true;
-    private const int default_interval = 8;
+    private const int default_interval = 18;
 
     private memmon client;
 
@@ -91,12 +91,24 @@ public class Device : BackgroundService
     {
         ArgumentNullException.ThrowIfNull(client);
         twinRecCounter++;
-        var ack = new PropertyAck<int>(p.Name)
+        var ack = new PropertyAck<int>(p.Name);
+
+        if (p.Value > 0)
         {
-            Description = client.Property_enabled?.PropertyValue.Value == true ? "desired notification accepted" : "disabled, not accepted",
-            Status = client.Property_enabled?.PropertyValue.Value == true ? 200 : 205,
-            Version = p.Version,
-            Value = p.Value
+            ack.Description = "desired notification accepted";
+            ack.Status = 200;
+            ack.Version = p.Version;
+            ack.Value = p.Value;
+            ack.LastReported = p.Value;
+        }
+        else
+        {
+            ack.Description = "negative values not accepted";
+            ack.Status = 405;
+            ack.Version = p.Version;
+            ack.Value = client.Property_interval.PropertyValue.LastReported > 0 ?
+                            client.Property_interval.PropertyValue.LastReported :
+                            default_interval;
         };
         client.Property_interval.PropertyValue = ack;
         return await Task.FromResult(ack);
