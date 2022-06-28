@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Text.Json.Serialization;
 using static Rido.MqttCore.JsonSerializerWithEnums;
 
@@ -26,6 +27,6 @@ namespace Rido.MqttCore.Birth
             public ConnectionStatus ConnectionStatus { get; private set; }
         }
 
-        public static string LastWillPayload() => Stringify(new BirthMessage(ConnectionStatus.offline));
+        public static byte[] LastWillPayload() => Encoding.UTF8.GetBytes(Stringify(new BirthMessage(ConnectionStatus.offline)));
     }
 }

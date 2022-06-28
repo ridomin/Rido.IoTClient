@@ -1,5 +1,6 @@
 ﻿using MQTTnet.Client;
 using Rido.MqttCore;
+using Rido.MqttCore.Birth;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,9 +22,10 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 .WithClientId(cs.ClientId)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .WithCleanSession(false)
-                .WithWillTopic($"pnp/{cs.ClientId}/lwt")
+                .WithWillTopic(BirthConvention.BirthTopic(cs.ClientId))
                 .WithWillQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
-                .WithWillPayload(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { lwtp = DateTime.Now })))
+                .WithWillPayload(BirthConvention.LastWillPayload())
+                .WithWillRetain(true)
                 .WithCredentials(cs.UserName, cs.Password);
             return builder;
         }
