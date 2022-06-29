@@ -28,5 +28,6 @@ namespace Rido.MqttCore.Birth
         }
 
         public static byte[] LastWillPayload() => Encoding.UTF8.GetBytes(Stringify(new BirthMessage(ConnectionStatus.offline)));
+        public static byte[] LastWillPayload(string modelId) => Encoding.UTF8.GetBytes(Stringify(new BirthMessage(ConnectionStatus.offline) { ModelId = modelId}));
     }
 }

@@ -24,7 +24,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 .WithCleanSession(false)
                 .WithWillTopic(BirthConvention.BirthTopic(cs.ClientId))
                 .WithWillQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
-                .WithWillPayload(BirthConvention.LastWillPayload())
+                .WithWillPayload(BirthConvention.LastWillPayload(cs.ModelId))
                 .WithWillRetain(true)
                 .WithCredentials(cs.UserName, cs.Password);
             return builder;
