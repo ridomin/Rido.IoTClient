@@ -121,7 +121,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
                         Certificates = new List<X509Certificate> { cert }
                     })
                     .Build();
-
+                cs.DeviceId = registrationId;
                 await mqtt.ConnectAsync(options, cancellationToken);
             }
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };

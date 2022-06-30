@@ -18,6 +18,16 @@ namespace Rido.Mqtt.IntergationTests
             Assert.Equal("rido.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
         }
 
+        [Fact]
+        public async Task ProvisionWithCertPnP()
+        {
+            string cs = "IdScope=0ne003861C6;X509Key=testdevice22.pfx|1234;ModelId=dtmi:rido:test;1";
+            var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(cs);
+            var dpsClient = new MqttDpsClient(mqtt);
+            var dpsRes = await dpsClient.ProvisionDeviceIdentity();
+            Assert.Equal("ridoext.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
+        }
+
         //[Fact]
         //public async Task ProvisionWithBadSasThrows()
         //{
