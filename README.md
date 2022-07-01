@@ -1,5 +1,15 @@
 # Rido.IoTClient
 
+[![Nuget](https://img.shields.io/nuget/v/Rido.Mqtt.MqttNet4Adapter?label=%20Rido.Mqtt.MqttNet4Adapter&style=plastic)](https://www.nuget.org/packages/Rido.Mqtt.MqttNet4Adapter)
+[![Nuget](https://img.shields.io/nuget/v/Rido.MqttCore?label=Rido.MqttCore&style=plastic)](https://www.nuget.org/packages/Rido.MqttCore)
+[![Nuget](https://img.shields.io/nuget/v/Rido.Mqtt.Client?label=Rido.Mqtt.Client&style=plastic)](https://www.nuget.org/packages/Rido.Mqtt.Client)
+[![Nuget](https://img.shields.io/nuget/v/Rido.Mqtt.HubClient?label=Rido.Mqtt.HubClient&style=plastic)](https://www.nuget.org/packages/Rido.Mqtt.HubClient)
+[![Nuget](https://img.shields.io/nuget/v/Rido.Mqtt.DpsClient?label=Rido.Mqtt.DpsClient&style=plastic)](https://www.nuget.org/packages/Rido.Mqtt.DpsClient)
+[![Nuget](https://img.shields.io/nuget/v/Rido.Mqtt.AzIoTClient?label=Rido.Mqtt.AzIoTClient&style=plastic)](https://www.nuget.org/packages/Rido.Mqtt.AzIoTClient)
+[![Nuget](https://img.shields.io/nuget/v/Rido.Mqtt.AwsClient?label=Rido.Mqtt.AwsClient&style=plastic)](https://www.nuget.org/packages/Rido.Mqtt.AwsClient)
+
+[![Rido.IoTClient CI](https://github.com/ridomin/Rido.IoTClient/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ridomin/Rido.IoTClient/actions/workflows/dotnet.yml)
+
 This project implements a MQTT device client for Azure IoT Hub, providing three layers of abstraction:
 
 - Layer 1. Connection enabling BYO MQTT library
