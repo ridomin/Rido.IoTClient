@@ -61,14 +61,16 @@ This library implements a compatible *connection string* with Azure IoT SDK Devi
 - `IdScope` DPS IdScope 
 - `DeviceId` Device Identity 
 - `SharedAccessKey` Device Shared Access Key
-- `X509Key` __pathtopfx>|<pfxpassword__
+- `X509Key` __pathtopfx>|<pfxpassword__  or thumbprint to search in `CurrentUser\My` certificate store
 - `ModelId` DTDL Model ID in DTMI format to create PnP Devices
-- `ModuleId` Device Module Identity
-- `Auth` Device Authentication: [SAS, X509]
+- `ModuleId` IoTHub Device Module Identity
+- `Auth` Device Authentication: [SAS, X509, Basic]
 - `SasMinutes` SasToken expire time in minutes, default to `60`.
-- `UserName` Username to be used to authenticate MQTT Brokers
-- `Password` Username to be used to authenticate MQTT Brokers
+- `UserName` Username to be used to authenticate with MQTT Brokers
+- `Password` Username to be used to authenticate with MQTT Brokers
 - `ClientId` Client ID used when connecting to MQTT Brokers (IoT Hub requires used deviceId as clientId)
+- `KeepAliveInSeconds` Seconds to send keep alive packets, default to `60`
+- `CleanSession` Establish the connection with a clean session, default to `true`
 
 ### Sample Connection Strings
 
