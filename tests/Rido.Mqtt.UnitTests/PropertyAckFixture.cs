@@ -1,9 +1,8 @@
-﻿
-using Rido.MqttCore.PnP;
+﻿using Rido.MqttCore.PnP;
 using System;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests
+namespace Rido.Mqtt.UnitTests
 {
     internal class AComplexObj
     {
@@ -173,7 +172,7 @@ namespace Rido.Mqtt.HubClient.Tests
             Assert.Equal("def", sp.Value);
             Assert.Equal(0, sp.Version);
             Assert.Equal(203, sp.Status);
-            
+
         }
     }
 }

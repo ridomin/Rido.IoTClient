@@ -1,11 +1,10 @@
-﻿
-using Rido.MqttCore;
+﻿using Rido.MqttCore;
 using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rido.Mqtt.HubClient.Tests
+namespace Rido.Mqtt.UnitTests
 {
     internal class MockMqttClient : IMqttBaseClient
     {
