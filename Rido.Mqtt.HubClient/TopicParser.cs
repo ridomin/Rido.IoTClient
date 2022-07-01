@@ -10,9 +10,9 @@ namespace Rido.Mqtt.HubClient
             var segments = topic.Split('/');
             int twinVersion = -1;
             int rid = -1;
-            if (topic.Contains('?'))
+            if (topic.Contains("?"))
             {
-                var qs = HttpUtility.ParseQueryString(segments[^1]);
+                var qs = HttpUtility.ParseQueryString(segments[segments.Length-1]);
                 int.TryParse(qs["$rid"], out rid);
                 twinVersion = Convert.ToInt32(qs["$version"]);
             }

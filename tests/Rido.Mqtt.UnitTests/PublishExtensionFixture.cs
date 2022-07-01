@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests
+namespace Rido.Mqtt.UnitTests
 {
     public class PublishExtensionFixture
     {

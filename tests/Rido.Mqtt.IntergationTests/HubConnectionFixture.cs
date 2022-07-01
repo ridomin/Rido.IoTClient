@@ -34,6 +34,7 @@ namespace Rido.Mqtt.IntergationTests
                 disconnectCalled = true;
             };
             await hubClient.Connection.DisconnectAsync();
+            Assert.True(disconnectCalled);
         }
 
         

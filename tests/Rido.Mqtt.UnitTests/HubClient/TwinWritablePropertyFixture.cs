@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests.HubClient
+namespace Rido.Mqtt.UnitTests.HubClient
 {
     internal class AComplexObj
     {
@@ -152,7 +152,7 @@ namespace Rido.Mqtt.HubClient.Tests.HubClient
             wp.OnProperty_Updated = async p =>
             {
                 received = true;
-                if (p.Value<0)
+                if (p.Value < 0)
                 {
                     p.Status = 405;
                     p.Description = "fakie not accepted";

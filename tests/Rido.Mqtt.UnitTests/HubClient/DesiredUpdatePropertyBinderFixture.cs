@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests.HubClient
+namespace Rido.Mqtt.UnitTests.HubClient
 {
     public class DesiredUpdatePropertyBinderFixture
     {
