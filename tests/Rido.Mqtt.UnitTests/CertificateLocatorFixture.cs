@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests
+namespace Rido.Mqtt.UnitTests
 {
     public class CertificateLocatorFixture
     {

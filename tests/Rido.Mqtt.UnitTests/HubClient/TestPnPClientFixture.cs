@@ -1,4 +1,6 @@
 ﻿using Rido.IoTClient.Tests.AzIoTHub;
+using Rido.Mqtt.HubClient;
+using Rido.Mqtt.UnitTests;
 using Rido.MqttCore;
 using Rido.MqttCore.PnP;
 using System;
@@ -6,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.HubClient.Tests.HubClient
+namespace Rido.Mqtt.UnitTests.HubClient
 {
     internal class StubClient : HubMqttClient
     {

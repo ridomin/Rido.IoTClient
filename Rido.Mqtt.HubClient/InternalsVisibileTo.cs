@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Rido.Mqtt.HubClient.Tests")]
+[assembly:InternalsVisibleTo("Rido.Mqtt.UnitTests")]

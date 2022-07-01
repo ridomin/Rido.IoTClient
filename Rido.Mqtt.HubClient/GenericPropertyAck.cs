@@ -13,48 +13,56 @@ namespace Rido.Mqtt.HubClient
 
         public string BuildAck()
         {
-            using MemoryStream ms = new MemoryStream();
-            using JsonDocument doc = JsonDocument.Parse(Value);
-            using Utf8JsonWriter writer = new Utf8JsonWriter(ms);
-            writer.WriteStartObject();
-            foreach (var el in doc.RootElement.EnumerateObject())
+            using (MemoryStream ms = new MemoryStream())
             {
-                if (!el.Name.StartsWith('$'))
+                using (JsonDocument doc = JsonDocument.Parse(Value))
                 {
-                    writer.WritePropertyName(el.Name);
-                    writer.WriteStartObject();
-                    writer.WriteNumber("ac", Status);
-                    writer.WriteNumber("av", Version);
-                    writer.WriteString("ad", Description);
-                    switch (el.Value.ValueKind)
+                    using (Utf8JsonWriter writer = new Utf8JsonWriter(ms))
                     {
-                        case JsonValueKind.String:
-                            writer.WriteString("value", el.Value.ToString());
-                            break;
-                        case JsonValueKind.Number:
-                            writer.WriteNumber("value", el.Value.GetDouble());
-                            break;
-                        case JsonValueKind.True:
-                        case JsonValueKind.False:
-                            writer.WriteBoolean("value", el.Value.GetBoolean());
-                            break;
-                        case JsonValueKind.Object:
-                            writer.WriteStartObject("value");
-                            foreach (var so in el.Value.EnumerateObject())
+                        writer.WriteStartObject();
+                        foreach (var el in doc.RootElement.EnumerateObject())
+                        {
+                            if (!el.Name.StartsWith("$"))
                             {
-                                so.WriteTo(writer);
+                                writer.WritePropertyName(el.Name);
+                                writer.WriteStartObject();
+                                writer.WriteNumber("ac", Status);
+                                writer.WriteNumber("av", Version);
+                                writer.WriteString("ad", Description);
+                                switch (el.Value.ValueKind)
+                                {
+                                    case JsonValueKind.String:
+                                        writer.WriteString("value", el.Value.ToString());
+                                        break;
+                                    case JsonValueKind.Number:
+                                        writer.WriteNumber("value", el.Value.GetDouble());
+                                        break;
+                                    case JsonValueKind.True:
+                                    case JsonValueKind.False:
+                                        writer.WriteBoolean("value", el.Value.GetBoolean());
+                                        break;
+                                    case JsonValueKind.Object:
+                                        writer.WriteStartObject("value");
+                                        foreach (var so in el.Value.EnumerateObject())
+                                        {
+                                            so.WriteTo(writer);
+                                        }
+                                        writer.WriteEndObject();
+                                        break;
+                                }
+                                writer.WriteEndObject();
                             }
-                            writer.WriteEndObject();
-                            break;
+                        }
+                        writer.WriteEndObject();
+                        writer.Flush();
+                        ms.Position = 0;
+                        using (StreamReader sr = new StreamReader(ms))
+                        {
+                            return sr.ReadToEnd();
+                        }
                     }
-                    writer.WriteEndObject();
                 }
             }
-            writer.WriteEndObject();
-            writer.Flush();
-            ms.Position = 0;
-            using StreamReader sr = new StreamReader(ms);
-            return sr.ReadToEnd();
         }
     }
 }

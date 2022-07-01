@@ -19,7 +19,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
             {
                 var cert = ClientCertificateLocator.Load(cs.X509Key);
                 string clientId = X509CommonNameParser.GetCNFromCertSubject(cert.Subject);
-                if (clientId.Contains('/')) //is a module
+                if (clientId.Contains("/")) //is a module
                 {
                     var segmentsId = clientId.Split('/');
                     cs.DeviceId = segmentsId[0];

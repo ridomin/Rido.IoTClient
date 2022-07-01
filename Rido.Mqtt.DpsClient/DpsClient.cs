@@ -14,7 +14,7 @@ namespace Rido.Mqtt.DpsClient
         public MqttDpsClient(IMqttBaseClient c)
         {
             mqttClient = c;
-            var suback = mqttClient.SubscribeAsync("$dps/registrations/res/#").Result;
+            _ = mqttClient.SubscribeAsync("$dps/registrations/res/#").ConfigureAwait(false);
             mqttClient.OnMessage += async m =>
             {
                 if (m.Topic.StartsWith($"$dps/registrations/res/"))
