@@ -31,7 +31,7 @@ namespace layer1_sample
 
             var twin = await GetTwin(mqtt, stoppingToken);
             Console.WriteLine(twin);
-            int numMsg = 0;
+            
             while (!stoppingToken.IsCancellationRequested)
             {
                 var pubAck = await mqtt.PublishAsync(
