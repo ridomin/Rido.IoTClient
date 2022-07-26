@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Nullable>disable</Nullable>
 		<PackageId>Rido.Mqtt.MqttNet4Adapter</PackageId>
-		<PackageVersion>0.1.0</PackageVersion>
+		<PackageVersion>0.1.1</PackageVersion>
 		<Description>MQTTNet4 adapter for Rido.MQTT libraries</Description>
 	</PropertyGroup>
 
@@ -13,7 +13,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="MQTTnet" Version="4.0.1.184" />
+		<PackageReference Include="MQTTnet" Version="4.0.2.221" />
 	</ItemGroup>
 
 	<ItemGroup>

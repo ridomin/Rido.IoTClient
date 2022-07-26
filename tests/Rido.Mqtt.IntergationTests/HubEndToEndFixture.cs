@@ -13,8 +13,8 @@ namespace Rido.Mqtt.IntergationTests
 
     public class HubEndToEndFixture : IDisposable
     {
-        const string hubConnectionString = "HostName=tests.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P5LfPNpLhLD/qJVOCTpuKXLi/9rmGqvkleB0quXxkws=";
-        const string hubName = "tests.azure-devices.net";
+        const string hubConnectionString = "HostName=rido.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=7Fnf/DRygqQ6WxK77+5pIev5McFkfQfE53m2Oxav4Yk=";
+        const string hubName = "rido.azure-devices.net";
         readonly RegistryManager rm;
         readonly string deviceId = string.Empty;
         readonly Device device;

@@ -11,7 +11,7 @@ namespace Rido.Mqtt.IntergationTests
         [Fact]
         public async Task ProvisionWithSas()
         {
-            string cs = "IdScope=0ne003861C6;DeviceId=sasdpstest;SharedAccessKey=l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=";
+            string cs = "IdScope=0ne006CCDE4;DeviceId=sasdpstest;SharedAccessKey=tj9qgyxR9lm5tUYmlbtYsTFHAV/DjcbF4xrnlUeJLC4=";
             var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(cs);
             var dpsClient = new MqttDpsClient(mqtt);
             var dpsRes = await dpsClient.ProvisionDeviceIdentity();
@@ -21,11 +21,11 @@ namespace Rido.Mqtt.IntergationTests
         [Fact]
         public async Task ProvisionWithCertPnP()
         {
-            string cs = "IdScope=0ne003861C6;X509Key=testdevice22.pfx|1234;ModelId=dtmi:rido:test;1";
+            string cs = "IdScope=0ne006CCDE4;X509Key=testdevice22.pfx|1234;ModelId=dtmi:rido:test;1";
             var mqtt = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateDpsClientAsync(cs);
             var dpsClient = new MqttDpsClient(mqtt);
             var dpsRes = await dpsClient.ProvisionDeviceIdentity();
-            Assert.Equal("ridoext.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
+            Assert.Equal("rido.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
         }
 
         //[Fact]
@@ -33,7 +33,7 @@ namespace Rido.Mqtt.IntergationTests
         //{
         //    try
         //    {
-        //        var dpsRes = await dpsClient.ProvisionWithSasAsync("0ne003861C6", "bad", "l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=");
+        //        var dpsRes = await dpsClient.ProvisionWithSasAsync("0ne006CCDE4", "bad", "l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=");
         //    }
         //    catch (ApplicationException ex)
         //    {
@@ -47,20 +47,20 @@ namespace Rido.Mqtt.IntergationTests
         //[Fact]
         //public async Task ProvisionWithSasPnP()
         //{
-        //    var dpsRes = await dpsClient.ProvisionWithSasAsync("0ne003861C6", "sasdpstest", "l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=", "dtmi:test:dps;1");
+        //    var dpsRes = await dpsClient.ProvisionWithSasAsync("0ne006CCDE4", "sasdpstest", "l38DGXhjOrdYlqExavXemTBR+QqiAfus9Qp+L1HwuYA=", "dtmi:test:dps;1");
         //    Assert.Equal("rido.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
         //}
 
         //[Fact]
         //public async Task ProvisionWithCert()
         //{
-        //    var dpsRes = await dpsClient.ProvisionWithCertAsync("0ne003861C6", "testdevice22.pfx", "1234");
+        //    var dpsRes = await dpsClient.ProvisionWithCertAsync("0ne006CCDE4", "testdevice22.pfx", "1234");
         //    Assert.Equal("ridox.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
         //}
         //[Fact]
         //public async Task ProvisionWithCertPnP()
         //{
-        //    var dpsRes = await dpsClient.ProvisionWithCertAsync("0ne003861C6", "testdevice22.pfx", "1234", "dtmi:test:dps;1");
+        //    var dpsRes = await dpsClient.ProvisionWithCertAsync("0ne006CCDE4", "testdevice22.pfx", "1234", "dtmi:test:dps;1");
         //    Assert.Equal("ridox.azure-devices.net", dpsRes.RegistrationState.AssignedHub);
         //}
     }
