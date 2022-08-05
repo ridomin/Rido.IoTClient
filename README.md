@@ -81,6 +81,8 @@ This library implements a compatible *connection string* with Azure IoT SDK Devi
 - `ClientId` Client ID used when connecting to MQTT Brokers (IoT Hub requires used deviceId as clientId)
 - `KeepAliveInSeconds` Seconds to send keep alive packets, default to `60`
 - `CleanSession` Establish the connection with a clean session, default to `true`
+- `TcpPort` Sets the TCP port for the MQTT connection, defaults to `8883`
+- `UseTls` Enable/Disable Server TLS connection, defaults to `true`
 
 ### Sample Connection Strings
 

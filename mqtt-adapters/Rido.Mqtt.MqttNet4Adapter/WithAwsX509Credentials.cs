@@ -13,7 +13,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
         {
             var cert = ClientCertificateLocator.Load(cs.X509Key);
             builder
-                .WithTcpServer(cs.HostName, 8883)
+                .WithTcpServer(cs.HostName, cs.TcpPort)
                 .WithKeepAlivePeriod(new TimeSpan(0, 0, 0, 300))
                 .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V311)
                 .WithClientId(cs.ClientId)

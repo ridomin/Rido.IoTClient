@@ -10,8 +10,10 @@ namespace Rido.Mqtt.UnitTests
         {
             var dcs = new ConnectionSettings();
             Assert.Equal(60, dcs.SasMinutes);
-            Assert.Equal(AuthType.Sas, dcs.Auth);
-            Assert.Equal("SasMinutes=60;Auth=Sas", dcs.ToString());
+            Assert.Equal(AuthType.Basic, dcs.Auth);
+            Assert.Equal(8883, dcs.TcpPort);
+            Assert.True(dcs.UseTls);
+            Assert.Equal("SasMinutes=60;Auth=Basic", dcs.ToString());
         }
 
         [Fact]
@@ -46,18 +48,22 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
             Assert.Equal(60, dcs.SasMinutes);
+            Assert.Equal(8883, dcs.TcpPort);
+            Assert.True(dcs.UseTls);
         }
 
         [Fact]
         public void ParseConnectionStringWithAllValues()
         {
-            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2";
+            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2;TcpPort=1234;UseTls=false";
             ConnectionSettings dcs = ConnectionSettings.FromConnectionString(cs);
             Assert.Equal("<hubname>.azure-devices.net", dcs.HostName);
             Assert.Equal("<deviceId>", dcs.DeviceId);
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
             Assert.Equal(2, dcs.SasMinutes);
+            Assert.Equal(1234, dcs.TcpPort);
+            Assert.False(dcs.UseTls);
         }
 
         [Fact]
@@ -70,7 +76,7 @@ namespace Rido.Mqtt.UnitTests
                 SharedAccessKey = "sas",
                 ModelId = "dtmi"
             };
-            string expected = "HostName=h;DeviceId=d;SharedAccessKey=***;ModelId=dtmi;SasMinutes=60;Auth=Sas";
+            string expected = "HostName=h;DeviceId=d;SharedAccessKey=***;ModelId=dtmi;SasMinutes=60;Auth=Basic";
             Assert.Equal(expected, dcs.ToString());
         }
 
@@ -84,7 +90,7 @@ namespace Rido.Mqtt.UnitTests
                 ModuleId = "m",
                 SharedAccessKey = "sas"
             };
-            string expected = "HostName=h;DeviceId=d;ModuleId=m;SharedAccessKey=***;SasMinutes=60;Auth=Sas";
+            string expected = "HostName=h;DeviceId=d;ModuleId=m;SharedAccessKey=***;SasMinutes=60;Auth=Basic";
             Assert.Equal(expected, dcs.ToString());
         }
     }
