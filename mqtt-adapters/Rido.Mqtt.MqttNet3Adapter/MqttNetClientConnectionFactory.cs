@@ -111,7 +111,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
                 var password = SasAuth.CreateSasToken(resource, cs.SharedAccessKey, 5);
                 var options = new MqttClientOptionsBuilder()
                     .WithClientId(cs.DeviceId)
-                    .WithTcpServer("global.azure-devices-provisioning.net", 8883)
+                    .WithTcpServer("global.azure-devices-provisioning.net", cs.TcpPort)
                     .WithCredentials(username, password)
                     .WithTls(new MqttClientOptionsBuilderTlsParameters
                     {
@@ -131,7 +131,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
 
                 var options = new MqttClientOptionsBuilder()
                     .WithClientId(registrationId)
-                    .WithTcpServer("global.azure-devices-provisioning.net", 8883)
+                    .WithTcpServer("global.azure-devices-provisioning.net", cs.TcpPort)
                     .WithCredentials(username)
                     .WithTls(new MqttClientOptionsBuilderTlsParameters
                     {

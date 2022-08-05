@@ -20,6 +20,8 @@ namespace Rido.MqttCore
         private const int Default_SasMinutes = 60;
         private const int Default_KeepAliveInSeconds = 60;
         private const string Default_CleanSession = "true";
+        private const int Default_TcpPort = 8883;
+        private const string Default_UseTls = "true";
 
         public string IdScope { get; set; }
         public string HostName { get; set; }
@@ -35,11 +37,15 @@ namespace Rido.MqttCore
         public string Password { get; set; }
         public int KeepAliveInSeconds { get; set; }
         public bool CleanSession { get; set; }
+        public int TcpPort { get; set; }
+        public bool UseTls { get; set; }
 
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
-            Auth = AuthType.Sas;
+            Auth = AuthType.Basic;
+            TcpPort = Default_TcpPort;
+            UseTls = Default_UseTls == "true";
         }
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
         public ConnectionSettings(string cs) => ParseConnectionString(cs);
@@ -84,11 +90,13 @@ namespace Rido.MqttCore
             Password = GetStringValue(map, nameof(Password));
             KeepAliveInSeconds = GetPositiveIntValueOrDefault(map, nameof(KeepAliveInSeconds), Default_KeepAliveInSeconds);
             CleanSession = GetStringValue(map, nameof(CleanSession), Default_CleanSession) == "true";
-
-            if (string.IsNullOrEmpty(SharedAccessKey) && string.IsNullOrEmpty(X509Key) && string.IsNullOrEmpty(Password))
-            {
-                throw new KeyNotFoundException("ConnectionString does not have any key");
-            }
+            TcpPort = GetPositiveIntValueOrDefault(map, nameof(TcpPort), Default_TcpPort);
+            UseTls = GetStringValue(map, nameof(UseTls), Default_UseTls) == "true";
+            
+            //if (string.IsNullOrEmpty(SharedAccessKey) && string.IsNullOrEmpty(X509Key) && string.IsNullOrEmpty(Password))
+            //{
+            //    throw new KeyNotFoundException("ConnectionString does not have any key");
+            //}
 
             if (!String.IsNullOrEmpty(X509Key))
             {
