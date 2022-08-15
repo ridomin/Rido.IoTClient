@@ -11,12 +11,8 @@ namespace Rido.Mqtt.MqttNet3Adapter
         public static MqttClientOptionsBuilder WithBasicAuth(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
         {
             builder
-             .WithTcpServer(cs.HostName, 8883)
-                .WithTls(new MqttClientOptionsBuilderTlsParameters()
-                {
-                    UseTls = true,
-                    IgnoreCertificateRevocationErrors = true
-                })
+             .WithTcpServer(cs.HostName, cs.TcpPort)
+
                 .WithClientId(cs.ClientId)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .WithCleanSession(false)
@@ -29,6 +25,15 @@ namespace Rido.Mqtt.MqttNet3Adapter
                         .Build()
                 )
                 .WithCredentials(cs.UserName, cs.Password);
+
+            if (cs.UseTls)
+            {
+                builder.WithTls(new MqttClientOptionsBuilderTlsParameters()
+                {
+                    UseTls = true,
+                    IgnoreCertificateRevocationErrors = true
+                });
+            }
             return builder;
         }
     }

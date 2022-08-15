@@ -18,7 +18,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             var cert = ClientCertificateLocator.Load(cs.X509Key);
             Trace.TraceInformation($"Loaded cert {cert.Subject} {cert.Thumbprint}");
             builder
-                .WithTcpServer(cs.HostName, 8883)
+                .WithTcpServer(cs.HostName, cs.TcpPort)
                 .WithKeepAlivePeriod(new TimeSpan(0, 0, 0, 300))
                 .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V311)
                 .WithClientId(cs.ClientId)
