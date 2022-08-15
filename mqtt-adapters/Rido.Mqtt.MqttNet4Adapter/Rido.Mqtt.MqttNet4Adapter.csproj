@@ -13,7 +13,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="MQTTnet" Version="4.0.2.221" />
+		<PackageReference Include="MQTTnet" Version="4.1.0.247" />
 	</ItemGroup>
 
 	<ItemGroup>
