@@ -1,4 +1,5 @@
 ﻿using Rido.MqttCore;
+using System;
 using Xunit;
 
 namespace Rido.Mqtt.UnitTests
@@ -22,6 +23,7 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal("<hubname>.azure-devices.net", dcs.HostName);
             Assert.Equal("<deviceId>", dcs.DeviceId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
+            Assert.Equal(Environment.MachineName, dcs.ClientId);
         }
 
         [Fact]
@@ -46,17 +48,21 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
             Assert.Equal(60, dcs.SasMinutes);
+            Assert.Equal(8883, dcs.TcpPort);
+            Assert.Equal(Environment.MachineName, dcs.ClientId);
+            Assert.True(dcs.UseTls);
         }
 
         [Fact]
         public void ParseConnectionStringWithAllValues()
         {
-            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2";
+            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2;TcpPort=1234;UseTls=false";
             ConnectionSettings dcs = ConnectionSettings.FromConnectionString(cs);
             Assert.Equal("<hubname>.azure-devices.net", dcs.HostName);
             Assert.Equal("<deviceId>", dcs.DeviceId);
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
+            Assert.Equal("<ClientId>", dcs.ClientId);
             Assert.Equal(2, dcs.SasMinutes);
         }
 
