@@ -6,4 +6,6 @@ if (Test-Path $NUPKG_DIR) {
 }
 
 dotnet pack -c Release -o $NUPKG_DIR .\Rido.IoTClient.sln
-dotnet nuget push  $NUPKG_DIR/* --api-key $API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+cd $NUPKG_DIR
+dotnet nuget push * --api-key $API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+cd ..

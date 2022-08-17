@@ -79,7 +79,7 @@ namespace Rido.MqttCore
             IdScope = GetStringValue(map, nameof(IdScope));
             HostName = GetStringValue(map, nameof(HostName));
             DeviceId = GetStringValue(map, nameof(DeviceId));
-            ClientId = GetStringValue(map, nameof(ClientId));
+            ClientId = GetStringValue(map, nameof(ClientId), Environment.MachineName);
             SharedAccessKey = GetStringValue(map, nameof(SharedAccessKey));
             ModuleId = GetStringValue(map, nameof(ModuleId));
             X509Key = GetStringValue(map, nameof(X509Key));
