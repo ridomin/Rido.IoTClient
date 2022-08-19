@@ -3,7 +3,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Rido.Mqtt.DpsClient
+namespace Rido.Mqtt.AzIoTClient
 {
     public class MqttDpsClient
     {

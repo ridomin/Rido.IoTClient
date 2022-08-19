@@ -10,26 +10,29 @@ namespace Rido.Mqtt.MqttNet4Adapter
 {
     public static partial class MqttNetExtensions
     {
-        public static MqttClientOptionsBuilder WithBasicAuth(this MqttClientOptionsBuilder builder, ConnectionSettings cs)
+        public static MqttClientOptionsBuilder WithBasicAuth(this MqttClientOptionsBuilder builder, ConnectionSettings cs, bool withLWT = true)
         {
             builder
-             .WithTcpServer(cs.HostName, cs.TcpPort)
-             
+                .WithTcpServer(cs.HostName, cs.TcpPort)
                 .WithClientId(cs.ClientId)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .WithCleanSession(false)
+                .WithCredentials(cs.UserName, cs.Password);
+
+            if (withLWT)
+            {
+                builder
                 .WithWillTopic(BirthConvention.BirthTopic(cs.ClientId))
                 .WithWillQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
                 .WithWillPayload(BirthConvention.LastWillPayload(cs.ModelId))
-                .WithWillRetain(true)
-                .WithCredentials(cs.UserName, cs.Password);
+                .WithWillRetain(true);
+            }
 
             if (cs.UseTls)
             {
                 builder.WithTls(new MqttClientOptionsBuilderTlsParameters()
                 {
-                    UseTls = true,
-                    IgnoreCertificateRevocationErrors = true
+                    UseTls = true
                 });
             }
             return builder;

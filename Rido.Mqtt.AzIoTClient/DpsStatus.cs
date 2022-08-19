@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Rido.Mqtt.DpsClient
+namespace Rido.Mqtt.AzIoTClient
 {
     public class DpsStatus
     {
