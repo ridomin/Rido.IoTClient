@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\mqtt-adapters\Rido.Mqtt.MqttNet4Adapter\Rido.Mqtt.MqttNet4Adapter.csproj" />
-    <ProjectReference Include="..\Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj" />
     <ProjectReference Include="..\Rido.Mqtt.HubClient\Rido.Mqtt.HubClient.csproj" />
   </ItemGroup>
 

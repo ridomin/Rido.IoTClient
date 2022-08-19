@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{651B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mqtt-adapters", "mqtt-adapters", "{C7BED8C3-1C8F-48E0-A9C8-99DDF733428B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.DpsClient", "Rido.Mqtt.DpsClient\Rido.Mqtt.DpsClient.csproj", "{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.M2MAdapter", "mqtt-adapters\Rido.Mqtt.M2MAdapter\Rido.Mqtt.M2MAdapter.csproj", "{C29A34D2-6A9C-42E0-AC49-CDCCC0BA4F0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rido.Mqtt.MqttNet3Adapter", "mqtt-adapters\Rido.Mqtt.MqttNet3Adapter\Rido.Mqtt.MqttNet3Adapter.csproj", "{19E8DC0A-5C48-4605-9E15-85C4237B0E7C}"
@@ -70,10 +68,6 @@ Global
 		{3E4B02CE-F00E-40B1-B7CB-EF6DABD542C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E4B02CE-F00E-40B1-B7CB-EF6DABD542C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E4B02CE-F00E-40B1-B7CB-EF6DABD542C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C8C97E1-0DF8-454C-BE4F-575E4DBB61DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C29A34D2-6A9C-42E0-AC49-CDCCC0BA4F0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C29A34D2-6A9C-42E0-AC49-CDCCC0BA4F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C29A34D2-6A9C-42E0-AC49-CDCCC0BA4F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
