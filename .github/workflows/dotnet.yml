@@ -3,6 +3,8 @@ name: Rido.IoTClient CI
 on:
   push:
     branches: [ master, dev ]
+    tags:
+    - "v*"
   pull_request:
     branches: [ master ]
 
