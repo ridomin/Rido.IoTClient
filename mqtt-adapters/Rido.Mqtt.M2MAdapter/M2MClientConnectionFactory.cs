@@ -8,7 +8,7 @@ using uPLibrary.Networking.M2Mqtt;
 
 namespace Rido.Mqtt.M2MAdapter
 {
-    public class M2MClientConnectionFactory : IHubClientConnectionFactory
+    public class M2MClientConnectionFactory
     {
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
