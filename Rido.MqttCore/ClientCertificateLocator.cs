@@ -6,6 +6,7 @@ namespace Rido.MqttCore
 {
     public class ClientCertificateLocator
     {
+        // TODO: support .PEM
         public static X509Certificate2 Load(string certSettings)
         {
             X509Certificate2 cert = null;

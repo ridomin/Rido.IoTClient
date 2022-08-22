@@ -26,4 +26,4 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release -o _nupkgs
     - name: Push
-      run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.GPR_TOKEN }} --source https://nuget.pkg.github.com/ridomin/index.json --skip-duplicate --no-symbols
+      run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.MYGET_TOKEN }} --source https://www.myget.org/F/ridopackages/api/v2/package --skip-duplicate --no-symbols
