@@ -27,3 +27,4 @@ jobs:
       run: dotnet pack -c Release -o _nupkgs
     - name: Push
       run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.GPR_TOKEN }} --source https://nuget.pkg.github.com/ridomin/index.json --skip-duplicate --no-symbols
+

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.MqttNet3Adapter
 {
-    public class MqttNetClientConnectionFactory : IHubClientConnectionFactory
+    public class MqttNetClientConnectionFactory
     {
         private Timer reconnectTimer;
         public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)

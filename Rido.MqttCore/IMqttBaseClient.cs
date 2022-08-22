@@ -14,7 +14,7 @@ namespace Rido.MqttCore
     {
         public string ReasonInfo { get; set; } = string.Empty;
     }
-
+    
     public interface IMqttBaseClient
     {
         bool IsConnected { get; }

@@ -11,16 +11,14 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.MqttNet4Adapter
 {
-    public class MqttNetClientConnectionFactory : IHubClientConnectionFactory
+    public class MqttNetClientConnectionFactory
     {
 
         MqttNetClient managedClient;
         Timer reconnectTimer;
-        public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
-        {
-            var cs = new ConnectionSettings(connectionSettingsString);
-            return await CreateHubClientAsync(cs);
-        }
+        public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default) => 
+            await CreateHubClientAsync(new ConnectionSettings(connectionSettingsString));
+        
 
         public async Task<IMqttBaseClient> CreateHubClientAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
         {
@@ -127,11 +125,11 @@ namespace Rido.Mqtt.MqttNet4Adapter
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };
         }
 
-        public async Task<IMqttBaseClient> CreateBasicClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public async Task<IMqttBaseClient> CreateBasicClientAsync(ConnectionSettings cs, bool withLWT = true, CancellationToken cancellationToken = default)
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
-                .WithBasicAuth(cs)
+                .WithBasicAuth(cs, withLWT)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .Build(), cancellationToken);
             if (connack.ResultCode != MqttClientConnectResultCode.Success)
