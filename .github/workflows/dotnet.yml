@@ -11,8 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      PUSH_MYGET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -29,7 +27,7 @@ jobs:
       run: dotnet test --no-build tests/Rido.Mqtt.UnitTests
     - name: Pack
       run: dotnet pack -c Release -o _nupkgs
-    - if: ${{ env.PUSH_MYGET }}
+    - if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
       name: Push MyGet
       run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.MYGET_TOKEN }} --source https://www.myget.org/F/ridopackages/api/v2/package --skip-duplicate --no-symbols
     - if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
