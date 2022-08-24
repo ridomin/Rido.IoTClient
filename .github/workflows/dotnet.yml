@@ -30,9 +30,9 @@ jobs:
       run: dotnet test --no-build tests/Rido.Mqtt.UnitTests
     - name: Pack
       run: dotnet pack -c Release -o _nupkgs
-    - name: Push MyGet
-      if: ${{ env.PUSH_MYGET }}
+    - if: ${{ env.PUSH_MYGET }}
+      name: Push MyGet
       run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.MYGET_TOKEN }} --source https://www.myget.org/F/ridopackages/api/v2/package --skip-duplicate --no-symbols
-    - name: Push NUGET
-      if: ${{ env.PUSH_NUGET }}
+    - if: ${{ env.PUSH_NUGET }}
+      name: Push NUGET
       run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json --skip-duplicate
