@@ -32,6 +32,6 @@ jobs:
     - if: ${{ env.PUSH_MYGET }}
       name: Push MyGet
       run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.MYGET_TOKEN }} --source https://www.myget.org/F/ridopackages/api/v2/package --skip-duplicate --no-symbols
-    - if: ${{ false }}
+    - if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       name: Push NUGET
       run: cd _nupkgs && dotnet nuget push * --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json --skip-duplicate
