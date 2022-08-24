@@ -4,7 +4,6 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<Nullable>disable</Nullable>
 		<PackageId>Rido.Mqtt.M2MAdapter</PackageId>
-		<PackageVersion>0.0.6</PackageVersion>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
