@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/pnp-memmon/pnp-memmon.csproj",
+                "${workspaceFolder}/samples/memmon/memmon.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/pnp-memmon/pnp-memmon.csproj",
+                "${workspaceFolder}/samples/memmon/memmon.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,9 +32,8 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/pnp-memmon/pnp-memmon.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/samples/memmon/memmon.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

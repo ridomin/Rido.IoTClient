@@ -9,10 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/pnp-memmon/bin/Debug/net6.0/pnp-memmon.dll",
-            "launchSettingsProfile" : "Central",
+            "program": "${workspaceFolder}/samples/memmon/bin/Debug/net6.0/memmon.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/pnp-memmon",
+            "cwd": "${workspaceFolder}/samples/memmon",
             "console": "internalConsole",
             "stopAtEntry": false
         },
