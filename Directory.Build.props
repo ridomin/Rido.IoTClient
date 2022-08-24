@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/ridomin/Rido.IoTClient</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>mqtt; azure-iot</PackageTags>
-	<GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
+	  <GenerateAssemblyVersionInfo>true</GenerateAssemblyVersionInfo>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" Condition="!Exists('packages.config')">
