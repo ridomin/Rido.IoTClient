@@ -5,6 +5,7 @@
 		<Nullable>disable</Nullable>
 		<PackageId>Rido.Mqtt.MqttNetA3Adatapter</PackageId>
 		<PackageVersion>0.0.10</PackageVersion>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
