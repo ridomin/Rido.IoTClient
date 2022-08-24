@@ -8,9 +8,9 @@
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "start",
             "program": "${workspaceFolder}/samples/memmon/bin/Debug/net6.0/memmon.dll",
-            "args": [],
+            "args": ["/ConnectionStrings:cs", "HostName=localhost;TcpPort=1883;UseTls=false"],
             "cwd": "${workspaceFolder}/samples/memmon",
             "console": "internalConsole",
             "stopAtEntry": false
