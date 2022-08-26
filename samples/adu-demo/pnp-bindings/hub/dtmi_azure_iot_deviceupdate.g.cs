@@ -11,7 +11,7 @@ namespace adu_demo_pnp_bindings_hub
     {
         public IWritableProperty<agentMetadata> Property_agent { get; set; }
         public IWritableProperty<serviceMetadata> Property_service { get; set ; }
-        public deviceupdate(IMqttBaseClient c, string name) : base(c, name)
+        public deviceupdate(IMqttConnection c, string name) : base(c, name)
         {
             Property_agent = new WritableProperty<agentMetadata>(c, "agent", name);
             Property_service = new WritableProperty<serviceMetadata>(c, "service", name);

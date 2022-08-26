@@ -10,7 +10,7 @@ namespace Rido.Mqtt.Client.TopicBindings
         readonly string name;
         readonly UpdatePropertyBinder update;
 
-        public Component(IMqttBaseClient connection, string name)
+        public Component(IMqttConnection connection, string name)
         {
             this.name = name;
             update = new UpdatePropertyBinder(connection, name);

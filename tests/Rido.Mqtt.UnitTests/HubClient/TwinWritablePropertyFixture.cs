@@ -15,7 +15,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
     {
         private static string Stringify(object o) => System.Text.Json.JsonSerializer.Serialize(o);
 
-        private readonly IMqttBaseClient connection;
+        private readonly IMqttConnection connection;
 
         public TwinWritablePropertyFixture()
         {

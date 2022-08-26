@@ -5,8 +5,8 @@ namespace Rido.Mqtt.Client
 {
     public class PnPClient
     {
-        public IMqttBaseClient Connection { get; private set; }
-        public PnPClient(IMqttBaseClient c)
+        public IMqttConnection Connection { get; private set; }
+        public PnPClient(IMqttConnection c)
         {
             Connection = c;
             _ = Connection.PublishAsync(

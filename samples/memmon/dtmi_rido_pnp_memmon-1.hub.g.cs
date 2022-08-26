@@ -17,7 +17,7 @@ public class memmon : HubMqttClient, Imemmon
     public ITelemetry<double> Telemetry_workingSet { get; set; }
     public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-    public memmon(IMqttBaseClient c) : base(c)
+    public memmon(IMqttConnection c) : base(c)
     {
         Property_started = new ReadOnlyProperty<DateTime>(c, "started");
         Property_interval = new WritableProperty<int>(c, "interval");

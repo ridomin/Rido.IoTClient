@@ -12,7 +12,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
     {
         public Func<GenericCommandRequest, Task<CommandResponse>> OnCmdDelegate { get; set; }
 
-        public GenericCommand(IMqttBaseClient connection)
+        public GenericCommand(IMqttConnection connection)
         {
             _ = connection.SubscribeAsync("$iothub/methods/POST/#");
             connection.OnMessage += async m =>

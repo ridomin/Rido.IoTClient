@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Rido.MqttCore
 {
+    /// <summary>
+    /// Generate HMAC token to authenticate to IoTHub
+    /// </summary>
     public class SasAuth
     {
         private const string apiversion_2020_09_30 = "2020-09-30";
@@ -25,6 +28,15 @@ namespace Rido.MqttCore
             return $"SharedAccessSignature sr={resource}&sig={sig}&se={expiry}";
         }
 
+        /// <summary>
+        /// Generates username and password to connect to IoTHub
+        /// </summary>
+        /// <param name="hostName">IoT Hub hostname</param>
+        /// <param name="deviceId">IoT Hub device Id</param>
+        /// <param name="sasKey">Device Shared Access Key</param>
+        /// <param name="modelId">PnP ModelId</param>
+        /// <param name="minutes">Sas Token expire in minutes</param>
+        /// <returns></returns>
         public static (string username, string password) GenerateHubSasCredentials(string hostName, string deviceId, string sasKey, string modelId, int minutes = 60) =>
             (GetUserName(hostName, deviceId, modelId), CreateSasToken($"{hostName}/devices/{deviceId}", sasKey, minutes));
     }

@@ -16,13 +16,13 @@ namespace Rido.Mqtt.MqttNet3Adapter
     public class MqttNetClientConnectionFactory
     {
         private Timer reconnectTimer;
-        public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        public async Task<IMqttConnection> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             var connectionSettings = new ConnectionSettings(connectionSettingsString);
             return await CreateHubClientAsync(connectionSettings, cancellationToken);
         }
 
-        public async Task<IMqttBaseClient> CreateHubClientAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
+        public async Task<IMqttConnection> CreateHubClientAsync(ConnectionSettings connectionSettings, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             MqttClientConnectResult connAck;
@@ -72,7 +72,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
         }
 
 
-        public async Task<IMqttBaseClient> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public async Task<IMqttConnection> CreateAwsClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var connAck = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
@@ -87,7 +87,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };
         }
 
-        public async Task<IMqttBaseClient> CreateBasicClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
+        public async Task<IMqttConnection> CreateBasicClientAsync(ConnectionSettings cs, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
@@ -100,7 +100,7 @@ namespace Rido.Mqtt.MqttNet3Adapter
             }
             return new MqttNetClient(mqtt) { ConnectionSettings = cs };
         }
-        public async Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        public async Task<IMqttConnection> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             MqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient() as MqttClient;
             var cs = new ConnectionSettings(connectionSettingsString);

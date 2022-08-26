@@ -13,7 +13,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         private readonly string name;
         private readonly IPropertyStoreWriter update;
 
-        public Component(IMqttBaseClient connection, string name)
+        public Component(IMqttConnection connection, string name)
         {
             this.name = name;
             update = new UpdateTwinBinder(connection);

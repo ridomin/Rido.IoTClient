@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.MqttNet4Adapter
 {
-    public class MqttNetClient : IMqttBaseClient
+    public class MqttNetClient : IMqttConnection
     {
         public bool IsConnected => connection.IsConnected;
 

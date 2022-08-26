@@ -8,7 +8,7 @@ namespace adu_demo_pnp_bindings_hive
 
     public class DeviceInformation : Component, dtmi.azure.DeviceManagement.DeviceInformation
     {
-        public DeviceInformation(IMqttBaseClient c, string name) : base(c, name)
+        public DeviceInformation(IMqttConnection c, string name) : base(c, name)
         {
             Property_manufacturer = new ReadOnlyProperty<string>(c, "manufacturer");
             Property_model = new ReadOnlyProperty<string>(c, "model");

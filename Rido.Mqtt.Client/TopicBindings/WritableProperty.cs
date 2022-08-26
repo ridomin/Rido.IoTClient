@@ -25,7 +25,7 @@ namespace Rido.Mqtt.Client.TopicBindings
 
         public string PropertyName => propertyName;
 
-        public WritableProperty(IMqttBaseClient connection, string name, string component = "")
+        public WritableProperty(IMqttConnection connection, string name, string component = "")
         {
             propertyName = name;
             componentName = component;

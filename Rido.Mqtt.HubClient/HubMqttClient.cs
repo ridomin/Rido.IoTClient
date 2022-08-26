@@ -11,7 +11,7 @@ namespace Rido.Mqtt.HubClient
 {
     public class HubMqttClient : IHubMqttClient
     {
-        public IMqttBaseClient Connection { get; set; }
+        public IMqttConnection Connection { get; set; }
 
         private readonly IPropertyStoreReader getTwinBinder;
         private readonly IReportPropertyBinder updateTwinBinder;
@@ -20,7 +20,7 @@ namespace Rido.Mqtt.HubClient
 
        
 
-        public HubMqttClient(IMqttBaseClient c)
+        public HubMqttClient(IMqttConnection c)
         {
             Connection = c;
             getTwinBinder = new GetTwinBinder(c);

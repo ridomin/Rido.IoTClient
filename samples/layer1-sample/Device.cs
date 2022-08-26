@@ -18,12 +18,10 @@ namespace layer1_sample
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            IMqttBaseClient mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory()
+            IMqttConnection mqtt = await new Rido.Mqtt.MqttNet4Adapter.MqttNetClientConnectionFactory()
                 .CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
 
             mqtt.OnMqttClientDisconnected += Mqtt_OnMqttClientDisconnected;
-
-            Console.WriteLine($"{mqtt.BaseClientLibraryInfo} {mqtt.ConnectionSettings}");
 
             await mqtt.PublishAsync(
                 $"$iothub/twin/PATCH/properties/reported/?$rid=1", 
@@ -51,7 +49,7 @@ namespace layer1_sample
         }
 
         int rid = 0;
-        async Task<string> GetTwin(IMqttBaseClient client, CancellationToken cancellationToken)
+        async Task<string> GetTwin(IMqttConnection client, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
             _ = await client.SubscribeAsync("$iothub/twin/res/#", cancellationToken);

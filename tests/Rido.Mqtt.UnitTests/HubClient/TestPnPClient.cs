@@ -17,7 +17,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public ReadOnlyProperty<string> Property_name;
         public WritableProperty<DeviceInfo> Property_deviceInfo;
         public Command<EmptyCommandRequest, EmptyCommandResponse> Command_start;
-        public TestInfo(IMqttBaseClient c, string name) : base(c, name)
+        public TestInfo(IMqttConnection c, string name) : base(c, name)
         {
             Property_name = new ReadOnlyProperty<string>(c, "name", name);
             Property_deviceInfo = new WritableProperty<DeviceInfo>(c, "deviceInfo", name);
@@ -56,7 +56,7 @@ namespace Rido.IoTClient.Tests.AzIoTHub
         public readonly Command<EmptyCommandRequest, EmptyCommandResponse> Command_walk;
         public readonly TestInfo Component_testInfo;
 
-        internal TestPnPClient(IMqttBaseClient c) : base(c)
+        internal TestPnPClient(IMqttConnection c) : base(c)
         {
             Property_counter = new ReadOnlyProperty<int>(c, "counter");
             Property_deviceInfo = new ReadOnlyProperty<DeviceInfo>(c, "deviceInfo");

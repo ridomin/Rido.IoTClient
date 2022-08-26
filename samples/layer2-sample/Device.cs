@@ -21,11 +21,10 @@ namespace layer2_sample
         {
             //IMqttBaseClient adapter = await new MqttNet4Adapter.MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"),stoppingToken);
             //IMqttBaseClient adapter = await new M2MAdapter.M2MClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
-            IMqttBaseClient adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
+            IMqttConnection adapter = await new MqttNetClientConnectionFactory().CreateHubClientAsync(_configuration.GetConnectionString("cs"), stoppingToken);
             var client = new HubMqttClient(adapter);
             
             _logger.LogInformation($"CONNECTED: DeviceId: {client.Connection.ConnectionSettings.DeviceId} - HostName: {client.Connection.ConnectionSettings.HostName} ");
-            _logger.LogInformation($"Using MQTT Library:" + client.Connection.BaseClientLibraryInfo);
 
             var v = await client.ReportPropertyAsync(new { started = DateTime.Now }, stoppingToken);
             _logger.LogInformation($"Property updated with version {v}");

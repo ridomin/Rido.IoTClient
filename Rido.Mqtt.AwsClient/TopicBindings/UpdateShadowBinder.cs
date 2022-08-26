@@ -14,9 +14,9 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
     public class UpdateShadowBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
         private readonly ConcurrentQueue<TaskCompletionSource<int>> pendingRequests;
-        private readonly IMqttBaseClient connection;
+        private readonly IMqttConnection connection;
 
-        public UpdateShadowBinder(IMqttBaseClient connection)
+        public UpdateShadowBinder(IMqttConnection connection)
         {
             this.connection = connection;
             pendingRequests = new ConcurrentQueue<TaskCompletionSource<int>>();

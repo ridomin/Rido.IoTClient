@@ -7,11 +7,11 @@ namespace Rido.Mqtt.AzIoTClient
 {
     public class MqttDpsClient
     {
-        readonly IMqttBaseClient mqttClient;
+        readonly IMqttConnection mqttClient;
         int rid = 0;
         readonly TaskCompletionSource<DpsStatus> tcs = new TaskCompletionSource<DpsStatus>();
 
-        public MqttDpsClient(IMqttBaseClient c)
+        public MqttDpsClient(IMqttConnection c)
         {
             mqttClient = c;
             _ = mqttClient.SubscribeAsync("$dps/registrations/res/#").ConfigureAwait(false);

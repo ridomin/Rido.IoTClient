@@ -9,9 +9,9 @@ namespace Rido.Mqtt.Client.TopicBindings
 {
     public class UpdatePropertyBinder : IReportPropertyBinder
     {
-        readonly IMqttBaseClient connection;
+        readonly IMqttConnection connection;
         readonly string name;
-        public UpdatePropertyBinder(IMqttBaseClient connection, string propName)
+        public UpdatePropertyBinder(IMqttConnection connection, string propName)
         {
             this.connection = connection;
             this.name = propName;

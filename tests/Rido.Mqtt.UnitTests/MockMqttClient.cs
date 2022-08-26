@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rido.Mqtt.UnitTests
 {
-    internal class MockMqttClient : IMqttBaseClient
+    internal class MockMqttClient : IMqttConnection
     {
         public MockMqttClient()
         {

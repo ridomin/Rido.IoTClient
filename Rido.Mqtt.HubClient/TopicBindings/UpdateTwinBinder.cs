@@ -12,9 +12,9 @@ namespace Rido.Mqtt.HubClient.TopicBindings
     public class UpdateTwinBinder : IReportPropertyBinder, IPropertyStoreWriter
     {
         private static readonly ConcurrentDictionary<int, TaskCompletionSource<int>> pendingRequests = new ConcurrentDictionary<int, TaskCompletionSource<int>>();
-        private readonly IMqttBaseClient connection;
+        private readonly IMqttConnection connection;
 
-        public UpdateTwinBinder(IMqttBaseClient connection)
+        public UpdateTwinBinder(IMqttConnection connection)
         {
             this.connection = connection;
             _ = connection.SubscribeAsync("$iothub/twin/res/#");

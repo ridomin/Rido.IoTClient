@@ -12,11 +12,11 @@ namespace Rido.Mqtt.HubClient.TopicBindings
     public class GetTwinBinder : IPropertyStoreReader
     {
         private static readonly ConcurrentDictionary<int, TaskCompletionSource<string>> pendingGetTwinRequests = new ConcurrentDictionary<int, TaskCompletionSource<string>>();
-        private readonly IMqttBaseClient connection;
+        private readonly IMqttConnection connection;
 
         internal int lastRid = -1;
 
-        public GetTwinBinder(IMqttBaseClient conn)
+        public GetTwinBinder(IMqttConnection conn)
         {
             connection = conn;
             _ = connection.SubscribeAsync("$iothub/twin/res/#");

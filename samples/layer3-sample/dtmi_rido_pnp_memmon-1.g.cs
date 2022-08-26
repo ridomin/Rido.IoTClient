@@ -18,7 +18,7 @@ namespace layer3_sample
         public ITelemetry<double> Telemetry_workingSet { get; set; }
         public ICommand<Cmd_getRuntimeStats_Request, Cmd_getRuntimeStats_Response> Command_getRuntimeStats { get; set; }
 
-        private dtmi_rido_pnp_memmon(IMqttBaseClient c) : base(c)
+        private dtmi_rido_pnp_memmon(IMqttConnection c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
