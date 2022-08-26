@@ -9,6 +9,13 @@ namespace Rido.MqttCore
     public class SasAuth
     {
         private const string apiversion_2020_09_30 = "2020-09-30";
+        /// <summary>
+        /// Returns UserName
+        /// </summary>
+        /// <param name="hostName">IoTHub host name</param>
+        /// <param name="deviceId">device Id</param>
+        /// <param name="modelId">PnP Model Id</param>
+        /// <returns></returns>
         public static string GetUserName(string hostName, string deviceId, string modelId = "") =>
             $"{hostName}/{deviceId}/?api-version={apiversion_2020_09_30}&model-id={modelId}";
 
@@ -20,6 +27,13 @@ namespace Rido.MqttCore
             }
         }
 
+        /// <summary>
+        /// Creates Sas Token using HMAC signature
+        /// </summary>
+        /// <param name="resource">resource to sign</param>
+        /// <param name="sasKey">key</param>
+        /// <param name="minutes">expiry minutes</param>
+        /// <returns></returns>
         public static string CreateSasToken(string resource, string sasKey, int minutes)
         {
 

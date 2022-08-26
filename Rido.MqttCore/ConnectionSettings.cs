@@ -7,10 +7,22 @@ using System.Text.RegularExpressions;
 
 namespace Rido.MqttCore
 {
+    /// <summary>
+    /// MQTT Authentication Type
+    /// </summary>
     public enum AuthType
     {
+        /// <summary>
+        /// Shared Access Token
+        /// </summary>
         Sas,
+        /// <summary>
+        /// X509 Client Certificate
+        /// </summary>
         X509,
+        /// <summary>
+        /// Username, Password
+        /// </summary>
         Basic
     }
 
@@ -92,6 +104,9 @@ namespace Rido.MqttCore
         /// </summary>
         public bool UseTls { get; set; }
 
+        /// <summary>
+        /// Default Ctor
+        /// </summary>
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
@@ -99,7 +114,16 @@ namespace Rido.MqttCore
             TcpPort = Default_TcpPort;
             UseTls = Default_UseTls == "true";
         }
+        /// <summary>
+        /// Factory from connecection string
+        /// </summary>
+        /// <param name="cs"></param>
+        /// <returns></returns>
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
+        /// <summary>
+        /// Ctor from Connection String
+        /// </summary>
+        /// <param name="cs"></param>
         public ConnectionSettings(string cs) => ParseConnectionString(cs);
 
         private static string GetStringValue(IDictionary<string, string> dict, string propertyName, string defaultValue = "")
@@ -182,6 +206,10 @@ namespace Rido.MqttCore
             }
         }
 
+        /// <summary>
+        /// Overrides ToSTring
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var result = new StringBuilder();
