@@ -8,7 +8,7 @@ namespace dtmi_rido_pnp_memmon;
 public interface Imemmon 
 {
     public const string ModelId = "dtmi:rido:pnp:memmon;1";
-    public IMqttBaseClient Connection { get; }
+    public IMqttConnection Connection { get; }
     public string InitialState { get; }
     public IReadOnlyProperty<DateTime> Property_started { get; set; }
     public IWritableProperty<bool> Property_enabled { get; set; }

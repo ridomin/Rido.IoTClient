@@ -4,11 +4,20 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Rido.MqttCore
 {
+    /// <summary>
+    /// ClientCertificateLocator allows to load certificates, including private keys from files or Cert Store
+    /// </summary>
     public class ClientCertificateLocator
     {
-        // TODO: support .PEM
+        /// <summary>
+        /// Supports pfx|pwd or thumbprints
+        /// </summary>
+        /// <param name="certSettings"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         public static X509Certificate2 Load(string certSettings)
         {
+            // TODO: support .PEM
             X509Certificate2 cert = null;
             if (certSettings.Contains(".pfx|")) // mycert.pfx|mypwd
             {

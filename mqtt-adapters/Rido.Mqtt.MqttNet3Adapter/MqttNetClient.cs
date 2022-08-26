@@ -15,7 +15,7 @@ using static Rido.MqttCore.JsonSerializerWithEnums;
 
 namespace Rido.Mqtt.MqttNet3Adapter
 {
-    public class MqttNetClient : IMqttBaseClient
+    public class MqttNetClient : IMqttConnection
     {
         public bool IsConnected => client.IsConnected;
 

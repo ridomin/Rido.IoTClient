@@ -11,7 +11,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
         where TResponse : BaseCommandResponse
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
-        public Command(IMqttBaseClient connection, string commandName, string componentName = "")
+        public Command(IMqttConnection connection, string commandName, string componentName = "")
         {
             var fullCommandName = string.IsNullOrEmpty(componentName) ? commandName : $"{componentName}*{commandName}";
             _ = connection.SubscribeAsync($"$iothub/methods/POST/#");

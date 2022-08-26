@@ -24,7 +24,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
             set => desiredBinder.OnProperty_Updated = value;
         }
 
-        public WritableProperty(IMqttBaseClient connection, string name, string component = "")
+        public WritableProperty(IMqttConnection connection, string name, string component = "")
         {
             PropertyName = name;
             componentName = component;

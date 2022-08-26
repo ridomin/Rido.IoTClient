@@ -10,7 +10,7 @@ namespace Rido.Mqtt.HubClient.TopicBindings
     public class GenericDesiredUpdatePropertyBinder
     {
         public Func<JsonNode, Task<GenericPropertyAck>> OnProperty_Updated = null;
-        public GenericDesiredUpdatePropertyBinder(IMqttBaseClient connection)
+        public GenericDesiredUpdatePropertyBinder(IMqttConnection connection)
         {
             _ = connection.SubscribeAsync("$iothub/twin/PATCH/properties/desired/#");
             IPropertyStoreWriter updateTwin = new UpdateTwinBinder(connection);

@@ -19,7 +19,7 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
         public T PropertyValue { get; set; }
         public int Version { get; set; }
 
-        public ReadOnlyProperty(IMqttBaseClient connection, string name, string component = "")
+        public ReadOnlyProperty(IMqttConnection connection, string name, string component = "")
         {
             updateBinder = new UpdateShadowBinder(connection);
             PropertyName = name;

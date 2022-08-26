@@ -8,7 +8,7 @@ using uPLibrary.Networking.M2Mqtt;
 
 namespace Rido.Mqtt.M2MAdapter
 {
-    public class M2MClient : IMqttBaseClient
+    public class M2MClient : IMqttConnection
     {
         private readonly MqttClient client;
 

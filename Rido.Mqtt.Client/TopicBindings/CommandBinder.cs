@@ -13,7 +13,7 @@ namespace Rido.Mqtt.Client.TopicBindings
     {
         public Func<T, Task<TResponse>> OnCmdDelegate { get; set; }
 
-        public Command(IMqttBaseClient connection, string commandName, string componentName = "")
+        public Command(IMqttConnection connection, string commandName, string componentName = "")
         {
             _ = connection.SubscribeAsync($"pnp/+/commands/#");
             connection.OnMessage += async m =>

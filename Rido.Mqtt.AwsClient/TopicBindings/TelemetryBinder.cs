@@ -9,13 +9,13 @@ namespace Rido.Mqtt.AwsClient.TopicBindings
 {
     public class Telemetry<T> : ITelemetry<T>
     {
-        private readonly IMqttBaseClient connection;
+        private readonly IMqttConnection connection;
         private readonly string deviceId;
         private readonly string moduleId;
         private readonly string name;
         private readonly string component;
 
-        public Telemetry(IMqttBaseClient connection, string name, string component = "", string moduleId = "")
+        public Telemetry(IMqttConnection connection, string name, string component = "", string moduleId = "")
         {
             this.connection = connection;
             this.name = name;

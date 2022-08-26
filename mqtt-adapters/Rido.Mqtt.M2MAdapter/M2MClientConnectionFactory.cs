@@ -10,7 +10,7 @@ namespace Rido.Mqtt.M2MAdapter
 {
     public class M2MClientConnectionFactory
     {
-        public async Task<IMqttBaseClient> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        public async Task<IMqttConnection> CreateHubClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             var cs = new ConnectionSettings(connectionSettingsString);
             MqttClient mqtt = null;
@@ -37,7 +37,7 @@ namespace Rido.Mqtt.M2MAdapter
             return await Task.FromResult(new M2MClient(mqtt) { ConnectionSettings = cs });
         }
 
-        public async Task<IMqttBaseClient> CreateBrokerClientAsync(string connectionSettingsString)
+        public async Task<IMqttConnection> CreateBrokerClientAsync(string connectionSettingsString)
         {
             var connectionSettings = new ConnectionSettings(connectionSettingsString); ;
             var mqtt = new MqttClient(connectionSettings.HostName, 8883, true, MqttSslProtocols.TLSv1_2, null, null);
@@ -46,7 +46,7 @@ namespace Rido.Mqtt.M2MAdapter
             return await Task.FromResult(new M2MClient(mqtt) { ConnectionSettings = connectionSettings });
         }
 
-        public Task<IMqttBaseClient> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
+        public Task<IMqttConnection> CreateDpsClientAsync(string connectionSettingsString, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

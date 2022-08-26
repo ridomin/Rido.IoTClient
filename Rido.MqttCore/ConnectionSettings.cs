@@ -7,14 +7,28 @@ using System.Text.RegularExpressions;
 
 namespace Rido.MqttCore
 {
-
+    /// <summary>
+    /// MQTT Authentication Type
+    /// </summary>
     public enum AuthType
     {
+        /// <summary>
+        /// Shared Access Token
+        /// </summary>
         Sas,
+        /// <summary>
+        /// X509 Client Certificate
+        /// </summary>
         X509,
+        /// <summary>
+        /// Username, Password
+        /// </summary>
         Basic
     }
 
+    /// <summary>
+    /// Allows to configure MQTT connections for a KeyValue string
+    /// </summary>
     public class ConnectionSettings
     {
         private const int Default_SasMinutes = 60;
@@ -23,23 +37,76 @@ namespace Rido.MqttCore
         private const int Default_TcpPort = 8883;
         private const string Default_UseTls = "true";
 
+        /// <summary>
+        /// Id Scope from Azure IoT Hub DPS service
+        /// </summary>
         public string IdScope { get; set; }
+        /// <summary>
+        /// MQTT/IoTHub host name
+        /// </summary>
         public string HostName { get; set; }
+        /// <summary>
+        /// Device for Azure IoT Hub/DPS clients
+        /// </summary>
         public string DeviceId { get; set; }
+        /// <summary>
+        /// MQTT Client Id, when empty will use the machine name
+        /// </summary>
         public string ClientId { get; set; }
+        /// <summary>
+        /// Azure IoT Hub/DPS Shared Access Key
+        /// </summary>
         public string SharedAccessKey { get; set; }
+        /// <summary>
+        /// X509 Key in one of this forms:
+        /// - path-to-pfx|pfxpwd
+        /// - thumbprint (private key must exist in the CurrentUser cert store)
+        /// </summary>
         public string X509Key { get; set; } //paht-to.pfx|pfxpwd, or thumbprint
+        /// <summary>
+        /// PnP Model Id to announce during the connection
+        /// </summary>
         public string ModelId { get; set; }
+        /// <summary>
+        /// Azure IoT Hub Module Id
+        /// </summary>
         public string ModuleId { get; set; }
+        /// <summary>
+        /// Authentication type, inferred from current settings
+        /// </summary>
         public AuthType Auth { get; set; }
+        /// <summary>
+        /// Time in minutes to refresh the Sas Token used to authenticate to IoT Hub
+        /// </summary>
         public int SasMinutes { get; set; }
+        /// <summary>
+        /// MQTT Basic Auth user name
+        /// </summary>
         public string UserName { get; set; }
+        /// <summary>
+        /// MQTT Basic Auth password
+        /// </summary>
         public string Password { get; set; }
+        /// <summary>
+        /// Keep alive ping refresh in seconds
+        /// </summary>
         public int KeepAliveInSeconds { get; set; }
+        /// <summary>
+        /// Open MQTT connection with clean session, defaults to true
+        /// </summary>
         public bool CleanSession { get; set; }
+        /// <summary>
+        /// Tcp Port to establish the connection, defaults to 8883
+        /// </summary>
         public int TcpPort { get; set; }
+        /// <summary>
+        /// Enable Server TLS connections, defaults to true
+        /// </summary>
         public bool UseTls { get; set; }
 
+        /// <summary>
+        /// Default Ctor
+        /// </summary>
         public ConnectionSettings()
         {
             SasMinutes = Default_SasMinutes;
@@ -47,7 +114,16 @@ namespace Rido.MqttCore
             TcpPort = Default_TcpPort;
             UseTls = Default_UseTls == "true";
         }
+        /// <summary>
+        /// Factory from connecection string
+        /// </summary>
+        /// <param name="cs"></param>
+        /// <returns></returns>
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
+        /// <summary>
+        /// Ctor from Connection String
+        /// </summary>
+        /// <param name="cs"></param>
         public ConnectionSettings(string cs) => ParseConnectionString(cs);
 
         private static string GetStringValue(IDictionary<string, string> dict, string propertyName, string defaultValue = "")
@@ -130,6 +206,10 @@ namespace Rido.MqttCore
             }
         }
 
+        /// <summary>
+        /// Overrides ToSTring
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var result = new StringBuilder();

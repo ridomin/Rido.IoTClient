@@ -12,7 +12,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
 {
     internal class StubClient : HubMqttClient
     {
-        public StubClient(IMqttBaseClient c) : base(c) { }
+        public StubClient(IMqttConnection c) : base(c) { }
     }
 
     public class TestPnPClientFixture

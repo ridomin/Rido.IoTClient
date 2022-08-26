@@ -16,7 +16,7 @@ public class memmon : PnPClient, Imemmon
 
     public string InitialState => String.Empty;
 
-    internal memmon(IMqttBaseClient c) : base(c)
+    internal memmon(IMqttConnection c) : base(c)
     {
         Property_started = new ReadOnlyProperty<DateTime>(c, "started");
         Property_interval = new WritableProperty<int>(c, "interval");

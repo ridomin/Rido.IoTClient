@@ -24,7 +24,7 @@ namespace adu_demo_pnp_bindings_hub
         public dtmi.azure.iot.deviceupdate Component_deviceUpdate { get; set; }
         public dtmi.azure.DeviceManagement.DeviceInformation Component_deviceInformation { get; set; }
 
-        private memmon(IMqttBaseClient c) : base(c)
+        private memmon(IMqttConnection c) : base(c)
         {
             Property_started = new ReadOnlyProperty<DateTime>(c, "started");
             Property_interval = new WritableProperty<int>(c, "interval");
