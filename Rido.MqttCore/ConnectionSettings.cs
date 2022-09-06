@@ -22,6 +22,7 @@ namespace Rido.MqttCore
         private const string Default_CleanSession = "true";
         private const int Default_TcpPort = 8883;
         private const string Default_UseTls = "true";
+        private const string Default_DisableCrl = "false";
 
         public string IdScope { get; set; }
         public string HostName { get; set; }
@@ -39,6 +40,8 @@ namespace Rido.MqttCore
         public bool CleanSession { get; set; }
         public int TcpPort { get; set; }
         public bool UseTls { get; set; }
+        public string CaPath { get; set; }
+        public bool DisableCrl { get; set; }
 
         public ConnectionSettings()
         {
@@ -92,6 +95,8 @@ namespace Rido.MqttCore
             CleanSession = GetStringValue(map, nameof(CleanSession), Default_CleanSession) == "true";
             TcpPort = GetPositiveIntValueOrDefault(map, nameof(TcpPort), Default_TcpPort);
             UseTls = GetStringValue(map, nameof(UseTls), Default_UseTls) == "true";
+            CaPath = GetStringValue(map, nameof(CaPath));
+            DisableCrl = GetStringValue(map, nameof(DisableCrl), Default_DisableCrl) == "true";
             
             //if (string.IsNullOrEmpty(SharedAccessKey) && string.IsNullOrEmpty(X509Key) && string.IsNullOrEmpty(Password))
             //{
