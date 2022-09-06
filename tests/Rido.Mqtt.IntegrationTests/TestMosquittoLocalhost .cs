@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.IntergationTests
+namespace Rido.Mqtt.IntegrationTests
 {
     public class TestMosquittoLocalhost
     {

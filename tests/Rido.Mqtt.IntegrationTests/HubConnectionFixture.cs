@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.IntergationTests
+namespace Rido.Mqtt.IntegrationTests
 {
     public class HubMqttClientFixture
     {
@@ -29,7 +29,7 @@ namespace Rido.Mqtt.IntergationTests
             await Task.Delay(100);
             bool disconnectCalled = false;
 
-            hubClient.Connection.OnMqttClientDisconnected += (object? sender, MqttCore.DisconnectEventArgs e) =>
+            hubClient.Connection.OnMqttClientDisconnected += (sender, e) =>
             {
                 disconnectCalled = true;
             };
@@ -38,6 +38,6 @@ namespace Rido.Mqtt.IntergationTests
             Assert.True(disconnectCalled);
         }
 
-        
+
     }
 }

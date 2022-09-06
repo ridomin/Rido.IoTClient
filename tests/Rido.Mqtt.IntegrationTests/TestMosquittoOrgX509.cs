@@ -4,14 +4,10 @@ using MQTTnet.Exceptions;
 using Rido.Mqtt.MqttNet4Adapter;
 using Rido.MqttCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.IntergationTests
+namespace Rido.Mqtt.IntegrationTests
 {
     public class TestMosquittoOrg
     {
@@ -25,13 +21,13 @@ namespace Rido.Mqtt.IntergationTests
         public async Task LetsEncrypt()
         {
             if (client == null) throw new ArgumentNullException(nameof(client));
-                
+
             var cs = new ConnectionSettings()
             {
                 HostName = "test.mosquitto.org",
                 TcpPort = 8886,
                 ClientId = "test-client",
-                DisableCrl =true
+                DisableCrl = true
             };
             var connAck = await client.ConnectAsync(new MqttClientOptionsBuilder()
                 .WithBasicAuth(cs)

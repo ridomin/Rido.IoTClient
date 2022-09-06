@@ -8,7 +8,7 @@ using dtmi_rido_pnp_IoTHubClassic;
 using Rido.MqttCore.PnP;
 using pnp_memmon;
 
-namespace Rido.Mqtt.IntergationTests
+namespace Rido.Mqtt.IntegrationTests
 {
 
     public class HubEndToEndFixture : IDisposable
@@ -150,7 +150,7 @@ namespace Rido.Mqtt.IntergationTests
                 return await Task.FromResult(result);
             };
             var sc = ServiceClient.CreateFromConnectionString(hubConnectionString);
-            CloudToDeviceMethod c2dMethod = new("getRuntimeStats");
+            CloudToDeviceMethod c2dMethod = new CloudToDeviceMethod("getRuntimeStats");
             c2dMethod.SetPayloadJson(JsonSerializer.Serialize(1));
             var dmRes = await sc.InvokeDeviceMethodAsync(deviceId, c2dMethod);
             Assert.True(commandInvoked);
