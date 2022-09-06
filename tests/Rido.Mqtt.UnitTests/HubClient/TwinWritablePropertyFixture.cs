@@ -26,7 +26,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
         [Fact]
         public async Task InitEmptyTwin()
         {
-            WritableProperty<double> wp = new(connection, "blah");
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "blah");
             string twin = Stringify(new
             {
                 reported = new Dictionary<string, object>() { { "$version", 1 } },
@@ -42,7 +42,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
         [Fact]
         public async Task InitTwinWithReported()
         {
-            WritableProperty<double> wp = new(connection, "myProp");
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "myProp");
             string twin = Stringify(new
             {
                 reported = new
@@ -93,7 +93,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
         [Fact]
         public async Task InitTwinWithDesiredTriggersUpdate()
         {
-            WritableProperty<double> wp = new(connection, "myDouble");
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "myDouble");
             Assert.Equal(0, wp.PropertyValue.Value);
             bool received = false;
             wp.OnProperty_Updated = async p =>
@@ -115,7 +115,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
         [Fact]
         public async Task InitInvalidTwinWithDesiredTriggersUpdate()
         {
-            WritableProperty<double> wp = new(connection, "myDouble");
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "myDouble");
             Assert.Equal(0, wp.PropertyValue.Value);
             bool received = false;
             wp.OnProperty_Updated = async p =>
@@ -146,7 +146,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
         [Fact]
         public async Task InitInvalidTwinWithDesiredAndReportedTriggersUpdate()
         {
-            WritableProperty<double> wp = new(connection, "myDouble");
+            WritableProperty<double> wp = new WritableProperty<double>(connection, "myDouble");
             Assert.Equal(0, wp.PropertyValue.Value);
             bool received = false;
             wp.OnProperty_Updated = async p =>
@@ -177,7 +177,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
         [Fact]
         public async Task InitTwinComplexWithDesiredTriggersUpdate()
         {
-            WritableProperty<AComplexObj> wp = new(connection, "myComplexObj");
+            WritableProperty<AComplexObj> wp = new WritableProperty<AComplexObj>(connection, "myComplexObj");
             Assert.Null(wp.PropertyValue.Value);
             wp.OnProperty_Updated = async p =>
             {

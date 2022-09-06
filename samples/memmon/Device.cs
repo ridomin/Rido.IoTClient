@@ -5,6 +5,8 @@ using Humanizer;
 using Rido.MqttCore.PnP;
 
 using dtmi_rido_pnp_memmon;
+using Rido.MqttCore;
+using System.Reflection;
 
 namespace memmon;
 
@@ -28,11 +30,14 @@ public class Device : BackgroundService
 
     private Imemmon client;
 
+    private string infoVersion = string.Empty;
+
     public Device(ILogger<Device> logger, IConfiguration configuration, TelemetryClient tc)
     {
         _logger = logger;
         _configuration = configuration;
         _telemetryClient = tc;
+        infoVersion = typeof(ConnectionSettings).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -198,6 +203,7 @@ public class Device : BackgroundService
             AppendLineWithPadRight(sb, " ");
             AppendLineWithPadRight(sb, $"Time Running: {TimeSpan.FromMilliseconds(clock.ElapsedMilliseconds).Humanize(3)}");
             AppendLineWithPadRight(sb, $"ConnectionStatus: {client.Connection.IsConnected} [{lastDiscconectReason}]");
+            AppendLineWithPadRight(sb, $"Rido.Mqtt version: {infoVersion}");
             AppendLineWithPadRight(sb, " ");
             return sb.ToString();
         }

@@ -2,12 +2,25 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "start_mosquitto",
+            "command": "mosquitto",
+            "type": "process",
+            "args" : ["-c", "tests/mosquitto.conf", "-d"]
+        },
+        {
+            "label" : "start",
+            "dependsOn" : [
+                "build",
+                "start_mosquitto"
+            ]
+        },
+        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/pnp-memmon/pnp-memmon.csproj",
+                "${workspaceFolder}/samples/memmon/memmon.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +32,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/pnp-memmon/pnp-memmon.csproj",
+                "${workspaceFolder}/samples/memmon/memmon.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,9 +45,8 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/pnp-memmon/pnp-memmon.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/samples/memmon/memmon.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

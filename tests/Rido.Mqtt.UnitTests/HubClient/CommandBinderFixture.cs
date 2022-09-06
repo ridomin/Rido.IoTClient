@@ -10,7 +10,7 @@ namespace Rido.Mqtt.UnitTests.HubClient
     {
         private class CmdRequest : IBaseCommandRequest<CmdRequest>
         {
-            public CmdRequest DeserializeBody(string payload) => new();
+            public CmdRequest DeserializeBody(string payload) => new CmdRequest();
         }
 
         private class CmdResponse : BaseCommandResponse

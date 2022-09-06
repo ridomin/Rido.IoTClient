@@ -11,8 +11,10 @@ namespace Rido.Mqtt.UnitTests
         {
             var dcs = new ConnectionSettings();
             Assert.Equal(60, dcs.SasMinutes);
+            Assert.Equal(60, dcs.KeepAliveInSeconds);
             Assert.Equal(AuthType.Basic, dcs.Auth);
             Assert.Equal(8883, dcs.TcpPort);
+            Assert.False(dcs.DisableCrl);
             Assert.True(dcs.UseTls);
             Assert.Equal("SasMinutes=60;Auth=Basic", dcs.ToString());
         }
@@ -50,15 +52,17 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
             Assert.Equal(60, dcs.SasMinutes);
+            Assert.Equal(60, dcs.KeepAliveInSeconds);
             Assert.Equal(8883, dcs.TcpPort);
             Assert.Equal(Environment.MachineName, dcs.ClientId);
             Assert.True(dcs.UseTls);
+            Assert.False(dcs.DisableCrl);
         }
 
         [Fact]
         public void ParseConnectionStringWithAllValues()
         {
-            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ClientId=<ClientId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2;TcpPort=1234;UseTls=false";
+            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ClientId=<ClientId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2;TcpPort=1234;UseTls=false;CaPath=<path>;DisableCrl=true";
             ConnectionSettings dcs = ConnectionSettings.FromConnectionString(cs);
             Assert.Equal("<hubname>.azure-devices.net", dcs.HostName);
             Assert.Equal("<deviceId>", dcs.DeviceId);
@@ -68,12 +72,14 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal(2, dcs.SasMinutes);
             Assert.Equal(1234, dcs.TcpPort);
             Assert.False(dcs.UseTls);
+            Assert.Equal("<path>", dcs.CaPath);
+            Assert.True(dcs.DisableCrl);
         }
 
         [Fact]
         public void ToStringReturnConnectionString()
         {
-            ConnectionSettings dcs = new()
+            ConnectionSettings dcs = new ConnectionSettings()
             {
                 HostName = "h",
                 DeviceId = "d",
@@ -87,7 +93,7 @@ namespace Rido.Mqtt.UnitTests
         [Fact]
         public void ToStringReturnConnectionStringWithModule()
         {
-            ConnectionSettings dcs = new()
+            ConnectionSettings dcs = new ConnectionSettings()
             {
                 HostName = "h",
                 DeviceId = "d",

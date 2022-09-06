@@ -17,6 +17,7 @@ internal class MemMonFactory
 
     public async Task<Imemmon> CreateMemMonClientAsync(string connectionString, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(connectionString, nameof(connectionString));
         if (connectionString.Contains("IdScope") || connectionString.Contains("SharedAccessKey"))
         {
             var cs = new ConnectionSettings(_configuration.GetConnectionString("cs"));
