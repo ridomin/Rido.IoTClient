@@ -11,8 +11,10 @@ namespace Rido.Mqtt.UnitTests
         {
             var dcs = new ConnectionSettings();
             Assert.Equal(60, dcs.SasMinutes);
+            Assert.Equal(60, dcs.KeepAliveInSeconds);
             Assert.Equal(AuthType.Basic, dcs.Auth);
             Assert.Equal(8883, dcs.TcpPort);
+            Assert.False(dcs.DisableCrl);
             Assert.True(dcs.UseTls);
             Assert.Equal("SasMinutes=60;Auth=Basic", dcs.ToString());
         }
@@ -50,6 +52,7 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal("<moduleId>", dcs.ModuleId);
             Assert.Equal("<SasKey>", dcs.SharedAccessKey);
             Assert.Equal(60, dcs.SasMinutes);
+            Assert.Equal(60, dcs.KeepAliveInSeconds);
             Assert.Equal(8883, dcs.TcpPort);
             Assert.Equal(Environment.MachineName, dcs.ClientId);
             Assert.True(dcs.UseTls);
