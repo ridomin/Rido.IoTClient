@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Rido.Mqtt.IntergationTests\TestMosquittoLocalhost .cs" Link="TestMosquittoLocalhost .cs" />
-    <Compile Include="..\Rido.Mqtt.IntergationTests\TestMosquittoOrgX509.cs" Link="TestMosquittoOrgX509.cs" />
+    <Compile Include="..\Rido.Mqtt.IntegrationTests\TestMosquittoLocalhost .cs" Link="TestMosquittoLocalhost .cs" />
+    <Compile Include="..\Rido.Mqtt.IntegrationTests\TestMosquittoOrgX509.cs" Link="TestMosquittoOrgX509.cs" />
   </ItemGroup>
 
   <ItemGroup>
