@@ -53,12 +53,13 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal(8883, dcs.TcpPort);
             Assert.Equal(Environment.MachineName, dcs.ClientId);
             Assert.True(dcs.UseTls);
+            Assert.False(dcs.DisableCrl);
         }
 
         [Fact]
         public void ParseConnectionStringWithAllValues()
         {
-            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ClientId=<ClientId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2;TcpPort=1234;UseTls=false";
+            string cs = "HostName=<hubname>.azure-devices.net;DeviceId=<deviceId>;ClientId=<ClientId>;ModuleId=<moduleId>;SharedAccessKey=<SasKey>;SasMinutes=2;TcpPort=1234;UseTls=false;CaPath=<path>;DisableCrl=true";
             ConnectionSettings dcs = ConnectionSettings.FromConnectionString(cs);
             Assert.Equal("<hubname>.azure-devices.net", dcs.HostName);
             Assert.Equal("<deviceId>", dcs.DeviceId);
@@ -68,6 +69,8 @@ namespace Rido.Mqtt.UnitTests
             Assert.Equal(2, dcs.SasMinutes);
             Assert.Equal(1234, dcs.TcpPort);
             Assert.False(dcs.UseTls);
+            Assert.Equal("<path>", dcs.CaPath);
+            Assert.True(dcs.DisableCrl);
         }
 
         [Fact]
