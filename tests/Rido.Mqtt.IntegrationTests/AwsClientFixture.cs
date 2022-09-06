@@ -3,11 +3,11 @@ using Rido.MqttCore;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.IntergationTests
+namespace Rido.Mqtt.IntegrationTests
 {
     public class AwsClientFixture
     {
-        private readonly ConnectionSettings cs = new()
+        private readonly ConnectionSettings cs = new ConnectionSettings()
         {
             HostName = "a38jrw6jte2l2x-ats.iot.us-west-1.amazonaws.com",
             Auth = AuthType.X509,

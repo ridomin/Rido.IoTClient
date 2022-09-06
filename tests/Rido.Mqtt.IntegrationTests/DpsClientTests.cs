@@ -2,7 +2,7 @@ using Rido.Mqtt.AzIoTClient;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rido.Mqtt.IntergationTests
+namespace Rido.Mqtt.IntegrationTests
 {
     public class DpsClientTests
     {

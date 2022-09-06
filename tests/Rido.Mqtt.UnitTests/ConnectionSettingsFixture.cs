@@ -79,7 +79,7 @@ namespace Rido.Mqtt.UnitTests
         [Fact]
         public void ToStringReturnConnectionString()
         {
-            ConnectionSettings dcs = new()
+            ConnectionSettings dcs = new ConnectionSettings()
             {
                 HostName = "h",
                 DeviceId = "d",
@@ -93,7 +93,7 @@ namespace Rido.Mqtt.UnitTests
         [Fact]
         public void ToStringReturnConnectionStringWithModule()
         {
-            ConnectionSettings dcs = new()
+            ConnectionSettings dcs = new ConnectionSettings()
             {
                 HostName = "h",
                 DeviceId = "d",
