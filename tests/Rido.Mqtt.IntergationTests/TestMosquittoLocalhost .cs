@@ -4,10 +4,6 @@ using MQTTnet.Exceptions;
 using Rido.Mqtt.MqttNet4Adapter;
 using Rido.MqttCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -53,7 +49,6 @@ namespace Rido.Mqtt.IntergationTests
             {
                 HostName = "localhost",
                 TcpPort = 8883,
-                ClientId = "test-client",
                 CaPath = "RidoFY23CA.crt",
                 UserName = "user",
                 Password = "password"

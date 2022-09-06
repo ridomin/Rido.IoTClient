@@ -48,7 +48,10 @@ namespace Rido.MqttCore
             SasMinutes = Default_SasMinutes;
             Auth = AuthType.Basic;
             TcpPort = Default_TcpPort;
+            KeepAliveInSeconds = Default_KeepAliveInSeconds;
             UseTls = Default_UseTls == "true";
+            DisableCrl = Default_DisableCrl == "true";
+            CleanSession = Default_CleanSession == "true";
         }
         public static ConnectionSettings FromConnectionString(string cs) => new ConnectionSettings(cs);
         public ConnectionSettings(string cs) => ParseConnectionString(cs);
