@@ -129,7 +129,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
         {
             IMqttClient mqtt = new MqttFactory(MqttNetTraceLogger.CreateTraceLogger()).CreateMqttClient();
             var connack = await mqtt.ConnectAsync(new MqttClientOptionsBuilder()
-                .WithBasicAuth(cs, withLWT)
+                .WithX509Auth(cs, withLWT)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
                 .Build(), cancellationToken);
             if (connack.ResultCode != MqttClientConnectResultCode.Success)
