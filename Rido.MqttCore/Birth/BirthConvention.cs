@@ -22,9 +22,9 @@ namespace Rido.MqttCore.Birth
             [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
             public string ModelId { get; set; }
             [JsonPropertyName("when")]
-            public DateTime When { get; private set; }
+            public DateTime When { get; set; }
             [JsonPropertyName("status")]
-            public ConnectionStatus ConnectionStatus { get; private set; }
+            public ConnectionStatus ConnectionStatus { get; set; }
         }
 
         public static byte[] LastWillPayload() => Encoding.UTF8.GetBytes(Stringify(new BirthMessage(ConnectionStatus.offline)));
