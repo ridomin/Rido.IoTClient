@@ -9,33 +9,14 @@ using Xunit;
 
 namespace Rido.Mqtt.IntegrationTests
 {
-    public class TestMosquittoOrg
+    public class TestBrokerRidoDev
     {
         MqttClient? client;
-        public TestMosquittoOrg()
+        public TestBrokerRidoDev()
         {
             client = new MqttFactory().CreateMqttClient(MqttNetTraceLogger.CreateTraceLogger()) as MqttClient;
         }
 
-        [Fact]
-        public async Task LetsEncrypt()
-        {
-            if (client == null) throw new ArgumentNullException(nameof(client));
-
-            var cs = new ConnectionSettings()
-            {
-                HostName = "test.mosquitto.org",
-                TcpPort = 8886,
-                ClientId = "test-client",
-                DisableCrl = true
-            };
-            var connAck = await client.ConnectAsync(new MqttClientOptionsBuilder()
-                .WithX509Auth(cs)
-                .Build());
-            Assert.Equal(MqttClientConnectResultCode.Success, connAck.ResultCode);
-            Assert.True(client.IsConnected);
-            await client.DisconnectAsync();
-        }
 
         [Fact]
         public async Task FailsWithouCA()
@@ -43,7 +24,7 @@ namespace Rido.Mqtt.IntegrationTests
             if (client == null) throw new ArgumentNullException(nameof(client));
             var cs = new ConnectionSettings()
             {
-                HostName = "test.mosquitto.org",
+                HostName = "broker.rido.dev",
                 TcpPort = 8883,
                 ClientId = "test-client"
             };
@@ -66,10 +47,11 @@ namespace Rido.Mqtt.IntegrationTests
             if (client == null) throw new ArgumentNullException(nameof(client));
             var cs = new ConnectionSettings()
             {
-                HostName = "test.mosquitto.org",
+                HostName = "broker.rido.dev",
                 TcpPort = 8883,
-                ClientId = "test-client",
-                CaPath = "mosquitto.org.crt"
+                CaPath = "RidoFY23CA.crt",
+                UserName = "client1",
+                Password = "Pass@Word1"
             };
             var connAck = await client.ConnectAsync(new MqttClientOptionsBuilder()
                 .WithX509Auth(cs)
@@ -85,11 +67,11 @@ namespace Rido.Mqtt.IntegrationTests
             if (client == null) throw new ArgumentNullException(nameof(client));
             var cs = new ConnectionSettings()
             {
-                HostName = "test.mosquitto.org",
+                HostName = "broker.rido.dev",
                 TcpPort = 8884,
                 ClientId = "test-client",
-                CaPath = "mosquitto.org.crt",
-                X509Key = "client.pfx|1234"
+                CaPath = "RidoFY23CA.crt",
+                X509Key = "mqttClient.pfx|1234"
             };
             var connAck = await client.ConnectAsync(new MqttClientOptionsBuilder()
                 .WithX509Auth(cs)
