@@ -30,7 +30,7 @@ namespace Rido.Mqtt.IntegrationTests
                 DisableCrl = true
             };
             var connAck = await client.ConnectAsync(new MqttClientOptionsBuilder()
-                .WithBasicAuth(cs)
+                .WithX509Auth(cs)
                 .Build());
             Assert.Equal(MqttClientConnectResultCode.Success, connAck.ResultCode);
             Assert.True(client.IsConnected);

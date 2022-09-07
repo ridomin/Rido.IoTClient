@@ -32,7 +32,6 @@ namespace Rido.Mqtt.MqttNet4Adapter
             if (!string.IsNullOrEmpty(cs.CaPath))
             {
                 var caCert = new X509Certificate2(cs.CaPath);
-                certs.Add(caCert);
                 tls.CertificateValidationHandler = ea =>
                 {
 #if NET6_0
@@ -58,7 +57,7 @@ namespace Rido.Mqtt.MqttNet4Adapter
                 .WithTcpServer(cs.HostName, cs.TcpPort)
                 .WithClientId(cs.ClientId)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(cs.KeepAliveInSeconds))
-                .WithCleanSession(true)
+                .WithCleanSession(cs.CleanSession)
                 .WithTls(tls);
 
             if (withLWT)
