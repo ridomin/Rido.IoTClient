@@ -142,6 +142,7 @@ namespace Rido.MqttCore
         {
             var result = new StringBuilder();
             AppendIfNotEmpty(result, nameof(HostName), HostName);
+            AppendIfNotEmpty(result, nameof(TcpPort), TcpPort.ToString());
             AppendIfNotEmpty(result, nameof(DeviceId), DeviceId);
             AppendIfNotEmpty(result, nameof(IdScope), IdScope);
             AppendIfNotEmpty(result, nameof(ModuleId), ModuleId);
